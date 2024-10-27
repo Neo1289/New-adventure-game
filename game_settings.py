@@ -19,3 +19,8 @@ button_color = (255, 255, 255)
 FONT_SIZE = 20
 
 display_surface = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
+
+####MAPS
+
+world_map = load_pygame(join('resources', 'world', 'world_map.tmx'))
+map_manor = load_pygame(join('resources', 'world', 'manor.tmx'))
