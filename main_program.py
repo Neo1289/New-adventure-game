@@ -12,14 +12,18 @@ class Game:
         self.clock = pygame.time.Clock()
         self.area_list = []
         self.area_names = []
-        self.level = []
+        self.enter = False
 
         #groups
         self.all_sprites = allSprites()
         self.collision_sprites = pygame.sprite.Group()
 
     def setup(self):
+
+        #maps
+
         map = load_pygame(join('resources','world','world_map.tmx'))
+        maps_manor = load_pygame(join('resources','world','manor.tmx'))
 
         #####BACKGROUND TILES --> self.ground = True
 
@@ -61,12 +65,13 @@ class Game:
     def areas(self):
         for i in range(len(self.area_list)):
             if self.area_list[i].rect.colliderect(self.player.rect):
+
                 self.FONT = pygame.font.SysFont('Georgia', FONT_SIZE)
                 self.text = f"Press Y to enter the {self.area_names[i]}"
                 self.text_surface = self.FONT.render(self.text, True, button_color)
                 self.text_rect = display_surface.get_rect(center=(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2))
                 self.display_surface.blit(self.text_surface, self.text_rect)
-                self.level.append(self.area_names[i])
+                self.enter = True
 
     def run(self):
         while self.running:
@@ -77,8 +82,8 @@ class Game:
                     self.running = False
 
                 if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_y and self.level:
-                        print(f"Key pressed: {self.level}")
+                    if event.key == pygame.K_y and self.enter:
+                        print(f"Key pressed: y")
 
             self.display_surface.fill('black')
             self.all_sprites.draw(self.player.rect.center)
