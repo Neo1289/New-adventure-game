@@ -13,6 +13,7 @@ class Game:
         self.enter = False
         self.area_list = []
         self.area_names = []
+        self.current_map = None
 
         #groups
         self.all_sprites = allSprites()
@@ -21,49 +22,72 @@ class Game:
     def setup(self):
         self.all_sprites.empty()
         self.collision_sprites.empty()
-        self.current_map = None
 
         if self.current_area == 'world_map':
             self.current_map = world_map
         elif self.current_area == 'manor':
             self.current_map = map_manor
 
+
+    def mapping(self):
+
+        #================
+        #world map ground
+        #================
         try:
-            for x, y, image in self.current_map.get_layer_by_name('ground').tiles():
-                GroundSprite((x * TILE_SIZE, y * TILE_SIZE), image, self.all_sprites)
+            [GroundSprite((x * TILE_SIZE, y * TILE_SIZE), image, self.all_sprites) for x, y, image in
+             self.current_map.get_layer_by_name('ground').tiles() if self.current_map.get_layer_by_name('ground')]
 
-            for x, y, image in self.current_map.get_layer_by_name('grass').tiles():
-                GroundSprite((x * TILE_SIZE, y * TILE_SIZE), image, self.all_sprites)
+            [GroundSprite((x * TILE_SIZE, y * TILE_SIZE), image, self.all_sprites) for x, y, image in
+             self.current_map.get_layer_by_name('grass').tiles() if self.current_map.get_layer_by_name('grass')]
 
-            for x, y, image in self.current_map.get_layer_by_name('stoneGround').tiles():
-                GroundSprite((x * TILE_SIZE, y * TILE_SIZE), image, self.all_sprites)
+            [GroundSprite((x * TILE_SIZE, y * TILE_SIZE), image, self.all_sprites) for x, y, image in
+             self.current_map.get_layer_by_name('stoneGround').tiles() if self.current_map.get_layer_by_name('stoneGround')]
 
-            for obj in self.current_map.get_layer_by_name('trees'):
-                if obj.image:
-                    CollisionSprite((obj.x, obj.y), obj.image, (self.all_sprites, self.collision_sprites))
+        #==================
+        # world map objects
+        #==================
 
-            for obj in self.current_map.get_layer_by_name('rocks_and_props'):
-                if obj.image:
-                    CollisionSprite((obj.x, obj.y), obj.image, (self.all_sprites, self.collision_sprites))
+            if self.current_map.get_layer_by_name('trees'):
+                for obj in self.current_map.get_layer_by_name('trees'):
+                    if obj.image:
+                        CollisionSprite((obj.x, obj.y), obj.image, (self.all_sprites, self.collision_sprites))
 
-            for obj in self.current_map.get_layer_by_name('areas'):
-                self.area_sprite = AreaSprite(obj.x, obj.y, obj.width, obj.height, self.all_sprites)
-                self.area_list.append(self.area_sprite)
-                self.area_names.append(obj.name)
+            if self.current_map.get_layer_by_name('rocks_and_props'):
+                for obj in self.current_map.get_layer_by_name('rocks_and_props'):
+                    if obj.image:
+                        CollisionSprite((obj.x, obj.y), obj.image, (self.all_sprites, self.collision_sprites))
+
+            if self.current_map.get_layer_by_name('areas'):
+                for obj in self.current_map.get_layer_by_name('areas'):
+                    self.area_sprite = AreaSprite(obj.x, obj.y, obj.width, obj.height, self.all_sprites)
+                    self.area_list.append(self.area_sprite)
+                    self.area_names.append(obj.name)
 
         except:
             pass
+
+        #==================
+        #==manor ground====
+        #==================
 
         try:
             for x, y, image in self.current_map.get_layer_by_name('manor floor').tiles():
                     GroundSprite((x * TILE_SIZE, y * TILE_SIZE), image, self.all_sprites)
-
         except:
             pass
 
-        for obj in self.current_map.get_layer_by_name('entities_spawn'):
-            if obj.name == 'player_spawn':
-                self.player = Player((obj.x, obj.y), self.all_sprites, self.collision_sprites)
+        #=================
+        #===player spawn==
+        #=================
+
+        try:
+            if self.current_map.get_layer_by_name('entities_spawn'):
+                for obj in self.current_map.get_layer_by_name('entities_spawn'):
+                    if obj.name == 'player_spawn':
+                        self.player = Player((obj.x, obj.y), self.all_sprites, self.collision_sprites)
+        except:
+            print('no spawn point')
 
     def areas(self):
         for i in range(len(self.area_list)):
@@ -85,19 +109,19 @@ class Game:
                 if event.type == pygame.QUIT:
                     self.running = False
 
-                if event.type == pygame.KEYDOWN and pygame.key == pygame.K_y and self.enter:
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_y and self.enter:
                     self.setup()
+                    self.mapping()
 
             self.display_surface.fill('black')
             self.all_sprites.draw(self.player.rect.center)
             self.all_sprites.update(dt)
             self.areas()
-            print(self.current_area)
-            print(self.enter)
             pygame.display.update()
         pygame.quit()
 
 if __name__ == '__main__':
     game = Game()
     game.setup()
+    game.mapping()
     game.run()
