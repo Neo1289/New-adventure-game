@@ -56,7 +56,7 @@
 </data>
  </layer>
  <objectgroup id="3" name="entities_spawn">
-  <object id="1" name="entities_spawn" x="826.667" y="440">
+  <object id="1" name="player_spawn" x="826.667" y="440">
    <point/>
   </object>
  </objectgroup>

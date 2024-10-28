@@ -9,8 +9,8 @@ pygame.init()
 import time
 
 info = pygame.display.Info()
-screen_width = info.current_w
-screen_height = info.current_h
+screen_width = 1024
+screen_height = 768
 
 WINDOW_WIDTH, WINDOW_HEIGHT = screen_width, screen_height -50
 TILE_SIZE = 32
