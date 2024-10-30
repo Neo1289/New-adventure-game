@@ -28,7 +28,6 @@ class Game:
         elif self.current_area == 'manor':
             self.current_map = map_manor
 
-
     def mapping(self):
 
         #================
@@ -74,6 +73,11 @@ class Game:
         try:
             for x, y, image in self.current_map.get_layer_by_name('manor floor').tiles():
                     GroundSprite((x * TILE_SIZE, y * TILE_SIZE), image, self.all_sprites)
+
+            if self.current_map.get_layer_by_name('walls'):
+                for obj in self.current_map.get_layer_by_name('walls'):
+                    if obj.image:
+                        CollisionSprite((obj.x, obj.y), obj.image, (self.all_sprites, self.collision_sprites))
         except:
             pass
 
@@ -98,8 +102,8 @@ class Game:
                 self.text_surface = self.FONT.render(self.text, True, button_color)
                 self.text_rect = display_surface.get_rect(center=(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2))
                 self.display_surface.blit(self.text_surface, self.text_rect)
-                self.enter = True
                 self.current_area = self.area_names[i]
+                self.enter = True
 
     def run(self):
         while self.running:
@@ -112,6 +116,7 @@ class Game:
                 if event.type == pygame.KEYDOWN and event.key == pygame.K_y and self.enter:
                     self.setup()
                     self.mapping()
+                    self.enter = False
 
             self.display_surface.fill('black')
             self.all_sprites.draw(self.player.rect.center)
