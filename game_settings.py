@@ -8,7 +8,6 @@ from random import randint
 pygame.init()
 import time
 
-info = pygame.display.Info()
 screen_width = 1024
 screen_height = 768
 
@@ -21,6 +20,9 @@ FONT_SIZE = 20
 display_surface = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 
 ####MAPS
+maps = {}
+for dirpath, dirnames, filenames in walk(path.join('resources', 'world')):
+    for filename in filenames:
+        if filename.lower().endswith('.tmx'):
+            maps[(filename.split('.')[0])] = (load_pygame(path.join('resources','world',filename)))
 
-world_map = load_pygame(join('resources', 'world', 'world_map.tmx'))
-map_manor = load_pygame(join('resources', 'world', 'manor.tmx'))
