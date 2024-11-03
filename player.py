@@ -7,9 +7,9 @@ class Player(pygame.sprite.Sprite):
         self.state, self.frame_index = 'down', 0
         self.image = pygame.image.load(join('resources','player','down','0.png')).convert_alpha()
         self.rect = self.image.get_rect(center = pos)
-        self.collision_rect = self.rect.inflate(-50, -50)
+        self.collision_rect = self.rect.inflate(-60, -60)
         self.direction = pygame.Vector2(0,0)
-        self.speed = 1000
+        self.speed = 2000
         self.groups = groups
         self.collision_sprites = collision_sprites
 
