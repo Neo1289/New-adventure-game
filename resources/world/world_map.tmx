@@ -423,7 +423,7 @@
   <object id="351" gid="65" x="353" y="382" width="47" height="43"/>
  </objectgroup>
  <objectgroup id="3" name="areas">
-  <object id="54" name="house" x="1123.33" y="1220.67" width="221.333" height="186.667"/>
+  <object id="54" name="house" x="1213.33" y="1340.67" width="55.333" height="66.667"/>
   <object id="55" name="forest" x="1180" y="501.333" width="314.667" height="244"/>
   <object id="56" name="player_spawn" x="1010.67" y="1013.33">
    <point/>
