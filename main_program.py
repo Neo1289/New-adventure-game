@@ -11,9 +11,9 @@ class Game:
         self.clock = pygame.time.Clock()
         self.maps = maps
         self.current_area = 'world_map'
+        self.rolling_area = 'world_map'
         self.current_map = None
         self.area_groups = {}
-        self.entry = False
         #groups
         self.all_sprites = allSprites()
         self.collision_sprites = pygame.sprite.Group()
@@ -50,27 +50,26 @@ class Game:
                 self.text_surface = self.FONT.render(self.text, True, button_color)
                 self.text_rect = display_surface.get_rect(center=(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2))
                 self.display_surface.blit(self.text_surface, self.text_rect)
-                self.current_area = name
-                self.entry = True
+                self.rolling_area = name
 
     def run(self):
         while self.running:
             dt = self.clock.tick() / 3000
-
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.running = False
 
-                if event.type == pygame.KEYDOWN and event.key == pygame.K_y and self.entry:
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_y:
+                    self.current_area = self.rolling_area
                     self.setup()
                     self.mapping()
-                    self.entry = False
 
             self.display_surface.fill('black')
             self.all_sprites.draw(self.player.rect.center)
-            self.all_sprites.update(dt)
             self.question()
-            print(self.current_area)
+            self.all_sprites.update(dt)
+            print(self.current_area,self.rolling_area)
+
             pygame.display.update()
         pygame.quit()
 
