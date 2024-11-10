@@ -9,7 +9,7 @@ class Player(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(center = pos)
         self.collision_rect = self.rect.inflate(-30, -30)
         self.direction = pygame.Vector2(0,0)
-        self.speed = 500
+        self.speed = 400
         self.groups = groups
         self.collision_sprites = collision_sprites
 

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="64" height="64" tilewidth="32" tileheight="32" infinite="0" nextlayerid="4" nextobjectid="352">
+<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="64" height="64" tilewidth="32" tileheight="32" infinite="0" nextlayerid="4" nextobjectid="360">
  <tileset firstgid="1" name="ground" tilewidth="32" tileheight="32" tilecount="64" columns="8">
   <image source="TX Tileset Grass.png" width="256" height="256"/>
  </tileset>
@@ -423,7 +423,7 @@
   <object id="351" gid="65" x="353" y="382" width="47" height="43"/>
  </objectgroup>
  <objectgroup id="3" name="areas">
-  <object id="54" name="house" x="1209.33" y="1340.67" width="49.333" height="92.667"/>
+  <object id="54" name="house" x="1213.33" y="1336.67" width="49.333" height="92.667"/>
   <object id="55" name="forest" x="1180" y="501.333" width="314.667" height="244"/>
   <object id="56" name="player_spawn" x="1010.67" y="1013.33">
    <point/>
