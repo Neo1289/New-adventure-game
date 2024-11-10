@@ -43,8 +43,6 @@ class Game:
                 elif obj.name == 'player_spawn':
                     self.player = Player((obj.x, obj.y), self.all_sprites, self.collision_sprites)
 
-
-
     def question(self):
         for name, area in self.area_groups.items():
             if area.rect.colliderect(self.player.rect):
@@ -68,9 +66,8 @@ class Game:
             self.display_surface.fill('black')
             self.all_sprites.draw(self.player.rect.center)
             self.question()
-            print(self.area_groups)
-
             self.all_sprites.update(dt)
+            display_surface.blit(text_surface, text_rect)
             pygame.display.update()
         pygame.quit()
 
