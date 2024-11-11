@@ -7,24 +7,16 @@ from pytmx.util_pygame import load_pygame
 from random import randint
 pygame.init()
 import time
-
 screen_width = 1024
 screen_height = 768
 
-WINDOW_WIDTH, WINDOW_HEIGHT = screen_width, screen_height -50
+WINDOW_WIDTH, WINDOW_HEIGHT = screen_width, screen_height
 TILE_SIZE = 32
+
+display_surface = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 
 button_color = (255, 255, 255)
 FONT_SIZE = 20
-
-####player features blit it resuses the same color as the button question
-caption = "Blit Example - Bottom Right"
-font_caption = pygame.font.SysFont('Georgia', 20)
-text_surface = font_caption.render(caption, True, button_color)
-padding = 30
-text_rect = text_surface.get_rect()
-text_rect.bottomright = (WINDOW_WIDTH - padding, WINDOW_HEIGHT - padding)
-display_surface = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 
 ####MAPS
 maps = {}

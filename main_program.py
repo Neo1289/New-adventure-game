@@ -18,6 +18,14 @@ class Game:
         self.all_sprites = allSprites()
         self.collision_sprites = pygame.sprite.Group()
 
+    def display_time(self):
+        self.current_time = pygame.time.get_ticks() // 1000
+        self.current_time = str(self.current_time)
+        self.font = pygame.font.SysFont('Georgia', 20)
+        self.text_surf = self.font.render(self.current_time, True, (250, 235, 240))
+        self.text_rect = self.text_surf.get_rect(bottomright = (WINDOW_WIDTH - 20, WINDOW_HEIGHT - 20))
+        self.display_surface.blit(self.text_surf, self.text_rect)
+
     def setup(self):
         self.all_sprites.empty()
         self.collision_sprites.empty()
@@ -67,7 +75,7 @@ class Game:
             self.all_sprites.draw(self.player.rect.center)
             self.question()
             self.all_sprites.update(dt)
-            display_surface.blit(text_surface, text_rect)
+            self.display_time()
             pygame.display.update()
         pygame.quit()
 
