@@ -3,6 +3,7 @@ from game_settings import *
 from player import *
 from sprites import *
 from groups import allSprites
+from side_game import *
 
 class Game:
     def __init__(self):
@@ -64,12 +65,18 @@ class Game:
     def run(self):
         while self.running:
             dt = self.clock.tick() / 3000
+            global shrine
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.running = False
-                if event.type ==  pygame.KEYDOWN and event.key == pygame.K_y:
+                if event.type ==  pygame.KEYDOWN and event.key == pygame.K_y and self.current_area != 'shrine':
                     self.setup()
                     self.mapping()
+                elif event.type ==  pygame.KEYDOWN and event.key == pygame.K_y and self.current_area == 'shrine':
+                    print('Entering Shrine...')
+                    self.running = False
+                    shrine_game = SideGame()
+                    shrine_game.run()
 
             self.display_surface.fill('black')
             self.all_sprites.draw(self.player.rect.center)
