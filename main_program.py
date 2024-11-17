@@ -76,6 +76,7 @@ class Game:
                     print('Entering Shrine...')
                     self.running = False
                     shrine_game = SideGame()
+                    shrine_game.mapping()
                     shrine_game.run()
 
             self.display_surface.fill('black')
