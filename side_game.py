@@ -2,6 +2,7 @@ from game_settings import *
 from sprites import *
 from player import *
 from groups import allSprites
+from main_program import Game
 
 class SideGame():
     def __init__(self):
@@ -10,6 +11,7 @@ class SideGame():
         self.map = maps['maze']
         self.all_sprites = allSprites()
         self.collision_sprites = pygame.sprite.Group()
+
     def mapping(self):
         for x, y, image in self.map.get_layer_by_name('ground').tiles():
             GroundSprite((x * TILE_SIZE, y * TILE_SIZE), image, self.all_sprites)
@@ -19,6 +21,9 @@ class SideGame():
                 CollisionSprite((obj.x, obj.y), obj.image, (self.all_sprites, self.collision_sprites))
 
         for obj in self.map.get_layer_by_name('areas'):
+            if obj.name != 'player_spawn':
+                self.shrine_sprite = AreaSprite(obj.x, obj.y, obj.width, obj.height, self.all_sprites)
+            elif obj.name == 'player_spawn':
                 self.player = Player((obj.x, obj.y), self.all_sprites, self.collision_sprites)
 
     def run(self):
@@ -27,10 +32,24 @@ class SideGame():
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.running = False
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_y:
+                    game = Game()
+                    game.current_area = 'forest'
+                    game.setup()
+                    game.mapping()
+                    game.run()
 
             display_surface.fill((0, 0, 0))
             self.all_sprites.draw(self.player.rect.center)
             self.all_sprites.update(dt)
+
+            if self.shrine_sprite.rect.colliderect(self.player.rect):
+                self.FONT = pygame.font.SysFont('Georgia', FONT_SIZE)
+                self.text = "Press Y to exit the Shrine"
+                self.text_surface = self.FONT.render(self.text, True, button_color)
+                self.text_rect = display_surface.get_rect(center=(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2))
+                display_surface.blit(self.text_surface, self.text_rect)
+
             pygame.display.update()
 
         pygame.quit()
