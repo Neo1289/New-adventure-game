@@ -47,10 +47,10 @@ class Game:
 
         if self.current_map.get_layer_by_name('areas'):
             for obj in self.current_map.get_layer_by_name('areas'):
-                if obj.name != 'player_spawn':
-                    self.area_groups[obj.name] = AreaSprite(obj.x, obj.y, obj.width, obj.height, self.all_sprites)
-                elif obj.name == 'player_spawn':
+                if obj.name == 'player_spawn':
                     self.player = Player((obj.x, obj.y), self.all_sprites, self.collision_sprites)
+                else:
+                    self.area_groups[obj.name] = AreaSprite(obj.x, obj.y, obj.width, obj.height, self.all_sprites)
 
     def question(self):
         for name, area in self.area_groups.items():
