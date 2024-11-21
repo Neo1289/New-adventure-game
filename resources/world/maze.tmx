@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="32" tileheight="32" infinite="0" nextlayerid="4" nextobjectid="209">
+<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="32" tileheight="32" infinite="0" nextlayerid="4" nextobjectid="217">
  <tileset firstgid="1" source="house_ground.tsx"/>
  <tileset firstgid="65" source="objects_world.tsx"/>
  <layer id="1" name="ground" width="100" height="100">
@@ -318,5 +318,29 @@
    <point/>
   </object>
   <object id="208" name="shrine" x="885.333" y="1877.33" width="34.6667" height="88"/>
+  <object id="209" name="monster" x="1805.33" y="1258.67">
+   <point/>
+  </object>
+  <object id="210" name="monster" x="1641.33" y="1422.67">
+   <point/>
+  </object>
+  <object id="211" name="monster" x="1401.33" y="1257.33">
+   <point/>
+  </object>
+  <object id="212" name="monster" x="1234.67" y="1262.67">
+   <point/>
+  </object>
+  <object id="213" name="monster" x="1344" y="1561.33">
+   <point/>
+  </object>
+  <object id="214" name="monster" x="1577.33" y="1598.67">
+   <point/>
+  </object>
+  <object id="215" name="monster" x="1857.33" y="1729.33">
+   <point/>
+  </object>
+  <object id="216" name="monster" x="1865.33" y="1910.67">
+   <point/>
+  </object>
  </objectgroup>
 </map>
