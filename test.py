@@ -1,6 +1,5 @@
 from enemy import *
 
-
 import pygame
 import sys
 
@@ -14,6 +13,7 @@ WINDOW_WIDTH = 800
 WINDOW_HEIGHT = 600
 WINDOW_TITLE = "Pygame Black Window"
 FPS = 60  # Frames per second
+running = True
 
 # Colors (R, G, B)
 BLACK = (0, 0, 0)
@@ -28,8 +28,17 @@ clock = pygame.time.Clock()
 # ---------------------------
 # Main Loop
 # ---------------------------
-running = True
+
+#---------------------------
+#testing code
+#---------------------------
+all_sprites = pygame.sprite.Group()
+
+enemy = Enemy((400,300),frames,all_sprites)
+
+# running = True
 while running:
+    dt = clock.tick(FPS) /1000
     # --- Event Handling ---
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -38,11 +47,10 @@ while running:
     # --- Drawing ---
     screen.fill(BLACK)  # Fill the screen with black
 
+    all_sprites.update(dt)
+    all_sprites.draw(screen)
     # --- Update Display ---
     pygame.display.flip()
-
-    # --- Frame Rate Control ---
-    clock.tick(FPS)
 
 # --- Cleanup ---
 pygame.quit()
