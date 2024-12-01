@@ -3,6 +3,7 @@ from sprites import *
 from player import *
 from groups import allSprites
 from main_program import Game
+from enemy import *
 
 class SideGame():
     def __init__(self):
@@ -21,10 +22,12 @@ class SideGame():
                 CollisionSprite((obj.x, obj.y), obj.image, (self.all_sprites, self.collision_sprites))
 
         for obj in self.map.get_layer_by_name('areas'):
-            if obj.name != 'player_spawn':
+            if obj.name == 'shrine':
                 self.shrine_sprite = AreaSprite(obj.x, obj.y, obj.width, obj.height, self.all_sprites)
             elif obj.name == 'player_spawn':
                 self.player = Player((obj.x, obj.y), self.all_sprites, self.collision_sprites)
+            elif obj.name == 'monster':
+                self.monster = Enemy((obj.x,obj.y),frames,self.all_sprites)
 
     def run(self):
         dt = self.clock.tick() / 7000

@@ -13,7 +13,7 @@ class Enemy(pygame.sprite.Sprite):
 
         self.frames, self.frames_index = frames,0
         self.image = self.frames[self.frames_index]
-        self.animation_speed = 6
+        self.animation_speed = 15
 
         self.rect = self.image.get_rect(center = pos)
         self.direction = pygame.Vector2()
