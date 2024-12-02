@@ -23,7 +23,7 @@ class Enemy(pygame.sprite.Sprite):
             self.direction = pygame.Vector2(0, 0)
         else:
             self.direction = self.direction.normalize()
-        self.speed = 100
+        self.speed = 200
 
     def animate(self, dt):
         self.frames_index += self.animation_speed * dt
@@ -36,5 +36,8 @@ class Enemy(pygame.sprite.Sprite):
     def update(self, dt):
         self.animate(dt)
         self.move(dt)
+        if self.rect.centerx > 3000:
+            self.kill()
+
 
 
