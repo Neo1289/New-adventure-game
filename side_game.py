@@ -12,6 +12,8 @@ class SideGame():
         self.map = maps['maze']
         self.all_sprites = allSprites()
         self.collision_sprites = pygame.sprite.Group()
+        self.bat_event = pygame.event.custom_type()
+        pygame.time.set_timer(self.bat_event, 5000)
 
     def mapping(self):
         for x, y, image in self.map.get_layer_by_name('ground').tiles():
@@ -29,6 +31,11 @@ class SideGame():
             elif obj.name == 'monster':
                 self.monster = Enemy((obj.x,obj.y),self.player,frames,self.all_sprites)
 
+    def customer_mapping(self):
+        for obj in self.map.get_layer_by_name('areas'):
+            if obj.name == 'monster':
+                self.monster = Enemy((obj.x,obj.y),self.player,frames,self.all_sprites)
+
     def run(self):
         dt = self.clock.tick() / 7000
         while self.running:
@@ -41,6 +48,8 @@ class SideGame():
                     game.setup()
                     game.mapping()
                     game.run()
+                if event.type == self.bat_event:
+                    self.customer_mapping()
 
             display_surface.fill((0, 0, 0))
             self.all_sprites.draw(self.player.rect.center)
