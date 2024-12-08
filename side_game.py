@@ -13,7 +13,7 @@ class SideGame():
         self.all_sprites = allSprites()
         self.collision_sprites = pygame.sprite.Group()
         self.bat_event = pygame.event.custom_type()
-        pygame.time.set_timer(self.bat_event, 5000)
+        pygame.time.set_timer(self.bat_event, 4000)
 
     def mapping(self):
         for x, y, image in self.map.get_layer_by_name('ground').tiles():
@@ -29,12 +29,12 @@ class SideGame():
             elif obj.name == 'player_spawn':
                 self.player = Player((obj.x, obj.y), self.all_sprites, self.collision_sprites)
             elif obj.name == 'monster':
-                self.monster = Enemy((obj.x,obj.y),self.player,frames,self.all_sprites)
+                self.monster = Enemy((obj.x,obj.y),frames,self.all_sprites)
 
     def customer_mapping(self):
         for obj in self.map.get_layer_by_name('areas'):
             if obj.name == 'monster':
-                self.monster = Enemy((obj.x,obj.y),self.player,frames,self.all_sprites)
+                self.monster = Enemy((obj.x,obj.y),frames,self.all_sprites)
 
     def run(self):
         dt = self.clock.tick() / 7000
@@ -50,6 +50,11 @@ class SideGame():
                     game.run()
                 if event.type == self.bat_event:
                     self.customer_mapping()
+
+            for sprite in self.all_sprites:
+                if hasattr(sprite, "sprite_type"):
+                    if sprite.rect.colliderect(self.player):
+                        print('ok')
 
             display_surface.fill((0, 0, 0))
             self.all_sprites.draw(self.player.rect.center)

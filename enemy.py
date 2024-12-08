@@ -1,3 +1,4 @@
+import random
 from game_settings import *
 
 frames = []
@@ -8,22 +9,19 @@ for file_name in listdir(bat_folder):
     frames.append(surf)
 
 class Enemy(pygame.sprite.Sprite):
-    def __init__(self,pos,player,frames,groups):
+    def __init__(self,pos,frames,groups):
         super().__init__(groups)
 
         self.frames, self.frames_index = frames,0
         self.image = self.frames[self.frames_index]
         self.animation_speed = 15
-        self.player = player
 
         self.rect = self.image.get_rect(center = pos)
         self.pos = pygame.Vector2(pos)
-        self.direction = pygame.Vector2(self.player.rect.center)
-        if self.direction is None:
-            self.direction = pygame.Vector2(0, 0)
-        else:
-            self.direction = self.direction.normalize()
+        self.list = [-1,1]
+        self.direction = pygame.Vector2(random.choice(self.list), random.choice(self.list))
         self.speed = 200
+        self.sprite_type = True
 
     def animate(self, dt):
         self.frames_index += self.animation_speed * dt
@@ -36,7 +34,7 @@ class Enemy(pygame.sprite.Sprite):
     def update(self, dt):
         self.animate(dt)
         self.move(dt)
-        if self.rect.centerx > 3000:
+        if self.rect.center > (3000,3000) or self.rect.center < (-3000,-3000) :
             self.kill()
 
 
