@@ -29,12 +29,12 @@ class SideGame():
             elif obj.name == 'player_spawn':
                 self.player = Player((obj.x, obj.y), self.all_sprites, self.collision_sprites)
             elif obj.name == 'monster':
-                self.monster = Enemy((obj.x,obj.y),self.player,frames,self.all_sprites)
+                self.monster = Enemy((obj.x,obj.y),frames,self.all_sprites)
 
     def customer_mapping(self):
         for obj in self.map.get_layer_by_name('areas'):
             if obj.name == 'monster':
-                self.monster = Enemy((obj.x,obj.y),self.player,frames,self.all_sprites)
+                self.monster = Enemy((obj.x,obj.y),frames,self.all_sprites)
 
     def run(self):
         dt = self.clock.tick() / 7000
