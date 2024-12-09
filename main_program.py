@@ -65,7 +65,6 @@ class Game:
     def run(self):
         while self.running:
             dt = self.clock.tick() / 3000
-            global shrine
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.running = False
@@ -84,6 +83,16 @@ class Game:
             self.question()
             self.all_sprites.update(dt)
             self.display_time()
+
+            if self.player.life <= 0:
+                self.caption = pygame.display.set_caption('GAME OVER')
+                pygame.time.delay(2000)
+                pygame.quit()
+                sys.exit()
+
+            print(self.current_area)
+
+            pygame.display.set_caption(f'Player life {self.player.life}')
             pygame.display.update()
         pygame.quit()
 
