@@ -38,6 +38,7 @@ class SideGame():
 
     def run(self):
         dt = self.clock.tick() / 7000
+
         while self.running:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -52,9 +53,9 @@ class SideGame():
                     self.customer_mapping()
 
             for sprite in self.all_sprites:
-                if hasattr(sprite, "sprite_type"):
+                if hasattr(sprite, "sprite_type"): #identify bats among the sprites
                     if sprite.rect.colliderect(self.player):
-                        print('ok')
+                        self.player.life -=1
 
             display_surface.fill((0, 0, 0))
             self.all_sprites.draw(self.player.rect.center)
@@ -67,6 +68,13 @@ class SideGame():
                 self.text_rect = display_surface.get_rect(center=(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2))
                 display_surface.blit(self.text_surface, self.text_rect)
 
+            if self.player.life <= 0:
+                self.caption = pygame.display.set_caption('GAME OVER')
+                pygame.time.delay(2000)
+                pygame.quit()
+                sys.exit()
+
+            self.caption = pygame.display.set_caption(f'Player life {self.player.life}')
             pygame.display.update()
 
         pygame.quit()

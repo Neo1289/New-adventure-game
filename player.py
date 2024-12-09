@@ -12,6 +12,7 @@ class Player(pygame.sprite.Sprite):
         self.speed = 400
         self.groups = groups
         self.collision_sprites = collision_sprites
+        self.life = 100
 
     def input(self):
         keys = pygame.key.get_pressed()
