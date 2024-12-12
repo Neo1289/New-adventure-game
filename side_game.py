@@ -30,7 +30,8 @@ class SideGame():
                 self.player = Player((obj.x, obj.y), self.all_sprites, self.collision_sprites)
             elif obj.name == 'monster':
                 self.monster = Enemy((obj.x,obj.y),frames,self.all_sprites)
-
+            elif obj.name == 'chest':
+                self.chest = AreaSprite(obj.x, obj.y, obj.width, obj.height, self.all_sprites)
 
     def custom_mapping(self):
         for obj in self.map.get_layer_by_name('areas'):
@@ -69,11 +70,19 @@ class SideGame():
                 self.text_rect = display_surface.get_rect(center=(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2))
                 display_surface.blit(self.text_surface, self.text_rect)
 
+            if self.chest.rect.colliderect(self.player.rect):
+                self.FONT = pygame.font.SysFont('Georgia', FONT_SIZE)
+                self.text = "press C to inspect the chest"
+                self.text_surface = self.FONT.render(self.text, True, button_color)
+                self.text_rect = display_surface.get_rect(center=(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2))
+                display_surface.blit(self.text_surface, self.text_rect)
+
             if self.player.life <= 0:
                 self.caption = pygame.display.set_caption('GAME OVER')
                 pygame.time.delay(2000)
                 pygame.quit()
                 sys.exit()
+
 
             self.caption = pygame.display.set_caption(f'Player life {self.player.life}')
             pygame.display.update()
