@@ -31,7 +31,8 @@ class SideGame():
             elif obj.name == 'monster':
                 self.monster = Enemy((obj.x,obj.y),frames,self.all_sprites)
 
-    def customer_mapping(self):
+
+    def custom_mapping(self):
         for obj in self.map.get_layer_by_name('areas'):
             if obj.name == 'monster':
                 self.monster = Enemy((obj.x,obj.y),frames,self.all_sprites)
@@ -50,7 +51,7 @@ class SideGame():
                     game.mapping()
                     game.run()
                 if event.type == self.bat_event:
-                    self.customer_mapping()
+                    self.custom_mapping()
 
             for sprite in self.all_sprites:
                 if hasattr(sprite, "sprite_type"): #identify bats among the sprites

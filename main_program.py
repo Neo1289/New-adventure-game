@@ -72,7 +72,6 @@ class Game:
                     self.setup()
                     self.mapping()
                 elif event.type ==  pygame.KEYDOWN and event.key == pygame.K_y and self.current_area == 'shrine':
-                    print('Entering Shrine...')
                     self.running = False
                     shrine_game = SideGame()
                     shrine_game.mapping()
@@ -89,8 +88,6 @@ class Game:
                 pygame.time.delay(2000)
                 pygame.quit()
                 sys.exit()
-
-            print(self.current_area)
 
             pygame.display.set_caption(f'Player life {self.player.life}')
             pygame.display.update()
