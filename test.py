@@ -1,57 +1,44 @@
-from enemy import *
-
 import pygame
 import sys
+from test_two import *
 
 # Initialize Pygame
 pygame.init()
 
-# ---------------------------
-# Configuration Parameters
-# ---------------------------
-WINDOW_WIDTH = 800
-WINDOW_HEIGHT = 600
-WINDOW_TITLE = "Pygame Black Window"
-FPS = 60  # Frames per second
-running = True
+# Set up display
+SCREEN_WIDTH, SCREEN_HEIGHT = 800, 600
+screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+pygame.display.set_caption("Main Game")
 
-# Colors (R, G, B)
-BLACK = (0, 0, 0)
-
-# ---------------------------
-# Setup Window and Clock
-# ---------------------------
-screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
-pygame.display.set_caption(WINDOW_TITLE)
+# Set up clock
 clock = pygame.time.Clock()
 
-# ---------------------------
-# Main Loop
-# ---------------------------
+def main_game_loop():
+    running = True
+    while running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+            # Example: Press 'M' to start the minigame
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_m:
+                    # Call the minigame and wait until it finishes
+                    run_minigame(screen)
 
-#---------------------------
-#testing code
-#---------------------------
-all_sprites = pygame.sprite.Group()
+        # Main game logic and rendering
+        screen.fill((50, 150, 50))  # Fill the screen with a green color
 
-enemy = Enemy((400,300),frames,all_sprites)
+        # Example main game text
+        font = pygame.font.Font(None, 36)
+        text = font.render("Main Game: Press 'M' for Minigame", True, (255, 255, 255))
+        screen.blit(text, (200, SCREEN_HEIGHT // 2))
 
-# running = True
-while running:
-    dt = clock.tick(FPS) /1000
-    # --- Event Handling ---
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
+        pygame.display.flip()
+        clock.tick(60)  # Limit to 60 FPS
 
-    # --- Drawing ---
-    screen.fill(BLACK)  # Fill the screen with black
+    pygame.quit()
+    sys.exit()
 
-    all_sprites.update(dt)
-    all_sprites.draw(screen)
-    # --- Update Display ---
-    pygame.display.flip()
 
-# --- Cleanup ---
-pygame.quit()
-sys.exit()
+if __name__ == "__main__":
+    main_game_loop()

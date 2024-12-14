@@ -66,6 +66,3 @@ class Player(pygame.sprite.Sprite):
         self.input()
         self.move(dt)
         self.animate(dt)
-
-######### testing the loading: iterate through the folder with os walk
-

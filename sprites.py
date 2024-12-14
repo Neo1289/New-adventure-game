@@ -1,4 +1,4 @@
-from game_settings import *
+from game_settings import pygame
 
 class GroundSprite(pygame.sprite.Sprite):
     def __init__(self, pos ,surf, groups):

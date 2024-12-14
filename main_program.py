@@ -1,9 +1,14 @@
-import pygame.surface
-from game_settings import *
-from player import *
-from sprites import *
+from game_settings import (pygame,
+                           maps,
+                           display_surface,
+                           WINDOW_HEIGHT,WINDOW_WIDTH,
+                           TILE_SIZE,FONT_SIZE,
+                           button_color,
+                           sys)
+from player import Player
+from sprites import GroundSprite, CollisionSprite, AreaSprite
 from groups import allSprites
-from side_game import *
+from side_game import SideGame
 
 class Game:
     def __init__(self):
@@ -20,7 +25,7 @@ class Game:
         self.collision_sprites = pygame.sprite.Group()
 
     def display_time(self):
-        self.current_time = pygame.time.get_ticks() // 1000
+        self.current_time = pygame.time.get_ticks() // 100
         self.current_time = str(self.current_time)
         self.font = pygame.font.SysFont('Georgia', 20)
         self.text_surf = self.font.render(self.current_time, True, (250, 235, 240))
@@ -31,6 +36,7 @@ class Game:
         self.all_sprites.empty()
         self.collision_sprites.empty()
         self.area_groups.clear()
+        self.shrine_game = SideGame()
 
         for name, map in self.maps.items():
             if name == self.current_area:
@@ -38,12 +44,10 @@ class Game:
 
     def mapping(self):
         [GroundSprite((x * TILE_SIZE, y * TILE_SIZE), image, self.all_sprites) for x, y, image in
-        self.current_map.get_layer_by_name('ground').tiles() if self.current_map.get_layer_by_name('ground')]
+         self.current_map.get_layer_by_name('ground').tiles()]
 
-        if self.current_map.get_layer_by_name('objects'):
-            for obj in self.current_map.get_layer_by_name('objects'):
-                if obj.image:
-                    CollisionSprite((obj.x, obj.y), obj.image, (self.all_sprites, self.collision_sprites))
+        [CollisionSprite((obj.x, obj.y), obj.image, (self.all_sprites, self.collision_sprites)) for obj in
+         self.current_map.get_layer_by_name('objects')]
 
         if self.current_map.get_layer_by_name('areas'):
             for obj in self.current_map.get_layer_by_name('areas'):
@@ -72,10 +76,8 @@ class Game:
                     self.setup()
                     self.mapping()
                 elif event.type ==  pygame.KEYDOWN and event.key == pygame.K_y and self.current_area == 'shrine':
-                    self.running = False
-                    shrine_game = SideGame()
-                    shrine_game.mapping()
-                    shrine_game.run()
+                    self.shrine_game.mapping()
+                    self.shrine_game.run()
 
             self.display_surface.fill('black')
             self.all_sprites.draw(self.player.rect.center)

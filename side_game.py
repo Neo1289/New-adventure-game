@@ -1,9 +1,15 @@
-from game_settings import *
-from sprites import *
-from player import *
+from game_settings import (display_surface,
+                           pygame,
+                           maps,
+                           TILE_SIZE,
+                           FONT_SIZE,
+                           WINDOW_WIDTH,WINDOW_HEIGHT,
+                           button_color,
+                           sys)
+from sprites import GroundSprite,CollisionSprite,AreaSprite
+from player import Player
 from groups import allSprites
-from main_program import Game
-from enemy import *
+from enemy import Enemy,frames
 
 class SideGame():
     def __init__(self):
@@ -39,18 +45,12 @@ class SideGame():
                 self.monster = Enemy((obj.x,obj.y),frames,self.all_sprites)
 
     def run(self):
-        dt = self.clock.tick() / 7000
+        dt = self.clock.tick() / 300000
 
         while self.running:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.running = False
-                if event.type == pygame.KEYDOWN and event.key == pygame.K_y:
-                    game = Game()
-                    game.current_area = 'forest'
-                    game.setup()
-                    game.mapping()
-                    game.run()
                 if event.type == self.bat_event:
                     self.custom_mapping()
 
@@ -69,6 +69,8 @@ class SideGame():
                 self.text_surface = self.FONT.render(self.text, True, button_color)
                 self.text_rect = display_surface.get_rect(center=(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2))
                 display_surface.blit(self.text_surface, self.text_rect)
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_y:
+                    self.running = False
 
             if self.chest.rect.colliderect(self.player.rect):
                 self.FONT = pygame.font.SysFont('Georgia', FONT_SIZE)
@@ -79,7 +81,7 @@ class SideGame():
 
             if self.player.life <= 0:
                 self.caption = pygame.display.set_caption('GAME OVER')
-                pygame.time.delay(2000)
+                pygame.time.delay(200)
                 pygame.quit()
                 sys.exit()
 
