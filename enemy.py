@@ -1,12 +1,5 @@
 import random
-from game_settings import *
-
-frames = []
-bat_folder = path.join('resources', 'bat')
-for file_name in listdir(bat_folder):
-    full_path = path.join(bat_folder, file_name)
-    surf = pygame.image.load(full_path).convert_alpha()
-    frames.append(surf)
+from game_settings import frames, pygame
 
 class Enemy(pygame.sprite.Sprite):
     def __init__(self,pos,frames,groups):
