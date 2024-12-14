@@ -20,6 +20,7 @@ class Game:
         self.current_map = None
         self.player = None
         self.area_groups = {}
+        self.shrine_game = SideGame(self.player)
         #groups
         self.all_sprites = allSprites()
         self.collision_sprites = pygame.sprite.Group()
@@ -36,7 +37,6 @@ class Game:
         self.all_sprites.empty()
         self.collision_sprites.empty()
         self.area_groups.clear()
-        self.shrine_game = SideGame()
 
         for name, map in self.maps.items():
             if name == self.current_area:
@@ -53,6 +53,7 @@ class Game:
             for obj in self.current_map.get_layer_by_name('areas'):
                 if obj.name == 'player_spawn':
                     self.player = Player((obj.x, obj.y), self.all_sprites, self.collision_sprites)
+                    self.shrine_game.player = self.player
                 else:
                     self.area_groups[obj.name] = AreaSprite(obj.x, obj.y, obj.width, obj.height, self.all_sprites)
 
@@ -68,7 +69,7 @@ class Game:
 
     def run(self):
         while self.running:
-            dt = self.clock.tick() / 3000
+            dt = self.clock.tick(60) / 1000
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.running = False

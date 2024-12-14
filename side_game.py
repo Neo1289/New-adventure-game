@@ -12,14 +12,15 @@ from groups import allSprites
 from enemy import Enemy,frames
 
 class SideGame():
-    def __init__(self):
+    def __init__(self,player):
         self.running = True
         self.clock = pygame.time.Clock()
         self.map = maps['maze']
         self.all_sprites = allSprites()
         self.collision_sprites = pygame.sprite.Group()
         self.bat_event = pygame.event.custom_type()
-        pygame.time.set_timer(self.bat_event, 4000)
+        pygame.time.set_timer(self.bat_event, 1000)
+        self.player = player
 
     def mapping(self):
         for x, y, image in self.map.get_layer_by_name('ground').tiles():
@@ -33,7 +34,7 @@ class SideGame():
             if obj.name == 'shrine':
                 self.shrine_sprite = AreaSprite(obj.x, obj.y, obj.width, obj.height, self.all_sprites)
             elif obj.name == 'player_spawn':
-                self.player = Player((obj.x, obj.y), self.all_sprites, self.collision_sprites)
+                self.player.pos = (obj.x,obj.y)
             elif obj.name == 'monster':
                 self.monster = Enemy((obj.x,obj.y),frames,self.all_sprites)
             elif obj.name == 'chest':
@@ -45,7 +46,8 @@ class SideGame():
                 self.monster = Enemy((obj.x,obj.y),frames,self.all_sprites)
 
     def run(self):
-        dt = self.clock.tick() / 300000
+        dt = self.clock.tick(60) / 1000
+        self.all_sprites.add(self.player)
 
         while self.running:
             for event in pygame.event.get():
@@ -53,6 +55,9 @@ class SideGame():
                     self.running = False
                 if event.type == self.bat_event:
                     self.custom_mapping()
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_y and self.shrine_sprite.rect.colliderect(self.player.rect):
+                        self.running = False
 
             for sprite in self.all_sprites:
                 if hasattr(sprite, "sprite_type"): #identify bats among the sprites
@@ -60,8 +65,6 @@ class SideGame():
                         self.player.life -=1
 
             display_surface.fill((0, 0, 0))
-            self.all_sprites.draw(self.player.rect.center)
-            self.all_sprites.update(dt)
 
             if self.shrine_sprite.rect.colliderect(self.player.rect):
                 self.FONT = pygame.font.SysFont('Georgia', FONT_SIZE)
@@ -69,8 +72,6 @@ class SideGame():
                 self.text_surface = self.FONT.render(self.text, True, button_color)
                 self.text_rect = display_surface.get_rect(center=(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2))
                 display_surface.blit(self.text_surface, self.text_rect)
-                if event.type == pygame.KEYDOWN and event.key == pygame.K_y:
-                    self.running = False
 
             if self.chest.rect.colliderect(self.player.rect):
                 self.FONT = pygame.font.SysFont('Georgia', FONT_SIZE)
@@ -85,6 +86,8 @@ class SideGame():
                 pygame.quit()
                 sys.exit()
 
+            self.all_sprites.draw(self.player.rect.center)
+            self.all_sprites.update(dt)
 
             self.caption = pygame.display.set_caption(f'Player life {self.player.life}')
             pygame.display.update()
