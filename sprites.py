@@ -8,10 +8,11 @@ class GroundSprite(pygame.sprite.Sprite):
          self.ground = True
 
 class CollisionSprite(pygame.sprite.Sprite):
-    def __init__(self, pos, surf, groups):
+    def __init__(self, pos, surf, groups,name):
         super().__init__(groups)
         self.image = surf
         self.rect = self.image.get_rect(topleft = pos)
+        self.name = name
 
 class AreaSprite(pygame.sprite.Sprite):
     def __init__(self, x, y, width,height,groups):

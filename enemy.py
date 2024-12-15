@@ -14,7 +14,7 @@ class Enemy(pygame.sprite.Sprite):
         self.list = [-1,1]
         self.direction = pygame.Vector2(random.choice(self.list), random.choice(self.list))
         self.speed = 200
-        self.sprite_type = True
+        self.bat = True
 
     def animate(self, dt):
         self.frames_index += self.animation_speed * dt

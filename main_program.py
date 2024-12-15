@@ -56,7 +56,7 @@ class Game:
 
         for obj in self.current_map.get_layer_by_name('objects'):
             if obj.image:
-                CollisionSprite((obj.x, obj.y), obj.image, (self.all_sprites, self.collision_sprites))
+                CollisionSprite((obj.x, obj.y), obj.image, (self.all_sprites, self.collision_sprites),obj.name)
 
         ###areas and animated characters###
 
@@ -82,6 +82,13 @@ class Game:
                 self.text_rect = display_surface.get_rect(center=(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2))
                 self.display_surface.blit(self.text_surface, self.text_rect)
                 self.current_area = name
+        for obj in self.collision_sprites:
+            if obj.rect.colliderect(self.player.rect) and obj.name != None:
+                self.FONT = pygame.font.SysFont('Georgia', FONT_SIZE)
+                self.text = f"do you want inspect the {name}?"
+                self.text_surface = self.FONT.render(self.text, True, button_color)
+                self.text_rect = display_surface.get_rect(center=(WINDOW_WIDTH / 3,WINDOW_HEIGHT / 3))
+                self.display_surface.blit(self.text_surface, self.text_rect)
 
     def transition_check(self,event): ###check if the player is in an area for transition and if the y has been pressed
         for name, area in self.area_groups.items():
@@ -96,7 +103,7 @@ class Game:
 
     def player_life_check(self):
         for sprite in self.all_sprites:
-            if hasattr(sprite, "sprite_type"):  # identify bats among the sprites
+            if hasattr(sprite, "bat"):
                 if sprite.rect.colliderect(self.player):
                     self.player.life -= 1
 
