@@ -331,7 +331,7 @@
   <object id="232" gid="79" x="910.273" y="1252.36" width="34" height="32"/>
   <object id="275" gid="66" x="1236" y="1283" width="32" height="58"/>
   <object id="276" gid="66" x="1542" y="2109" width="32" height="58"/>
-  <object id="277" gid="79" x="1691" y="2092" width="34" height="32"/>
+  <object id="277" name="chest" gid="79" x="1691" y="2092" width="34" height="32"/>
   <object id="278" gid="76" x="1786" y="1263" width="41" height="73"/>
   <object id="279" gid="76" x="1378" y="1827" width="41" height="73"/>
   <object id="280" gid="76" x="2086" y="1465" width="41" height="73"/>
@@ -491,6 +491,5 @@
   <object id="260" name="monster" x="986.542" y="707.64">
    <point/>
   </object>
-  <object id="284" name="chest" x="1680" y="2048" width="64" height="52"/>
  </objectgroup>
 </map>
