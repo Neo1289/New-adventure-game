@@ -33,7 +33,6 @@ for dirpath, dirnames, filenames in walk(path.join('resources', 'world')):
         if filename.lower().endswith('.tmx'):
             maps[(filename.split('.')[0])] = (load_pygame(path.join('resources','world',filename)))
 
-
 # ---------------------------
 # bats images
 # ---------------------------
@@ -44,4 +43,5 @@ for file_name in listdir(bat_folder):
     full_path = path.join(bat_folder, file_name)
     surf = pygame.image.load(full_path).convert_alpha()
     frames.append(surf)
+
 

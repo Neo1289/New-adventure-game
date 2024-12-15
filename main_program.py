@@ -4,11 +4,11 @@ from game_settings import (pygame,
                            WINDOW_HEIGHT,WINDOW_WIDTH,
                            TILE_SIZE,FONT_SIZE,
                            button_color,
-                           sys)
+                           sys, frames)
 from player import Player
 from sprites import GroundSprite, CollisionSprite, AreaSprite
 from groups import allSprites
-from side_game import SideGame
+from enemy import Enemy
 
 class Game:
     def __init__(self):
@@ -20,10 +20,13 @@ class Game:
         self.current_map = None
         self.player = None
         self.area_groups = {}
-        self.shrine_game = SideGame(self.player)
-        #groups
+        ###groups
         self.all_sprites = allSprites()
         self.collision_sprites = pygame.sprite.Group()
+        ###extra bats
+        self.bat_event = pygame.event.custom_type()
+        pygame.time.set_timer(self.bat_event, 3000)
+        self.transition = False
 
     def display_time(self):
         self.current_time = pygame.time.get_ticks() // 100
@@ -43,21 +46,34 @@ class Game:
                 self.current_map = map
 
     def mapping(self):
-        [GroundSprite((x * TILE_SIZE, y * TILE_SIZE), image, self.all_sprites) for x, y, image in
-         self.current_map.get_layer_by_name('ground').tiles()]
 
-        [CollisionSprite((obj.x, obj.y), obj.image, (self.all_sprites, self.collision_sprites)) for obj in
-         self.current_map.get_layer_by_name('objects')]
+        ###ground tiles###
 
-        if self.current_map.get_layer_by_name('areas'):
-            for obj in self.current_map.get_layer_by_name('areas'):
-                if obj.name == 'player_spawn':
-                    self.player = Player((obj.x, obj.y), self.all_sprites, self.collision_sprites)
-                    self.shrine_game.player = self.player
-                else:
-                    self.area_groups[obj.name] = AreaSprite(obj.x, obj.y, obj.width, obj.height, self.all_sprites)
+        for x, y, image in self.current_map.get_layer_by_name('ground').tiles():
+            GroundSprite((x * TILE_SIZE, y * TILE_SIZE), image, self.all_sprites)
 
-    def question(self):
+        ###objects###
+
+        for obj in self.current_map.get_layer_by_name('objects'):
+            if obj.image:
+                CollisionSprite((obj.x, obj.y), obj.image, (self.all_sprites, self.collision_sprites))
+
+        ###areas and animated characters###
+
+        for obj in self.current_map.get_layer_by_name('areas'):
+            if obj.name == 'player_spawn':
+                self.player = Player((obj.x, obj.y), self.all_sprites, self.collision_sprites)
+            elif obj.name == 'monster':
+                self.monster = Enemy((obj.x, obj.y), frames, self.all_sprites)
+            else:
+                self.area_groups[obj.name] = AreaSprite(obj.x, obj.y, obj.width, obj.height, self.all_sprites)
+
+    def custom_mapping(self): ###spawning extra bats
+        for obj in self.current_map.get_layer_by_name('areas'):
+            if obj.name == 'monster':
+                self.monster = Enemy((obj.x,obj.y),frames,self.all_sprites)
+
+    def question(self): ###ask if the player wants to enter the next stage
         for name, area in self.area_groups.items():
             if area.rect.colliderect(self.player.rect):
                 self.FONT = pygame.font.SysFont('Georgia', FONT_SIZE)
@@ -67,30 +83,46 @@ class Game:
                 self.display_surface.blit(self.text_surface, self.text_rect)
                 self.current_area = name
 
+    def transition_check(self,event): ###check if the player is in an area for transition and if the y has been pressed
+        for name, area in self.area_groups.items():
+            if area.rect.colliderect(self.player.rect) and event.type == pygame.KEYDOWN and event.key == pygame.K_y:
+                self.transition = True
+
+    def transition_performer(self): ###check if bool is true and perform the remapping
+        if self.transition:
+            self.setup()
+            self.mapping()
+            self.transition = False
+
+    def player_life_check(self):
+        for sprite in self.all_sprites:
+            if hasattr(sprite, "sprite_type"):  # identify bats among the sprites
+                if sprite.rect.colliderect(self.player):
+                    self.player.life -= 1
+
+        if self.player.life <= 0:
+            self.caption = pygame.display.set_caption('GAME OVER')
+            pygame.time.delay(2000)
+            pygame.quit()
+            sys.exit()
+
     def run(self):
         while self.running:
-            dt = self.clock.tick(60) / 1000
+            dt = self.clock.tick() / 3000
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.running = False
-                if event.type ==  pygame.KEYDOWN and event.key == pygame.K_y and self.current_area != 'shrine':
-                    self.setup()
-                    self.mapping()
-                elif event.type ==  pygame.KEYDOWN and event.key == pygame.K_y and self.current_area == 'shrine':
-                    self.shrine_game.mapping()
-                    self.shrine_game.run()
+                if event.type == self.bat_event:
+                    self.custom_mapping()
+                self.transition_check(event)
 
+            self.transition_performer()
             self.display_surface.fill('black')
             self.all_sprites.draw(self.player.rect.center)
-            self.question()
             self.all_sprites.update(dt)
             self.display_time()
-
-            if self.player.life <= 0:
-                self.caption = pygame.display.set_caption('GAME OVER')
-                pygame.time.delay(2000)
-                pygame.quit()
-                sys.exit()
+            self.question()
+            self.player_life_check()
 
             pygame.display.set_caption(f'Player life {self.player.life}')
             pygame.display.update()
