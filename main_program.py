@@ -4,7 +4,7 @@ from game_settings import (pygame,
                            WINDOW_HEIGHT,WINDOW_WIDTH,
                            TILE_SIZE,FONT_SIZE,
                            button_color,
-                           sys, frames)
+                           sys, frames, scheleton_frames)
 from player import Player
 from sprites import GroundSprite, CollisionSprite, AreaSprite
 from groups import allSprites
@@ -62,9 +62,16 @@ class Game:
 
         for obj in self.current_map.get_layer_by_name('areas'):
             if obj.name == 'player_spawn':
-                self.player = Player((obj.x, obj.y), self.all_sprites, self.collision_sprites)
+                if self.player is None:
+                    self.player = Player((obj.x, obj.y), self.all_sprites, self.collision_sprites)
+                else:
+                    self.player.collision_rect.center = (obj.x, obj.y)
+                    self.all_sprites.add(self.player)
+        
             elif obj.name == 'monster':
                 self.monster = Enemy((obj.x, obj.y), frames, self.all_sprites)
+            elif obj.name == 'scheleton':
+                self.scheleton = Enemy((obj.x, obj.y),scheleton_frames, self.all_sprites)
             else:
                 self.area_groups[obj.name] = AreaSprite(obj.x, obj.y, obj.width, obj.height, self.all_sprites)
 
@@ -103,7 +110,7 @@ class Game:
 
     def player_life_check(self):
         for sprite in self.all_sprites:
-            if hasattr(sprite, "bat"):
+            if hasattr(sprite, "dangerous"):
                 if sprite.rect.colliderect(self.player):
                     self.player.life -= 1
 
