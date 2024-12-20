@@ -17,7 +17,7 @@ pygame.init()
 # Configuration Parameters
 # ---------------------------
 
-WINDOW_WIDTH, WINDOW_HEIGHT = 1024,768
+WINDOW_WIDTH, WINDOW_HEIGHT = 800, 600 ###1024 ,768
 display_surface = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 TILE_SIZE = 32
 button_color = (255, 255, 255)
@@ -45,3 +45,13 @@ for file_name in listdir(bat_folder):
     frames.append(surf)
 
 
+# ---------------------------
+# scheletons images
+# ---------------------------
+
+scheleton_frames = []
+bat_folder = path.join('resources', 'skeleton')
+for file_name in listdir(bat_folder):
+    full_path = path.join(bat_folder, file_name)
+    surf = pygame.image.load(full_path).convert_alpha()
+    scheleton_frames.append(surf)
