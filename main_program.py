@@ -67,7 +67,7 @@ class Game:
                 else:
                     self.player.collision_rect.center = (obj.x, obj.y)
                     self.all_sprites.add(self.player)
-        
+
             elif obj.name == 'monster':
                 self.monster = Enemy((obj.x, obj.y), frames, self.all_sprites)
             elif obj.name == 'scheleton':
@@ -92,9 +92,9 @@ class Game:
         for obj in self.collision_sprites:
             if obj.rect.colliderect(self.player.rect) and obj.name != None:
                 self.FONT = pygame.font.SysFont('Georgia', FONT_SIZE)
-                self.text = f"do you want inspect the {name}?"
+                self.text = f"do you want inspect the {obj.name}?"
                 self.text_surface = self.FONT.render(self.text, True, button_color)
-                self.text_rect = display_surface.get_rect(center=(WINDOW_WIDTH / 3,WINDOW_HEIGHT / 3))
+                self.text_rect = display_surface.get_rect(center=(WINDOW_WIDTH / 2,WINDOW_HEIGHT / 2))
                 self.display_surface.blit(self.text_surface, self.text_rect)
 
     def transition_check(self,event): ###check if the player is in an area for transition and if the y has been pressed
@@ -141,9 +141,3 @@ class Game:
             pygame.display.set_caption(f'Player life {self.player.life}')
             pygame.display.update()
         pygame.quit()
-
-if __name__ == '__main__':
-    game = Game()
-    game.setup()
-    game.mapping()
-    game.run()
