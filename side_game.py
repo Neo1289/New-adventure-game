@@ -60,4 +60,3 @@ class SideGame():
 
         pygame.quit()
         sys.exit()
-

@@ -44,7 +44,6 @@ for file_name in listdir(bat_folder):
     surf = pygame.image.load(full_path).convert_alpha()
     frames.append(surf)
 
-
 # ---------------------------
 # scheletons images
 # ---------------------------
