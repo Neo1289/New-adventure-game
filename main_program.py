@@ -9,6 +9,7 @@ from player import Player
 from sprites import GroundSprite, CollisionSprite, AreaSprite
 from groups import allSprites
 from enemy import Enemy
+from side_game import SideGame
 
 class Game:
     def __init__(self):
@@ -126,6 +127,10 @@ class Game:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.running = False
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_m:
+                    side_game = SideGame()
+                    side_game.run()
+                    break
                 if event.type == self.bat_event:
                     self.custom_mapping()
                 self.transition_check(event)
@@ -141,3 +146,9 @@ class Game:
             pygame.display.set_caption(f'Player life {self.player.life}')
             pygame.display.update()
         pygame.quit()
+
+if __name__ == '__main__':
+    main_game = Game()
+    main_game.setup()
+    main_game.mapping()
+    main_game.run()
