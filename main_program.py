@@ -9,7 +9,7 @@ from player import Player
 from sprites import GroundSprite, CollisionSprite, AreaSprite
 from groups import allSprites
 from enemy import Enemy
-from side_game import SideGame
+from ToolBar import ToolBar
 
 class Game:
     def __init__(self):
@@ -28,6 +28,9 @@ class Game:
         self.bat_event = pygame.event.custom_type()
         pygame.time.set_timer(self.bat_event, 3000)
         self.transition = False
+        ###toolbar
+        self.toolbar = False
+        self.toolbar_instance = ToolBar()
 
     def display_time(self):
         self.current_time = pygame.time.get_ticks() // 100
@@ -121,19 +124,24 @@ class Game:
             pygame.quit()
             sys.exit()
 
+    def toolbar_check(self,event): ###check if the player is in an area for transition and if the t has been pressed
+         if event.type == pygame.KEYDOWN and event.key == pygame.K_t:
+                self.toolbar = True
+
+    def toolbar_transitioner(self):
+        if self.toolbar:
+            self.toolbar_instance.run()
+
     def run(self):
         while self.running:
             dt = self.clock.tick() / 3000
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.running = False
-                if event.type == pygame.KEYDOWN and event.key == pygame.K_m:
-                    side_game = SideGame()
-                    side_game.run()
-                    break
                 if event.type == self.bat_event:
                     self.custom_mapping()
                 self.transition_check(event)
+                self.toolbar_check(event)
 
             self.transition_performer()
             self.display_surface.fill('black')
@@ -142,6 +150,8 @@ class Game:
             self.display_time()
             self.question()
             self.player_life_check()
+
+            self.toolbar_transitioner()
 
             pygame.display.set_caption(f'Player life {self.player.life}')
             pygame.display.update()
