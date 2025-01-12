@@ -106,12 +106,17 @@ class Game:
             if area.rect.colliderect(self.player.rect) and event.type == pygame.KEYDOWN and event.key == pygame.K_y:
                 self.transition = True
 
+        if event.type == pygame.KEYDOWN and event.key == pygame.K_t: ####check if the k for the toolbar has been pressed
+            self.toolbar = True
+
     def transition_performer(self): ###check if bool is true and perform the remapping
         if self.transition:
             self.setup()
             self.mapping()
             self.transition = False
 
+        if self.toolbar: ### check if the toolbar key has been pressed and performs the transition
+            self.toolbar_instance.run()
     def player_life_check(self):
         for sprite in self.all_sprites:
             if hasattr(sprite, "dangerous"):
@@ -124,14 +129,6 @@ class Game:
             pygame.quit()
             sys.exit()
 
-    def toolbar_check(self,event): ###check if the player is in an area for transition and if the t has been pressed
-         if event.type == pygame.KEYDOWN and event.key == pygame.K_t:
-                self.toolbar = True
-
-    def toolbar_transitioner(self):
-        if self.toolbar:
-            self.toolbar_instance.run()
-
     def run(self):
         while self.running:
             dt = self.clock.tick() / 3000
@@ -141,7 +138,6 @@ class Game:
                 if event.type == self.bat_event:
                     self.custom_mapping()
                 self.transition_check(event)
-                self.toolbar_check(event)
 
             self.transition_performer()
             self.display_surface.fill('black')
@@ -150,8 +146,6 @@ class Game:
             self.display_time()
             self.question()
             self.player_life_check()
-
-            self.toolbar_transitioner()
 
             pygame.display.set_caption(f'Player life {self.player.life}')
             pygame.display.update()
