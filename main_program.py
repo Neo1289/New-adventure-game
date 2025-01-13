@@ -29,7 +29,7 @@ class Game:
         pygame.time.set_timer(self.bat_event, 3000)
         self.transition = False
         ###toolbar
-        self.toolbar = False
+        self.toolbar = None
         self.toolbar_instance = ToolBar()
 
     def display_time(self):
@@ -108,6 +108,7 @@ class Game:
 
         if event.type == pygame.KEYDOWN and event.key == pygame.K_t: ####check if the k for the toolbar has been pressed
             self.toolbar = True
+            print(self.toolbar)
 
     def transition_performer(self): ###check if bool is true and perform the remapping
         if self.transition:
@@ -117,6 +118,9 @@ class Game:
 
         if self.toolbar: ### check if the toolbar key has been pressed and performs the transition
             self.toolbar_instance.run()
+            self.toolbar = False
+            print(self.toolbar)
+
     def player_life_check(self):
         for sprite in self.all_sprites:
             if hasattr(sprite, "dangerous"):
