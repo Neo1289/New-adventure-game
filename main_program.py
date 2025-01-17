@@ -1,3 +1,4 @@
+import random
 from game_settings import (pygame,
                            maps,
                            display_surface,
@@ -25,12 +26,18 @@ class Game:
         self.all_sprites = allSprites()
         self.collision_sprites = pygame.sprite.Group()
         ###extra bats
-        self.bat_event = pygame.event.custom_type()
-        pygame.time.set_timer(self.bat_event, 3000)
+        self.monster_event = pygame.event.custom_type()
+        pygame.time.set_timer(self.monster_event, 3000)
         self.transition = False
         ###toolbar
         self.toolbar = None
         self.toolbar_instance = ToolBar()
+        self.finding = None
+
+        #### game objects that can be used by the player
+        self.potion = 0
+        self.cristall_ball = 0
+        self.money = 0
 
     def display_time(self):
         self.current_time = pygame.time.get_ticks() // 100
@@ -79,10 +86,12 @@ class Game:
             else:
                 self.area_groups[obj.name] = AreaSprite(obj.x, obj.y, obj.width, obj.height, self.all_sprites)
 
-    def custom_mapping(self): ###spawning extra bats
+    def custom_mapping(self): ###spawning extra monsters
         for obj in self.current_map.get_layer_by_name('areas'):
             if obj.name == 'monster':
                 self.monster = Enemy((obj.x,obj.y),frames,self.all_sprites)
+            elif obj.name == 'scheleton':
+                self.scheleton = Enemy((obj.x, obj.y), scheleton_frames, self.all_sprites)
 
     def question(self): ###ask if the player wants to enter the next stage
         for name, area in self.area_groups.items():
@@ -108,7 +117,9 @@ class Game:
 
         if event.type == pygame.KEYDOWN and event.key == pygame.K_t: ####check if the k for the toolbar has been pressed
             self.toolbar = True
-            print(self.toolbar)
+        for obj in self.collision_sprites:
+            if obj.rect.colliderect(self.player.rect) and obj.name != None and event.type == pygame.KEYDOWN and event.key == pygame.K_y:
+                self.finding = random.randint(1,10)
 
     def transition_performer(self): ###check if bool is true and perform the remapping
         if self.transition:
@@ -119,7 +130,12 @@ class Game:
         if self.toolbar: ### check if the toolbar key has been pressed and performs the transition
             self.toolbar_instance.run()
             self.toolbar = False
-            print(self.toolbar)
+
+        if self.finding == 1:
+            self.potion += 1
+        elif self.finding == 2:
+            self.cristall_ball +=1
+        self.finding = None
 
     def player_life_check(self):
         for sprite in self.all_sprites:
@@ -139,7 +155,7 @@ class Game:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.running = False
-                if event.type == self.bat_event:
+                if event.type == self.monster_event:
                     self.custom_mapping()
                 self.transition_check(event)
 
@@ -151,7 +167,10 @@ class Game:
             self.question()
             self.player_life_check()
 
-            pygame.display.set_caption(f'Player life {self.player.life}')
+            pygame.display.set_caption(f'\u2665 {self.player.life}    '
+                                       f'\U0001F9EA {self.potion}   '
+                                       f'\U0001F52E {self.cristall_ball}    '
+                                       f'\U0001F4B0 {self.money}')
             pygame.display.update()
         pygame.quit()
 
