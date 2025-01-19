@@ -27,7 +27,7 @@ class Game:
         self.collision_sprites = pygame.sprite.Group()
         ###extra bats
         self.monster_event = pygame.event.custom_type()
-        pygame.time.set_timer(self.monster_event, 3000)
+        pygame.time.set_timer(self.monster_event, 5000)
         self.transition = False
         ###toolbar
         self.toolbar = None
@@ -35,9 +35,13 @@ class Game:
         self.finding = None
 
         #### game objects that can be used by the player
-        self.potion = 0
-        self.cristall_ball = 0
-        self.money = 0
+        self.game_objects = {
+            'potion': 0,
+            'crystal ball': 0,
+            'coin': 0
+        }
+        self.keys_list = list(self.game_objects.keys())
+        self.last_object_found = None
 
     def display_time(self):
         self.current_time = pygame.time.get_ticks() // 100
@@ -109,6 +113,12 @@ class Game:
                 self.text_surface = self.FONT.render(self.text, True, button_color)
                 self.text_rect = display_surface.get_rect(center=(WINDOW_WIDTH / 2,WINDOW_HEIGHT / 2))
                 self.display_surface.blit(self.text_surface, self.text_rect)
+        if self.last_object_found != None:
+            self.FONT = pygame.font.SysFont('Georgia', FONT_SIZE)
+            self.text = f"you found a {self.last_object_found}"
+            self.text_surface = self.FONT.render(self.text, True, button_color)
+            self.text_rect = display_surface.get_rect(center=(WINDOW_WIDTH + 250, WINDOW_HEIGHT / 2))
+            self.display_surface.blit(self.text_surface, self.text_rect)
 
     def transition_check(self,event): ###check if the player is in an area for transition and if the y has been pressed
         for name, area in self.area_groups.items():
@@ -131,11 +141,12 @@ class Game:
             self.toolbar_instance.run()
             self.toolbar = False
 
-        if self.finding == 1:
-            self.potion += 1
-        elif self.finding == 2:
-            self.cristall_ball +=1
-        self.finding = None
+        for i in range(len(self.keys_list)):
+            if  i == self.finding:
+                key = self.keys_list[self.finding]
+                self.game_objects[key] += 1
+                self.last_object_found = self.keys_list[i]
+                self.finding = None
 
     def player_life_check(self):
         for sprite in self.all_sprites:
@@ -148,6 +159,13 @@ class Game:
             pygame.time.delay(2000)
             pygame.quit()
             sys.exit()
+
+    def display_captions(self):
+        caption = (f"\u2665 {self.player.life}      "
+                   f"\U0001F9EA {self.game_objects['potion']}      "
+                   f"\U0001F52E {self.game_objects['crystal ball']}      "
+                   f"\U0001F4B0 {self.game_objects['coin']}")
+        pygame.display.set_caption(caption)
 
     def run(self):
         while self.running:
@@ -166,11 +184,8 @@ class Game:
             self.display_time()
             self.question()
             self.player_life_check()
+            self.display_captions()
 
-            pygame.display.set_caption(f'\u2665 {self.player.life}    '
-                                       f'\U0001F9EA {self.potion}   '
-                                       f'\U0001F52E {self.cristall_ball}    '
-                                       f'\U0001F4B0 {self.money}')
             pygame.display.update()
         pygame.quit()
 
