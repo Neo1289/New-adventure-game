@@ -10,7 +10,6 @@ from player import Player
 from sprites import GroundSprite, CollisionSprite, AreaSprite
 from groups import allSprites
 from enemy import Enemy
-from ToolBar import ToolBar
 
 class Game:
     def __init__(self):
@@ -29,9 +28,6 @@ class Game:
         self.monster_event = pygame.event.custom_type()
         pygame.time.set_timer(self.monster_event, 5000)
         self.transition = False
-        ###toolbar
-        self.toolbar = None
-        self.toolbar_instance = ToolBar()
         self.finding = None
 
         #### game objects that can be used by the player
@@ -125,8 +121,6 @@ class Game:
             if area.rect.colliderect(self.player.rect) and event.type == pygame.KEYDOWN and event.key == pygame.K_y:
                 self.transition = True
 
-        if event.type == pygame.KEYDOWN and event.key == pygame.K_t: ####check if the k for the toolbar has been pressed
-            self.toolbar = True
         for obj in self.collision_sprites:
             if obj.rect.colliderect(self.player.rect) and obj.name != None and event.type == pygame.KEYDOWN and event.key == pygame.K_y:
                 self.finding = random.randint(1,10)
@@ -136,10 +130,6 @@ class Game:
             self.setup()
             self.mapping()
             self.transition = False
-
-        if self.toolbar: ### check if the toolbar key has been pressed and performs the transition
-            self.toolbar_instance.run()
-            self.toolbar = False
 
         for i in range(len(self.keys_list)):
             if  i == self.finding:
@@ -189,8 +179,3 @@ class Game:
             pygame.display.update()
         pygame.quit()
 
-if __name__ == '__main__':
-    main_game = Game()
-    main_game.setup()
-    main_game.mapping()
-    main_game.run()
