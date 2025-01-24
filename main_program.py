@@ -10,6 +10,7 @@ from player import Player
 from sprites import GroundSprite, CollisionSprite, AreaSprite
 from groups import allSprites
 from enemy import Enemy
+from side_game import ToolBar
 
 class Game:
     def __init__(self):
@@ -125,6 +126,10 @@ class Game:
             if obj.rect.colliderect(self.player.rect) and obj.name != None and event.type == pygame.KEYDOWN and event.key == pygame.K_y:
                 self.finding = random.randint(1,10)
 
+        if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+            toolbar_inst = ToolBar()
+            toolbar_inst.run()
+
     def transition_performer(self): ###check if bool is true and perform the remapping
         if self.transition:
             self.setup()
@@ -179,3 +184,8 @@ class Game:
             pygame.display.update()
         pygame.quit()
 
+if __name__ == '__main__':
+    main_game = Game()
+    main_game.setup()
+    main_game.mapping()
+    main_game.run()
