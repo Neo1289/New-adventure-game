@@ -105,11 +105,15 @@ class Game:
                 self.current_area = name
         for obj in self.collision_sprites:
             if obj.rect.colliderect(self.player.rect) and obj.name != None:
+                if obj.name !='scarecrow':
+                    self.text = f"do you want inspect the {obj.name}?"
+                elif obj.name == 'scarecrow':
+                    self.text = f"do you want to play with the {obj.name}?"
                 self.FONT = pygame.font.SysFont('Georgia', FONT_SIZE)
-                self.text = f"do you want inspect the {obj.name}?"
                 self.text_surface = self.FONT.render(self.text, True, button_color)
                 self.text_rect = display_surface.get_rect(center=(WINDOW_WIDTH / 2,WINDOW_HEIGHT / 2))
                 self.display_surface.blit(self.text_surface, self.text_rect)
+
         if self.last_object_found != None:
             self.FONT = pygame.font.SysFont('Georgia', FONT_SIZE)
             self.text = f"you found a {self.last_object_found}"
@@ -126,9 +130,9 @@ class Game:
             if obj.rect.colliderect(self.player.rect) and obj.name != None and event.type == pygame.KEYDOWN and event.key == pygame.K_y:
                 self.finding = random.randint(1,10)
 
-        if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
-            side_game_inst = SideGame()
-            side_game_inst.run()
+            elif event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE and obj.rect.colliderect(self.player.rect) and obj.name == 'scarecrow':
+                side_game_inst = SideGame()
+                side_game_inst.run()
 
     def transition_performer(self): ###check if bool is true and perform the remapping
         if self.transition:

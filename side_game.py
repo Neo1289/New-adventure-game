@@ -17,12 +17,12 @@ class SideGame():
         self.running = True
         self.clock = pygame.time.Clock()
         self.space = pymunk.Space()
-        self.space.gravity = (0, 900)
+        self.space.gravity = (0, 1000)
         self.draw_options = pymunk.pygame_util.DrawOptions(display_surface)
 
     def create_ground(self):
         self.body = pymunk.Body(body_type=pymunk.Body.STATIC)
-        self.body.position = (400, 550)  # Center of the ground
+        self.body.position = (400, 550)
         self.shape = pymunk.Segment(self.body, (-400, 0), (400, 0), 5)
         self.shape.friction = 0.9
         self.space.add(self.body, self.shape)
