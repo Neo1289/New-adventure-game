@@ -11,6 +11,7 @@ from sprites import GroundSprite, CollisionSprite, AreaSprite
 from groups import allSprites
 from enemy import Enemy
 from side_game import SideGame
+from inventory import Inventory
 
 class Game:
     def __init__(self):
@@ -117,11 +118,17 @@ class Game:
 
     def transition_check(self,event): ###check if the player is in an area for transition and if the y has been pressed
         for name, area in self.area_groups.items():
-            if area.rect.colliderect(self.player.rect) and event.type == pygame.KEYDOWN and event.key == pygame.K_y:
+            if (area.rect.colliderect(self.player.rect)
+                    and event.type == pygame.KEYDOWN
+                    and event.key == pygame.K_y):
                 self.transition = True
 
         for obj in self.collision_sprites:
-            if obj.rect.colliderect(self.player.rect) and obj.name != None and event.type == pygame.KEYDOWN and event.key == pygame.K_y and obj.resources == 1:
+            if (obj.rect.colliderect(self.player.rect)
+                    and obj.name != None and event.type == pygame.KEYDOWN
+                    and event.key == pygame.K_y
+                    and obj.resources == 1
+                    and obj.name != 'scarecrow'):
                 self.finding = random.randint(0,2)
 
                 for i in range(len(self.keys_list)):
@@ -132,16 +139,22 @@ class Game:
                         self.finding = None
                         obj.resources = 0
 
-            elif event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE and obj.rect.colliderect(self.player.rect) and obj.name == 'scarecrow':
+            elif (event.type == pygame.KEYDOWN
+                  and event.key == pygame.K_SPACE
+                  and obj.rect.colliderect(self.player.rect)
+                  and obj.name == 'scarecrow'):
                 side_game_inst = SideGame()
                 side_game_inst.run()
 
-    def transition_performer(self): ###check if bool is true and perform the remapping
+            elif event.type == pygame.KEYDOWN and event.key == pygame.K_i:
+                inventory = Inventory()
+                inventory.run()
+
+    def remapping(self): ###check if bool is true and perform the remapping
         if self.transition:
             self.setup()
             self.mapping()
             self.transition = False
-
 
     def player_life_check(self):
         for sprite in self.all_sprites:
@@ -172,7 +185,7 @@ class Game:
                     self.monsters()
                 self.transition_check(event)
 
-            self.transition_performer()
+            self.remapping()
             self.display_surface.fill('black')
             self.all_sprites.draw(self.player.rect.center)
             self.all_sprites.update(dt)
