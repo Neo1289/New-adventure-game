@@ -5,7 +5,7 @@ from game_settings import (pygame,
                            WINDOW_HEIGHT,WINDOW_WIDTH,
                            TILE_SIZE,FONT_SIZE,
                            button_color,
-                           sys, frames, scheleton_frames)
+                           sys, bat_frames, scheleton_frames)
 from player import Player
 from sprites import GroundSprite, CollisionSprite, AreaSprite
 from groups import allSprites
@@ -22,10 +22,11 @@ class Game:
         self.current_map = None
         self.player = None
         self.area_groups = {}
+        self.FONT = pygame.font.SysFont('Georgia', FONT_SIZE)
         ###groups
         self.all_sprites = allSprites()
         self.collision_sprites = pygame.sprite.Group()
-        ###extra bats
+        ###extra monsters
         self.monster_event = pygame.event.custom_type()
         pygame.time.set_timer(self.monster_event, 5000)
         self.transition = False
@@ -39,14 +40,6 @@ class Game:
         }
         self.keys_list = list(self.game_objects.keys())
         self.last_object_found = None
-
-    def display_time(self):
-        self.current_time = pygame.time.get_ticks() // 100
-        self.current_time = str(self.current_time)
-        self.font = pygame.font.SysFont('Georgia', 20)
-        self.text_surf = self.font.render(self.current_time, True, (250, 235, 240))
-        self.text_rect = self.text_surf.get_rect(bottomright = (WINDOW_WIDTH - 20, WINDOW_HEIGHT - 20))
-        self.display_surface.blit(self.text_surf, self.text_rect)
 
     def setup(self):
         self.all_sprites.empty()
@@ -68,9 +61,9 @@ class Game:
 
         for obj in self.current_map.get_layer_by_name('objects'):
             if obj.image:
-                CollisionSprite((obj.x, obj.y), obj.image, (self.all_sprites, self.collision_sprites),obj.name)
+                CollisionSprite((obj.x, obj.y), obj.image, (self.all_sprites, self.collision_sprites), obj.name)
 
-        ###areas and animated characters###
+        ###player###
 
         for obj in self.current_map.get_layer_by_name('areas'):
             if obj.name == 'player_spawn':
@@ -79,47 +72,48 @@ class Game:
                 else:
                     self.player.collision_rect.center = (obj.x, obj.y)
                     self.all_sprites.add(self.player)
-
-            elif obj.name == 'monster':
-                self.monster = Enemy((obj.x, obj.y), frames, self.all_sprites)
-            elif obj.name == 'scheleton':
-                self.scheleton = Enemy((obj.x, obj.y),scheleton_frames, self.all_sprites)
-            else:
+            elif obj.name not in ('bat','scheleton'):
                 self.area_groups[obj.name] = AreaSprite(obj.x, obj.y, obj.width, obj.height, self.all_sprites)
 
-    def custom_mapping(self): ###spawning extra monsters
+    def monsters(self): ###spawning monsters
         for obj in self.current_map.get_layer_by_name('areas'):
-            if obj.name == 'monster':
-                self.monster = Enemy((obj.x,obj.y),frames,self.all_sprites)
+            if obj.name == 'bat':
+                self.monster = Enemy((obj.x,obj.y), bat_frames, self.all_sprites)
             elif obj.name == 'scheleton':
                 self.scheleton = Enemy((obj.x, obj.y), scheleton_frames, self.all_sprites)
 
-    def question(self): ###ask if the player wants to enter the next stage
+    def text_render(self):
+        ###ask if the player wants to enter the next stage
         for name, area in self.area_groups.items():
             if area.rect.colliderect(self.player.rect):
-                self.FONT = pygame.font.SysFont('Georgia', FONT_SIZE)
                 self.text = f"Press Y to enter the {name}"
                 self.text_surface = self.FONT.render(self.text, True, button_color)
                 self.text_rect = display_surface.get_rect(center=(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2))
                 self.display_surface.blit(self.text_surface, self.text_rect)
                 self.current_area = name
+        ###ask if the player wants to inspect the objects
         for obj in self.collision_sprites:
-            if obj.rect.colliderect(self.player.rect) and obj.name != None:
+            if obj.rect.colliderect(self.player.rect) and obj.name != None and obj.resources == 1:
                 if obj.name !='scarecrow':
                     self.text = f"do you want inspect the {obj.name}?"
+        ####ask if the player wants to play with the scarecrow
                 elif obj.name == 'scarecrow':
-                    self.text = f"do you want to play with the {obj.name}?"
-                self.FONT = pygame.font.SysFont('Georgia', FONT_SIZE)
+                    self.text = f"do you want to play with the {obj.name}? Press the bar"
                 self.text_surface = self.FONT.render(self.text, True, button_color)
                 self.text_rect = display_surface.get_rect(center=(WINDOW_WIDTH / 2,WINDOW_HEIGHT / 2))
                 self.display_surface.blit(self.text_surface, self.text_rect)
-
+        #####print last object found
         if self.last_object_found != None:
-            self.FONT = pygame.font.SysFont('Georgia', FONT_SIZE)
             self.text = f"you found a {self.last_object_found}"
             self.text_surface = self.FONT.render(self.text, True, button_color)
             self.text_rect = display_surface.get_rect(center=(WINDOW_WIDTH + 250, WINDOW_HEIGHT / 2))
             self.display_surface.blit(self.text_surface, self.text_rect)
+        ##display time
+        self.current_time = pygame.time.get_ticks() // 100
+        self.current_time = str(self.current_time)
+        self.text_surf = self.FONT.render(self.current_time, True, (250, 235, 240))
+        self.text_rect = self.text_surf.get_rect(bottomright=(WINDOW_WIDTH - 20, WINDOW_HEIGHT - 20))
+        self.display_surface.blit(self.text_surf, self.text_rect)
 
     def transition_check(self,event): ###check if the player is in an area for transition and if the y has been pressed
         for name, area in self.area_groups.items():
@@ -127,8 +121,16 @@ class Game:
                 self.transition = True
 
         for obj in self.collision_sprites:
-            if obj.rect.colliderect(self.player.rect) and obj.name != None and event.type == pygame.KEYDOWN and event.key == pygame.K_y:
-                self.finding = random.randint(1,10)
+            if obj.rect.colliderect(self.player.rect) and obj.name != None and event.type == pygame.KEYDOWN and event.key == pygame.K_y and obj.resources == 1:
+                self.finding = random.randint(0,2)
+
+                for i in range(len(self.keys_list)):
+                    if i == self.finding:
+                        key = self.keys_list[self.finding]
+                        self.game_objects[key] += 1
+                        self.last_object_found = self.keys_list[i]
+                        self.finding = None
+                        obj.resources = 0
 
             elif event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE and obj.rect.colliderect(self.player.rect) and obj.name == 'scarecrow':
                 side_game_inst = SideGame()
@@ -140,12 +142,6 @@ class Game:
             self.mapping()
             self.transition = False
 
-        for i in range(len(self.keys_list)):
-            if  i == self.finding:
-                key = self.keys_list[self.finding]
-                self.game_objects[key] += 1
-                self.last_object_found = self.keys_list[i]
-                self.finding = None
 
     def player_life_check(self):
         for sprite in self.all_sprites:
@@ -173,15 +169,14 @@ class Game:
                 if event.type == pygame.QUIT:
                     self.running = False
                 if event.type == self.monster_event:
-                    self.custom_mapping()
+                    self.monsters()
                 self.transition_check(event)
 
             self.transition_performer()
             self.display_surface.fill('black')
             self.all_sprites.draw(self.player.rect.center)
             self.all_sprites.update(dt)
-            self.display_time()
-            self.question()
+            self.text_render()
             self.player_life_check()
             self.display_captions()
 
@@ -192,4 +187,5 @@ if __name__ == '__main__':
     main_game = Game()
     main_game.setup()
     main_game.mapping()
+    main_game.monsters()
     main_game.run()
