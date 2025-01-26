@@ -41,13 +41,6 @@ class Game:
         self.keys_list = list(self.game_objects.keys())
         self.last_object_found = None
 
-    def display_time(self):
-        self.current_time = pygame.time.get_ticks() // 100
-        self.current_time = str(self.current_time)
-        self.text_surf = self.FONT.render(self.current_time, True, (250, 235, 240))
-        self.text_rect = self.text_surf.get_rect(bottomright = (WINDOW_WIDTH - 20, WINDOW_HEIGHT - 20))
-        self.display_surface.blit(self.text_surf, self.text_rect)
-
     def setup(self):
         self.all_sprites.empty()
         self.collision_sprites.empty()
@@ -94,7 +87,8 @@ class Game:
             elif obj.name == 'scheleton':
                 self.scheleton = Enemy((obj.x, obj.y), scheleton_frames, self.all_sprites)
 
-    def question(self): ###ask if the player wants to enter the next stage
+    def text_render(self):
+        ###ask if the player wants to enter the next stage
         for name, area in self.area_groups.items():
             if area.rect.colliderect(self.player.rect):
                 self.text = f"Press Y to enter the {name}"
@@ -102,21 +96,29 @@ class Game:
                 self.text_rect = display_surface.get_rect(center=(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2))
                 self.display_surface.blit(self.text_surface, self.text_rect)
                 self.current_area = name
+        ###ask if the player wants to inspect the objects
         for obj in self.collision_sprites:
             if obj.rect.colliderect(self.player.rect) and obj.name != None and obj.resources == 1:
                 if obj.name !='scarecrow':
                     self.text = f"do you want inspect the {obj.name}?"
+        ####ask if the player wants to play with the scarecrow
                 elif obj.name == 'scarecrow':
                     self.text = f"do you want to play with the {obj.name}? Press the bar"
                 self.text_surface = self.FONT.render(self.text, True, button_color)
                 self.text_rect = display_surface.get_rect(center=(WINDOW_WIDTH / 2,WINDOW_HEIGHT / 2))
                 self.display_surface.blit(self.text_surface, self.text_rect)
-
+        #####print last object found
         if self.last_object_found != None:
             self.text = f"you found a {self.last_object_found}"
             self.text_surface = self.FONT.render(self.text, True, button_color)
             self.text_rect = display_surface.get_rect(center=(WINDOW_WIDTH + 250, WINDOW_HEIGHT / 2))
             self.display_surface.blit(self.text_surface, self.text_rect)
+        ##display time
+        self.current_time = pygame.time.get_ticks() // 100
+        self.current_time = str(self.current_time)
+        self.text_surf = self.FONT.render(self.current_time, True, (250, 235, 240))
+        self.text_rect = self.text_surf.get_rect(bottomright=(WINDOW_WIDTH - 20, WINDOW_HEIGHT - 20))
+        self.display_surface.blit(self.text_surf, self.text_rect)
 
     def transition_check(self,event): ###check if the player is in an area for transition and if the y has been pressed
         for name, area in self.area_groups.items():
@@ -125,7 +127,7 @@ class Game:
 
         for obj in self.collision_sprites:
             if obj.rect.colliderect(self.player.rect) and obj.name != None and event.type == pygame.KEYDOWN and event.key == pygame.K_y and obj.resources == 1:
-                self.finding = random.randint(1,10)
+                self.finding = random.randint(0,2)
 
                 for i in range(len(self.keys_list)):
                     if i == self.finding:
@@ -179,8 +181,7 @@ class Game:
             self.display_surface.fill('black')
             self.all_sprites.draw(self.player.rect.center)
             self.all_sprites.update(dt)
-            self.display_time()
-            self.question()
+            self.text_render()
             self.player_life_check()
             self.display_captions()
 
