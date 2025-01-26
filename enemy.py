@@ -1,5 +1,5 @@
 import random
-from game_settings import frames, pygame
+from game_settings import pygame
 
 class Enemy(pygame.sprite.Sprite):
     def __init__(self,pos,frames,groups):

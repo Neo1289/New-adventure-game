@@ -344,151 +344,151 @@
    <point/>
   </object>
   <object id="208" name="forest" x="885.333" y="1877.33" width="34.6667" height="88"/>
-  <object id="209" name="monster" x="2253.81" y="982.912">
+  <object id="209" name="bat" x="2253.81" y="982.912">
    <point/>
   </object>
-  <object id="210" name="monster" x="1380.72" y="916.609">
+  <object id="210" name="bat" x="1380.72" y="916.609">
    <point/>
   </object>
-  <object id="238" name="monster" x="1823.15" y="949.943">
+  <object id="238" name="bat" x="1823.15" y="949.943">
    <point/>
   </object>
-  <object id="211" name="monster" x="1034.66" y="902.785">
+  <object id="211" name="bat" x="1034.66" y="902.785">
    <point/>
   </object>
-  <object id="212" name="monster" x="722.549" y="938.428">
+  <object id="212" name="bat" x="722.549" y="938.428">
    <point/>
   </object>
-  <object id="213" name="monster" x="677.333" y="1591.63">
+  <object id="213" name="bat" x="677.333" y="1591.63">
    <point/>
   </object>
-  <object id="214" name="monster" x="762.178" y="2432">
+  <object id="214" name="bat" x="762.178" y="2432">
    <point/>
   </object>
-  <object id="271" name="monster" x="971.269" y="368.367">
+  <object id="271" name="bat" x="971.269" y="368.367">
    <point/>
   </object>
-  <object id="215" name="monster" x="2560.36" y="1732.36">
+  <object id="215" name="bat" x="2560.36" y="1732.36">
    <point/>
   </object>
-  <object id="216" name="monster" x="1122.91" y="2428.85">
+  <object id="216" name="bat" x="1122.91" y="2428.85">
    <point/>
   </object>
-  <object id="272" name="monster" x="1332" y="365.215">
+  <object id="272" name="bat" x="1332" y="365.215">
    <point/>
   </object>
-  <object id="233" name="monster" x="1435.03" y="2444">
+  <object id="233" name="bat" x="1435.03" y="2444">
    <point/>
   </object>
-  <object id="270" name="monster" x="1644.12" y="380.367">
+  <object id="270" name="bat" x="1644.12" y="380.367">
    <point/>
   </object>
-  <object id="237" name="monster" x="541.088" y="1986.43">
+  <object id="237" name="bat" x="541.088" y="1986.43">
    <point/>
   </object>
-  <object id="234" name="monster" x="1686.54" y="2404.61">
+  <object id="234" name="bat" x="1686.54" y="2404.61">
    <point/>
   </object>
-  <object id="274" name="monster" x="1895.63" y="340.973">
+  <object id="274" name="bat" x="1895.63" y="340.973">
    <point/>
   </object>
-  <object id="235" name="monster" x="2116.85" y="2425.82">
+  <object id="235" name="bat" x="2116.85" y="2425.82">
    <point/>
   </object>
-  <object id="273" name="monster" x="2325.94" y="362.185">
+  <object id="273" name="bat" x="2325.94" y="362.185">
    <point/>
   </object>
-  <object id="236" name="monster" x="2471.39" y="2389.46">
+  <object id="236" name="bat" x="2471.39" y="2389.46">
    <point/>
   </object>
-  <object id="240" name="monster" x="2265.33" y="2728.85">
+  <object id="240" name="bat" x="2265.33" y="2728.85">
    <point/>
   </object>
-  <object id="265" name="monster" x="2474.42" y="665.215">
+  <object id="265" name="bat" x="2474.42" y="665.215">
    <point/>
   </object>
-  <object id="246" name="monster" x="2062.3" y="2910.67">
+  <object id="246" name="bat" x="2062.3" y="2910.67">
    <point/>
   </object>
-  <object id="257" name="monster" x="2271.39" y="847.034">
+  <object id="257" name="bat" x="2271.39" y="847.034">
    <point/>
   </object>
-  <object id="250" name="monster" x="1810.78" y="2747.03">
+  <object id="250" name="bat" x="1810.78" y="2747.03">
    <point/>
   </object>
-  <object id="263" name="monster" x="2019.88" y="683.397">
+  <object id="263" name="bat" x="2019.88" y="683.397">
    <point/>
   </object>
-  <object id="242" name="monster" x="1568.36" y="2768.25">
+  <object id="242" name="bat" x="1568.36" y="2768.25">
    <point/>
   </object>
-  <object id="261" name="monster" x="1777.45" y="704.609">
+  <object id="261" name="bat" x="1777.45" y="704.609">
    <point/>
   </object>
-  <object id="252" name="monster" x="1316.85" y="2604.61">
+  <object id="252" name="bat" x="1316.85" y="2604.61">
    <point/>
   </object>
-  <object id="267" name="monster" x="1525.94" y="540.973">
+  <object id="267" name="bat" x="1525.94" y="540.973">
    <point/>
   </object>
-  <object id="244" name="monster" x="1365.33" y="2950.06">
+  <object id="244" name="bat" x="1365.33" y="2950.06">
    <point/>
   </object>
-  <object id="255" name="monster" x="1574.42" y="886.428">
+  <object id="255" name="bat" x="1574.42" y="886.428">
    <point/>
   </object>
-  <object id="248" name="monster" x="1113.81" y="2786.43">
+  <object id="248" name="bat" x="1113.81" y="2786.43">
    <point/>
   </object>
-  <object id="259" name="monster" x="1322.91" y="722.791">
+  <object id="259" name="bat" x="1322.91" y="722.791">
    <point/>
   </object>
-  <object id="241" name="monster" x="1928.97" y="2713.7">
+  <object id="241" name="bat" x="1928.97" y="2713.7">
    <point/>
   </object>
-  <object id="266" name="monster" x="2138.06" y="650.064">
+  <object id="266" name="bat" x="2138.06" y="650.064">
    <point/>
   </object>
-  <object id="254" name="monster" x="1677.45" y="2550.06">
+  <object id="254" name="bat" x="1677.45" y="2550.06">
    <point/>
   </object>
-  <object id="269" name="monster" x="1886.54" y="486.428">
+  <object id="269" name="bat" x="1886.54" y="486.428">
    <point/>
   </object>
-  <object id="247" name="monster" x="1725.94" y="2895.52">
+  <object id="247" name="bat" x="1725.94" y="2895.52">
    <point/>
   </object>
-  <object id="258" name="monster" x="1935.03" y="831.882">
+  <object id="258" name="bat" x="1935.03" y="831.882">
    <point/>
   </object>
-  <object id="251" name="monster" x="1474.42" y="2731.88">
+  <object id="251" name="bat" x="1474.42" y="2731.88">
    <point/>
   </object>
-  <object id="264" name="monster" x="1683.51" y="668.246">
+  <object id="264" name="bat" x="1683.51" y="668.246">
    <point/>
   </object>
-  <object id="243" name="monster" x="1232" y="2753.09">
+  <object id="243" name="bat" x="1232" y="2753.09">
    <point/>
   </object>
-  <object id="262" name="monster" x="1441.09" y="689.458">
+  <object id="262" name="bat" x="1441.09" y="689.458">
    <point/>
   </object>
-  <object id="253" name="monster" x="980.482" y="2589.46">
+  <object id="253" name="bat" x="980.482" y="2589.46">
    <point/>
   </object>
-  <object id="268" name="monster" x="1189.57" y="525.822">
+  <object id="268" name="bat" x="1189.57" y="525.822">
    <point/>
   </object>
-  <object id="245" name="monster" x="1028.97" y="2934.91">
+  <object id="245" name="bat" x="1028.97" y="2934.91">
    <point/>
   </object>
-  <object id="256" name="monster" x="1238.06" y="871.276">
+  <object id="256" name="bat" x="1238.06" y="871.276">
    <point/>
   </object>
-  <object id="249" name="monster" x="777.451" y="2771.28">
+  <object id="249" name="bat" x="777.451" y="2771.28">
    <point/>
   </object>
-  <object id="260" name="monster" x="986.542" y="707.64">
+  <object id="260" name="bat" x="986.542" y="707.64">
    <point/>
   </object>
  </objectgroup>

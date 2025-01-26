@@ -37,12 +37,12 @@ for dirpath, dirnames, filenames in walk(path.join('resources', 'world')):
 # bats images
 # ---------------------------
 
-frames = []
+bat_frames = []
 bat_folder = path.join('resources', 'bat')
 for file_name in listdir(bat_folder):
     full_path = path.join(bat_folder, file_name)
     surf = pygame.image.load(full_path).convert_alpha()
-    frames.append(surf)
+    bat_frames.append(surf)
 
 # ---------------------------
 # scheletons images

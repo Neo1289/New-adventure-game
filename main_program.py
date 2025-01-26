@@ -5,7 +5,7 @@ from game_settings import (pygame,
                            WINDOW_HEIGHT,WINDOW_WIDTH,
                            TILE_SIZE,FONT_SIZE,
                            button_color,
-                           sys, frames, scheleton_frames)
+                           sys, bat_frames, scheleton_frames)
 from player import Player
 from sprites import GroundSprite, CollisionSprite, AreaSprite
 from groups import allSprites
@@ -80,17 +80,17 @@ class Game:
                     self.player.collision_rect.center = (obj.x, obj.y)
                     self.all_sprites.add(self.player)
 
-            elif obj.name == 'monster':
-                self.monster = Enemy((obj.x, obj.y), frames, self.all_sprites)
+            elif obj.name == 'bat':
+                self.monster = Enemy((obj.x, obj.y), bat_frames, self.all_sprites)
             elif obj.name == 'scheleton':
-                self.scheleton = Enemy((obj.x, obj.y),scheleton_frames, self.all_sprites)
+                self.scheleton = Enemy((obj.x, obj.y), scheleton_frames, self.all_sprites)
             else:
                 self.area_groups[obj.name] = AreaSprite(obj.x, obj.y, obj.width, obj.height, self.all_sprites)
 
     def custom_mapping(self): ###spawning extra monsters
         for obj in self.current_map.get_layer_by_name('areas'):
-            if obj.name == 'monster':
-                self.monster = Enemy((obj.x,obj.y),frames,self.all_sprites)
+            if obj.name == 'bat':
+                self.monster = Enemy((obj.x,obj.y), bat_frames, self.all_sprites)
             elif obj.name == 'scheleton':
                 self.scheleton = Enemy((obj.x, obj.y), scheleton_frames, self.all_sprites)
 
@@ -108,7 +108,7 @@ class Game:
                 if obj.name !='scarecrow':
                     self.text = f"do you want inspect the {obj.name}?"
                 elif obj.name == 'scarecrow':
-                    self.text = f"do you want to play with the {obj.name}?"
+                    self.text = f"do you want to play with the {obj.name}? Press the bar"
                 self.FONT = pygame.font.SysFont('Georgia', FONT_SIZE)
                 self.text_surface = self.FONT.render(self.text, True, button_color)
                 self.text_rect = display_surface.get_rect(center=(WINDOW_WIDTH / 2,WINDOW_HEIGHT / 2))
