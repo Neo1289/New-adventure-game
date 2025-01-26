@@ -12,16 +12,17 @@ from game_settings import (display_surface,
 class Inventory():
     def __init__(self):
         self.running = True
-        self.clock = pygame.time.Clock()
 
     def run(self):
         while self.running:
             for event in pygame.event.get():
-                if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_q:
                     self.running = False
-
 
             display_surface.fill((0, 0, 0))
             pygame.display.update()
-            self.clock.tick(60)
+
         return
