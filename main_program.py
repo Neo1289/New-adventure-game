@@ -63,7 +63,7 @@ class Game:
             if obj.image:
                 CollisionSprite((obj.x, obj.y), obj.image, (self.all_sprites, self.collision_sprites), obj.name)
 
-        ###areas and animated characters###
+        ###player###
 
         for obj in self.current_map.get_layer_by_name('areas'):
             if obj.name == 'player_spawn':
@@ -72,15 +72,10 @@ class Game:
                 else:
                     self.player.collision_rect.center = (obj.x, obj.y)
                     self.all_sprites.add(self.player)
-
-            elif obj.name == 'bat':
-                self.monster = Enemy((obj.x, obj.y), bat_frames, self.all_sprites)
-            elif obj.name == 'scheleton':
-                self.scheleton = Enemy((obj.x, obj.y), scheleton_frames, self.all_sprites)
-            else:
+            elif obj.name not in ('bat','scheleton'):
                 self.area_groups[obj.name] = AreaSprite(obj.x, obj.y, obj.width, obj.height, self.all_sprites)
 
-    def custom_mapping(self): ###spawning extra monsters
+    def monsters(self): ###spawning monsters
         for obj in self.current_map.get_layer_by_name('areas'):
             if obj.name == 'bat':
                 self.monster = Enemy((obj.x,obj.y), bat_frames, self.all_sprites)
@@ -174,7 +169,7 @@ class Game:
                 if event.type == pygame.QUIT:
                     self.running = False
                 if event.type == self.monster_event:
-                    self.custom_mapping()
+                    self.monsters()
                 self.transition_check(event)
 
             self.transition_performer()
@@ -192,4 +187,5 @@ if __name__ == '__main__':
     main_game = Game()
     main_game.setup()
     main_game.mapping()
+    main_game.monsters()
     main_game.run()
