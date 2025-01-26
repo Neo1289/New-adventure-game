@@ -1,7 +1,7 @@
 game to-do list:
 
-- create a toolbar that store the objects found during the game
 - introduce small extra side games
+- create the inventory
 - build scalable system for elements inspection:
   - spend the resources found
   - merchant to trade
