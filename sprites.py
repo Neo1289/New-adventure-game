@@ -13,6 +13,7 @@ class CollisionSprite(pygame.sprite.Sprite):
         self.image = surf
         self.rect = self.image.get_rect(topleft = pos)
         self.name = name
+        self.resources = 1
 
 class AreaSprite(pygame.sprite.Sprite):
     def __init__(self, x, y, width,height,groups):

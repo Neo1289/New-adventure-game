@@ -22,10 +22,11 @@ class Game:
         self.current_map = None
         self.player = None
         self.area_groups = {}
+        self.FONT = pygame.font.SysFont('Georgia', FONT_SIZE)
         ###groups
         self.all_sprites = allSprites()
         self.collision_sprites = pygame.sprite.Group()
-        ###extra bats
+        ###extra monsters
         self.monster_event = pygame.event.custom_type()
         pygame.time.set_timer(self.monster_event, 5000)
         self.transition = False
@@ -43,8 +44,7 @@ class Game:
     def display_time(self):
         self.current_time = pygame.time.get_ticks() // 100
         self.current_time = str(self.current_time)
-        self.font = pygame.font.SysFont('Georgia', 20)
-        self.text_surf = self.font.render(self.current_time, True, (250, 235, 240))
+        self.text_surf = self.FONT.render(self.current_time, True, (250, 235, 240))
         self.text_rect = self.text_surf.get_rect(bottomright = (WINDOW_WIDTH - 20, WINDOW_HEIGHT - 20))
         self.display_surface.blit(self.text_surf, self.text_rect)
 
@@ -68,7 +68,7 @@ class Game:
 
         for obj in self.current_map.get_layer_by_name('objects'):
             if obj.image:
-                CollisionSprite((obj.x, obj.y), obj.image, (self.all_sprites, self.collision_sprites),obj.name)
+                CollisionSprite((obj.x, obj.y), obj.image, (self.all_sprites, self.collision_sprites), obj.name)
 
         ###areas and animated characters###
 
@@ -97,25 +97,22 @@ class Game:
     def question(self): ###ask if the player wants to enter the next stage
         for name, area in self.area_groups.items():
             if area.rect.colliderect(self.player.rect):
-                self.FONT = pygame.font.SysFont('Georgia', FONT_SIZE)
                 self.text = f"Press Y to enter the {name}"
                 self.text_surface = self.FONT.render(self.text, True, button_color)
                 self.text_rect = display_surface.get_rect(center=(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2))
                 self.display_surface.blit(self.text_surface, self.text_rect)
                 self.current_area = name
         for obj in self.collision_sprites:
-            if obj.rect.colliderect(self.player.rect) and obj.name != None:
+            if obj.rect.colliderect(self.player.rect) and obj.name != None and obj.resources == 1:
                 if obj.name !='scarecrow':
                     self.text = f"do you want inspect the {obj.name}?"
                 elif obj.name == 'scarecrow':
                     self.text = f"do you want to play with the {obj.name}? Press the bar"
-                self.FONT = pygame.font.SysFont('Georgia', FONT_SIZE)
                 self.text_surface = self.FONT.render(self.text, True, button_color)
                 self.text_rect = display_surface.get_rect(center=(WINDOW_WIDTH / 2,WINDOW_HEIGHT / 2))
                 self.display_surface.blit(self.text_surface, self.text_rect)
 
         if self.last_object_found != None:
-            self.FONT = pygame.font.SysFont('Georgia', FONT_SIZE)
             self.text = f"you found a {self.last_object_found}"
             self.text_surface = self.FONT.render(self.text, True, button_color)
             self.text_rect = display_surface.get_rect(center=(WINDOW_WIDTH + 250, WINDOW_HEIGHT / 2))
@@ -127,8 +124,16 @@ class Game:
                 self.transition = True
 
         for obj in self.collision_sprites:
-            if obj.rect.colliderect(self.player.rect) and obj.name != None and event.type == pygame.KEYDOWN and event.key == pygame.K_y:
+            if obj.rect.colliderect(self.player.rect) and obj.name != None and event.type == pygame.KEYDOWN and event.key == pygame.K_y and obj.resources == 1:
                 self.finding = random.randint(1,10)
+
+                for i in range(len(self.keys_list)):
+                    if i == self.finding:
+                        key = self.keys_list[self.finding]
+                        self.game_objects[key] += 1
+                        self.last_object_found = self.keys_list[i]
+                        self.finding = None
+                        obj.resources = 0
 
             elif event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE and obj.rect.colliderect(self.player.rect) and obj.name == 'scarecrow':
                 side_game_inst = SideGame()
@@ -140,12 +145,6 @@ class Game:
             self.mapping()
             self.transition = False
 
-        for i in range(len(self.keys_list)):
-            if  i == self.finding:
-                key = self.keys_list[self.finding]
-                self.game_objects[key] += 1
-                self.last_object_found = self.keys_list[i]
-                self.finding = None
 
     def player_life_check(self):
         for sprite in self.all_sprites:
