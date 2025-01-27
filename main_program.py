@@ -11,7 +11,6 @@ from sprites import GroundSprite, CollisionSprite, AreaSprite
 from groups import allSprites
 from enemy import Enemy
 from side_game import SideGame
-from inventory import Inventory
 
 class Game:
     def __init__(self):
@@ -139,16 +138,13 @@ class Game:
                         self.finding = None
                         obj.resources = 0
 
-            elif (event.type == pygame.KEYDOWN
+            if (event.type == pygame.KEYDOWN
                   and event.key == pygame.K_SPACE
                   and obj.rect.colliderect(self.player.rect)
                   and obj.name == 'scarecrow'):
                 side_game_inst = SideGame()
+                side_game_inst.condition_met = True
                 side_game_inst.run()
-
-            elif event.type == pygame.KEYDOWN and event.key == pygame.K_i:
-                inventory = Inventory()
-                inventory.run()
 
     def remapping(self): ###check if bool is true and perform the remapping
         if self.transition:
