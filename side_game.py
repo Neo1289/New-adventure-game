@@ -19,7 +19,6 @@ class SideGame():
         self.space = pymunk.Space()
         self.space.gravity = (0, 1000)
         self.draw_options = pymunk.pygame_util.DrawOptions(display_surface)
-        self.condition_met = False
 
     def create_ground(self):
         self.body = pymunk.Body(body_type=pymunk.Body.STATIC)
@@ -52,13 +51,9 @@ class SideGame():
                     mouse_pos = pygame.mouse.get_pos()
                     self.balls.append(self.create_ball(mouse_pos))
 
-            if self.condition_met:
-                self.space.step(1 / 60.0)
-                display_surface.fill((0, 0, 0))
-                self.space.debug_draw(self.draw_options)
-            else:
-                display_surface.fill((0, 0, 0))
-
+            self.space.step(1 / 60.0)
+            display_surface.fill((0, 0, 0))
+            self.space.debug_draw(self.draw_options)
 
             pygame.display.update()
             self.clock.tick(60)

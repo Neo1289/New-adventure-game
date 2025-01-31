@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="64" height="64" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="52">
+<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="64" height="64" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="77">
  <tileset firstgid="1" source="house_ground.tsx"/>
  <tileset firstgid="65" source="objects_world.tsx"/>
  <layer id="1" name="ground" width="64" height="64">
@@ -117,9 +117,32 @@
   <object id="45" gid="72" x="1004.39" y="623.424" width="95" height="138"/>
   <object id="50" gid="68" x="1019" y="1221" width="38" height="51"/>
   <object id="51" name="scarecrow" gid="82" x="1147" y="924" width="50" height="77"/>
+  <object id="52" gid="79" x="1177" y="1158" width="34" height="32"/>
+  <object id="53" gid="79" x="1099" y="1207" width="34" height="32"/>
+  <object id="54" gid="79" x="1123" y="1161" width="34" height="32"/>
+  <object id="55" gid="80" x="1166" y="1211" width="31" height="39"/>
+  <object id="56" gid="80" x="1092" y="1169" width="31" height="39"/>
+  <object id="57" gid="80" x="1150" y="1205" width="31" height="39"/>
+  <object id="58" gid="80" x="1188" y="1202" width="31" height="39"/>
+  <object id="59" gid="80" x="1134" y="1212" width="31" height="39"/>
+  <object id="61" gid="80" x="1183" y="1018" width="31" height="39"/>
+  <object id="62" gid="80" x="1160" y="1021" width="31" height="39"/>
+  <object id="63" gid="80" x="1136" y="1021" width="31" height="39"/>
+  <object id="64" gid="80" x="1139" y="992" width="31" height="39"/>
+  <object id="65" gid="80" x="1160" y="988" width="31" height="39"/>
+  <object id="66" gid="80" x="1180" y="988" width="31" height="39"/>
+  <object id="67" gid="80" x="1137" y="970" width="31" height="39"/>
+  <object id="68" gid="80" x="1159" y="968" width="31" height="39"/>
+  <object id="69" gid="80" x="1181" y="970" width="31" height="39"/>
+  <object id="70" gid="80" x="838" y="1164" width="31" height="39"/>
+  <object id="71" gid="80" x="839" y="1185" width="31" height="39"/>
+  <object id="72" gid="80" x="838" y="1206" width="31" height="39"/>
+  <object id="73" gid="79" x="954" y="871" width="34" height="32"/>
+  <object id="74" gid="79" x="906" y="871" width="34" height="32"/>
+  <object id="76" name="merchant" gid="84" x="834" y="883" width="29" height="46"/>
  </objectgroup>
  <objectgroup id="4" name="areas">
-  <object id="46" name="player_spawn" x="1033.21" y="1039.27">
+  <object id="46" name="player_spawn" x="968.21" y="1180.27">
    <point/>
   </object>
   <object id="48" name="world_map" x="1017.3" y="1162.79" width="39.1212" height="49.7879"/>

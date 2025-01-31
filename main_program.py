@@ -7,7 +7,7 @@ from game_settings import (pygame,
                            button_color,
                            sys, bat_frames, scheleton_frames)
 from player import Player
-from sprites import GroundSprite, CollisionSprite, AreaSprite
+from sprites import GroundSprite, CollisionSprite, AreaSprite, InventorySprite
 from groups import allSprites
 from enemy import Enemy
 from side_game import SideGame
@@ -40,7 +40,6 @@ class Game:
         }
         self.keys_list = list(self.game_objects.keys())
         self.last_object_found = None
-
     def setup(self):
         self.all_sprites.empty()
         self.collision_sprites.empty()
@@ -94,14 +93,18 @@ class Game:
         ###ask if the player wants to inspect the objects
         for obj in self.collision_sprites:
             if obj.rect.colliderect(self.player.rect) and obj.name != None and obj.resources == 1:
-                if obj.name !='scarecrow':
+                if obj.name not in ('scarecrow','merchant'):
                     self.text = f"do you want inspect the {obj.name}?"
         ####ask if the player wants to play with the scarecrow
                 elif obj.name == 'scarecrow':
                     self.text = f"do you want to play with the {obj.name}? Press the bar"
+                elif obj.name == 'merchant':
+                    self.text = f"do you want to sell goods? Press E"
+
                 self.text_surface = self.FONT.render(self.text, True, button_color)
                 self.text_rect = display_surface.get_rect(center=(WINDOW_WIDTH / 2,WINDOW_HEIGHT / 2))
                 self.display_surface.blit(self.text_surface, self.text_rect)
+
         #####print last object found
         if self.last_object_found != None:
             self.text = f"you found a {self.last_object_found}"
@@ -123,11 +126,7 @@ class Game:
                 self.transition = True
 
         for obj in self.collision_sprites:
-            if (obj.rect.colliderect(self.player.rect)
-                    and obj.name != None and event.type == pygame.KEYDOWN
-                    and event.key == pygame.K_y
-                    and obj.resources == 1
-                    and obj.name != 'scarecrow'):
+            if obj.rect.colliderect(self.player.rect) and obj.name != None and event.type == pygame.KEYDOWN and event.key == pygame.K_y and obj.resources == 1 and obj.name not in ('scarecrow','merchant'):
                 self.finding = random.randint(0,2)
 
                 for i in range(len(self.keys_list)):
@@ -137,14 +136,21 @@ class Game:
                         self.last_object_found = self.keys_list[i]
                         self.finding = None
                         obj.resources = 0
-
+            if obj.rect.colliderect(self.player.rect) and obj.name =='merchant' and event.type == pygame.KEYDOWN and event.key == pygame.K_e:
+                inventory = InventorySprite(self.player.rect.centerx, self.player.rect.centery)
+                self.all_sprites.add(inventory)
+    
             if (event.type == pygame.KEYDOWN
                   and event.key == pygame.K_SPACE
                   and obj.rect.colliderect(self.player.rect)
                   and obj.name == 'scarecrow'):
                 side_game_inst = SideGame()
-                side_game_inst.condition_met = True
                 side_game_inst.run()
+    def using_resources(self,event):
+        if event.type == pygame.KEYDOWN and event.key == pygame.K_1:
+            if self.game_objects['potion'] > 0:
+                self.player.life = 100
+                self.game_objects['potion'] -=1
 
     def remapping(self): ###check if bool is true and perform the remapping
         if self.transition:
@@ -180,6 +186,7 @@ class Game:
                 if event.type == self.monster_event:
                     self.monsters()
                 self.transition_check(event)
+                self.using_resources(event)
 
             self.remapping()
             self.display_surface.fill('black')
