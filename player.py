@@ -9,7 +9,7 @@ class Player(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(center = pos)
         self.collision_rect = self.rect.inflate(-30, -30)
         self.direction = pygame.Vector2(0,0)
-        self.speed = 400
+        self.speed = 1000
         self.groups = groups
         self.collision_sprites = collision_sprites
         self.life = 100
@@ -18,7 +18,8 @@ class Player(pygame.sprite.Sprite):
         keys = pygame.key.get_pressed()
         self.direction.x = int(keys[pygame.K_RIGHT] or keys[pygame.K_d]) - int(keys[pygame.K_LEFT] or keys[pygame.K_a])
         self.direction.y = int(keys[pygame.K_DOWN] or keys[pygame.K_s]) - int(keys[pygame.K_UP] or keys[pygame.K_w])
-        self.direction = self.direction.normalize() if self.direction else self.direction
+        if self.direction.length() > 0:  # Prevent division by zero
+            self.direction = self.direction.normalize()
 
     def move(self, dt):
         self.collision_rect.x += self.direction.x * self.speed * dt

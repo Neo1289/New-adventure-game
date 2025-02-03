@@ -179,7 +179,7 @@ class Game:
 
     def run(self):
         while self.running:
-            dt = self.clock.tick() / 3000
+            dt = self.clock.tick() / 5000
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.running = False
