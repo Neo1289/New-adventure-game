@@ -5,9 +5,9 @@ from game_settings import (pygame,
                            WINDOW_HEIGHT,WINDOW_WIDTH,
                            TILE_SIZE,FONT_SIZE,
                            button_color,
-                           sys, bat_frames, scheleton_frames)
+                           sys, bat_frames, scheleton_frames,FONT_SIZE)
 from player import Player
-from sprites import GroundSprite, CollisionSprite, AreaSprite, InventorySprite
+from sprites import GroundSprite, CollisionSprite, AreaSprite
 from groups import allSprites
 from enemy import Enemy
 from side_game import SideGame
@@ -22,7 +22,9 @@ class Game:
         self.current_map = None
         self.player = None
         self.area_groups = {}
-        self.FONT = pygame.font.SysFont('Georgia', FONT_SIZE)
+        self.FONT_SIZE = FONT_SIZE
+        self.FONT = pygame.font.SysFont('Georgia', self.FONT_SIZE)
+
         ###groups
         self.all_sprites = allSprites()
         self.collision_sprites = pygame.sprite.Group()
@@ -31,6 +33,7 @@ class Game:
         pygame.time.set_timer(self.monster_event, 5000)
         self.transition = False
         self.finding = None
+        self.inventory = None
 
         #### game objects that can be used by the player
         self.game_objects = {
@@ -117,6 +120,15 @@ class Game:
         self.text_surf = self.FONT.render(self.current_time, True, (250, 235, 240))
         self.text_rect = self.text_surf.get_rect(bottomright=(WINDOW_WIDTH - 20, WINDOW_HEIGHT - 20))
         self.display_surface.blit(self.text_surf, self.text_rect)
+        ####display the inventory
+        if self.inventory:
+            self.inventory_font = self.FONT_SIZE
+            for key, value in self.game_objects.items():
+                self.text_inv = f"you have {value} {key}"
+                self.text_surface = self.FONT.render(self.text_inv, True, button_color)
+                self.text_rect = display_surface.get_rect(center=(self.player.rect.centerx - 100 , self.player.rect.centery - 100 - self.inventory_font))
+                self.display_surface.blit(self.text_surface, self.text_rect)
+                self.inventory_font += self.FONT_SIZE
 
     def transition_check(self,event): ###check if the player is in an area for transition and if the y has been pressed
         for name, area in self.area_groups.items():
@@ -136,16 +148,17 @@ class Game:
                         self.last_object_found = self.keys_list[i]
                         self.finding = None
                         obj.resources = 0
+
             if obj.rect.colliderect(self.player.rect) and obj.name =='merchant' and event.type == pygame.KEYDOWN and event.key == pygame.K_e:
-                inventory = InventorySprite(self.player.rect.centerx, self.player.rect.centery)
-                self.all_sprites.add(inventory)
-    
+                self.inventory = True
+
             if (event.type == pygame.KEYDOWN
                   and event.key == pygame.K_SPACE
                   and obj.rect.colliderect(self.player.rect)
                   and obj.name == 'scarecrow'):
                 side_game_inst = SideGame()
                 side_game_inst.run()
+
     def using_resources(self,event):
         if event.type == pygame.KEYDOWN and event.key == pygame.K_1:
             if self.game_objects['potion'] > 0:
