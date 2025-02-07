@@ -38,11 +38,12 @@ class Game:
         #### game objects that can be used by the player
         self.game_objects = {
             'potion': 0,
-            'crystal ball': 0,
+            'crystal ball': 1,
             'coin': 0
         }
         self.keys_list = list(self.game_objects.keys())
         self.last_object_found = None
+
     def setup(self):
         self.all_sprites.empty()
         self.collision_sprites.empty()
@@ -53,9 +54,8 @@ class Game:
                 self.current_map = map
 
     def mapping(self):
-
+        self.inventory = False ###giving the change to trade until in the room
         ###ground tiles###
-
         for x, y, image in self.current_map.get_layer_by_name('ground').tiles():
             GroundSprite((x * TILE_SIZE, y * TILE_SIZE), image, self.all_sprites)
 
@@ -102,8 +102,7 @@ class Game:
                 elif obj.name == 'scarecrow':
                     self.text = f"do you want to play with the {obj.name}? Press the bar"
                 elif obj.name == 'merchant':
-                    self.text = f"do you want to sell goods? Press E"
-
+                    self.text = f"do you want to sell your crystal balls? Press E"
                 self.text_surface = self.FONT.render(self.text, True, button_color)
                 self.text_rect = display_surface.get_rect(center=(WINDOW_WIDTH / 2,WINDOW_HEIGHT / 2))
                 self.display_surface.blit(self.text_surface, self.text_rect)
@@ -149,8 +148,8 @@ class Game:
                         self.finding = None
                         obj.resources = 0
 
-            if obj.rect.colliderect(self.player.rect) and obj.name =='merchant' and event.type == pygame.KEYDOWN and event.key == pygame.K_e:
-                self.inventory = True
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_e and obj.rect.colliderect(self.player.rect) and obj.name == 'merchant':
+                    self.inventory = True
 
             if (event.type == pygame.KEYDOWN
                   and event.key == pygame.K_SPACE
@@ -163,7 +162,14 @@ class Game:
         if event.type == pygame.KEYDOWN and event.key == pygame.K_1:
             if self.game_objects['potion'] > 0:
                 self.player.life = 100
-                self.game_objects['potion'] -=1
+                self.game_objects['potion'] -= 1
+
+    def trading_resouces(self,event):
+        if self.inventory:
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_s and self.game_objects['crystal ball'] > 0:
+                self.game_objects['crystal ball'] -= 1
+                self.game_objects['coin'] += 5
+
 
     def remapping(self): ###check if bool is true and perform the remapping
         if self.transition:
@@ -200,6 +206,7 @@ class Game:
                     self.monsters()
                 self.transition_check(event)
                 self.using_resources(event)
+                self.trading_resouces(event)
 
             self.remapping()
             self.display_surface.fill('black')
