@@ -259,7 +259,7 @@
   <object id="189" gid="72" x="1187.67" y="635.667" width="95" height="138"/>
  </objectgroup>
  <objectgroup id="3" name="areas">
-  <object id="88" name="player_spawn" x="1128" y="1100">
+  <object id="88" name="player_spawn" x="1134.67" y="1071">
    <point/>
   </object>
   <object id="89" name="world_map" x="640" y="1232" width="144" height="148"/>
