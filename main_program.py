@@ -102,7 +102,7 @@ class Game:
                 elif obj.name == 'scarecrow':
                     self.text = f"do you want to play with the {obj.name}? Press the bar"
                 elif obj.name == 'merchant':
-                    self.text = f"do you want to sell your crystal balls? Press E"
+                    self.text = f"do you want to sell your crystal balls? Press E to see your tradable resources. S to sell, B to buy potions"
                 self.text_surface = self.FONT.render(self.text, True, button_color)
                 self.text_rect = display_surface.get_rect(center=(WINDOW_WIDTH / 2,WINDOW_HEIGHT / 2))
                 self.display_surface.blit(self.text_surface, self.text_rect)
@@ -169,7 +169,9 @@ class Game:
             if event.type == pygame.KEYDOWN and event.key == pygame.K_s and self.game_objects['crystal ball'] > 0:
                 self.game_objects['crystal ball'] -= 1
                 self.game_objects['coin'] += 5
-
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_b and self.game_objects['coin'] >= 3:
+                self.game_objects['coin'] -= 3
+                self.game_objects['potion'] += 1
 
     def remapping(self): ###check if bool is true and perform the remapping
         if self.transition:
