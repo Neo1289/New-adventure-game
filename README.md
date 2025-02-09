@@ -1,9 +1,6 @@
 game to-do list:
 
-- build scalable system for elements inspection:
-  - spend the resources found
-  - merchant to trade
-  - remove the hardcoding for the monsters 
+- fix the player speed and collision size
+- do the side game properly
 
-- implement physics with pymunk
 
