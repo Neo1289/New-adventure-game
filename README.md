@@ -1,6 +1,3 @@
-game to-do list:
-
-- fix the player speed and collision size
-- do the side game properly
+find a way to handle to different side games, the one that already exist and the platformer
 
 
