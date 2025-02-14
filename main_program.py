@@ -85,49 +85,45 @@ class Game:
                 self.scheleton = Enemy((obj.x, obj.y), scheleton_frames, self.all_sprites)
 
     def text_render(self):
-        ###ask if the player wants to enter the next stage
+
+        #display next stage
         for name, area in self.area_groups.items():
             if area.rect.colliderect(self.player.rect):
                 self.text = f"Press Y to enter the {name}"
-                self.text_surface = self.FONT.render(self.text, True, button_color)
-                self.text_rect = display_surface.get_rect(center=(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2))
-                self.display_surface.blit(self.text_surface, self.text_rect)
+                self.render(self.text,WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2)
                 self.current_area = name
-        ###ask if the player wants to inspect the objects
+        #interact with npc
         for obj in self.collision_sprites:
             if obj.rect.colliderect(self.player.rect) and obj.name != None and obj.resources == 1:
                 if obj.name not in ('scarecrow','merchant'):
                     self.text = f"do you want inspect the {obj.name}?"
-        ####ask if the player wants to play with the scarecrow
                 elif obj.name == 'scarecrow':
                     self.text = f"do you want to play with the {obj.name}? Press the bar"
                 elif obj.name == 'merchant':
-                    self.text = f"do you want to sell your crystal balls? Press E to see your tradable resources. S to sell, B to buy potions"
-                self.text_surface = self.FONT.render(self.text, True, button_color)
-                self.text_rect = display_surface.get_rect(center=(WINDOW_WIDTH / 2,WINDOW_HEIGHT / 2))
-                self.display_surface.blit(self.text_surface, self.text_rect)
+                    self.text = (f"do you want to sell your crystal balls? "
+                                 f"Press E to see your tradable resources. S to sell"
+                                 f"B to buy potions")
+
+                self.render(self.text,WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2)
 
         #####print last object found
         if self.last_object_found != None:
             self.text = f"you found a {self.last_object_found}"
-            self.text_surface = self.FONT.render(self.text, True, button_color)
-            self.text_rect = display_surface.get_rect(center=(WINDOW_WIDTH + 250, WINDOW_HEIGHT / 2))
-            self.display_surface.blit(self.text_surface, self.text_rect)
-        ##display time
-        self.current_time = pygame.time.get_ticks() // 100
-        self.current_time = str(self.current_time)
-        self.text_surf = self.FONT.render(self.current_time, True, (250, 235, 240))
-        self.text_rect = self.text_surf.get_rect(bottomright=(WINDOW_WIDTH - 20, WINDOW_HEIGHT - 20))
-        self.display_surface.blit(self.text_surf, self.text_rect)
+            self.render(self.text, WINDOW_WIDTH + 250, WINDOW_HEIGHT / 2)
+
         ####display the inventory
         if self.inventory:
             self.inventory_font = self.FONT_SIZE
             for key, value in self.game_objects.items():
                 self.text_inv = f"you have {value} {key}"
-                self.text_surface = self.FONT.render(self.text_inv, True, button_color)
-                self.text_rect = display_surface.get_rect(center=(self.player.rect.centerx - 100 , self.player.rect.centery - 100 - self.inventory_font))
-                self.display_surface.blit(self.text_surface, self.text_rect)
+                self.render(self.text_inv, self.player.rect.centerx - 100 , self.player.rect.centery - 100 - self.inventory_font)
                 self.inventory_font += self.FONT_SIZE
+
+    def render(self,text,x,y):
+        self.text = text
+        self.text_surface = self.FONT.render(self.text, True, button_color)
+        self.text_rect = display_surface.get_rect(center=(x,y))
+        self.display_surface.blit(self.text_surface, self.text_rect)
 
     def transition_check(self,event): ###check if the player is in an area for transition and if the y has been pressed
         for name, area in self.area_groups.items():
