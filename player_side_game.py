@@ -14,7 +14,7 @@ class PlayerSide(pygame.sprite.Sprite):
         self.images = self.load_images()
         self.image = self.images['right'][0]
         self.rect = self.image.get_rect(center = (WINDOW_WIDTH //2,GROUND_FLOOR))
-        self.speed = 4
+        self.speed = 40
         self.walk_count = 0
         self.vertical_velocity = 0
         self.is_jumping = False

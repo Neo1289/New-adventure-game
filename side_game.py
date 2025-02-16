@@ -19,7 +19,7 @@ class SideGame():
         self.display_surface = display_surface
 
     def run(self):
-        dt = self.clock.tick(60)
+        dt = self.clock.tick(600)
         while self.running:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
