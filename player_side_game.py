@@ -2,7 +2,6 @@ from game_settings import (pygame,
                            load_pygame,
                            WINDOW_WIDTH,
                            WINDOW_HEIGHT,
-                           display_surface,
                            sys,
                            join,
                            GROUND_FLOOR,
@@ -10,8 +9,8 @@ from game_settings import (pygame,
                            path)
 
 class PlayerSide(pygame.sprite.Sprite):
-    def __init__(self,groups):
-        super().__init__(groups)
+    def __init__(self):
+        super().__init__()
         self.images = self.load_images()
         self.image = self.images['right'][0]
         self.rect = self.image.get_rect(center = (WINDOW_WIDTH //2,GROUND_FLOOR))
@@ -29,8 +28,9 @@ class PlayerSide(pygame.sprite.Sprite):
                         full_path = join(folder, file_name)
                         surf = pygame.image.load(full_path).convert_alpha()
                         self.frames[state].append(surf)
+        return self.frames
 
-    def update(self):
+    def update(self,dt):
         self.keys = pygame.key.get_pressed()
         if self.keys[pygame.K_LEFT]:
             self.rect.x -= self.speed
@@ -41,7 +41,7 @@ class PlayerSide(pygame.sprite.Sprite):
             self.image = self.images['right'][self.walk_count // 10 % 2]
             self.walk_count += 1
         else:
-            self.image = self.images['left']
+            self.image = self.images['right'][0]
             self.walk_count = 0
         #jumping
         if not self.is_jumping and self.keys[pygame.K_SPACE]:
@@ -54,3 +54,4 @@ class PlayerSide(pygame.sprite.Sprite):
             self.rect.bottom = GROUND_FLOOR
             self.is_jumping = False
             self.vertical_velocity = 0
+
