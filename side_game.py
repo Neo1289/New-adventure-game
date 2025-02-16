@@ -9,14 +9,14 @@ from game_settings import (display_surface,
                            join
                            )
 from player_side_game import PlayerSide
-from groups import allSprites
+
 
 class SideGame():
     def __init__(self):
         self.running = True
         self.clock = pygame.time.Clock()
-        self.all_sprites = allSprites()
-        self.player = PlayerSide(self.all_sprites)
+        self.player = PlayerSide()
+        self.display_surface = display_surface
 
     def run(self):
         dt = self.clock.tick(60)
@@ -29,9 +29,9 @@ class SideGame():
                     self.running = False
 
 
-            display_surface.fill((0, 0, 0))
-            self.all_sprites.draw(self.player.rect.center)
-            self.all_sprites.update(dt)
+            self.display_surface.fill((0, 0, 0))
+            self.player.update(dt)
+            self.display_surface.blit(self.player.image, (WINDOW_HEIGHT / 2, WINDOW_WIDTH / 2))
             pygame.display.update()
 
         return
