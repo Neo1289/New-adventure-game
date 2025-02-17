@@ -4,7 +4,6 @@ from game_settings import (pygame,
                            WINDOW_HEIGHT,
                            sys,
                            join,
-                           GROUND_FLOOR,
                            walk,
                            path)
 
@@ -13,8 +12,8 @@ class PlayerSide(pygame.sprite.Sprite):
         super().__init__()
         self.images = self.load_images()
         self.image = self.images['right'][0]
-        self.rect = self.image.get_rect(center = (WINDOW_WIDTH //2,GROUND_FLOOR))
-        self.speed = 4
+        self.rect = self.image.get_rect(center = (WINDOW_WIDTH / 2, WINDOW_HEIGHT - 20))
+        self.speed = 3
         self.walk_count = 0
         self.vertical_velocity = 0
         self.is_jumping = False
@@ -32,13 +31,14 @@ class PlayerSide(pygame.sprite.Sprite):
 
     def update(self,dt):
         self.keys = pygame.key.get_pressed()
+        dt_seconds = dt / 1000.0
         if self.keys[pygame.K_LEFT]:
-            self.rect.x -= self.speed
-            self.image = self.images['left'][self.walk_count // 10 % 2]
+            self.rect.x -= self.speed * dt_seconds
+            self.image = self.images['left'][self.walk_count // 20 % 2]
             self.walk_count += 1
         elif self.keys[pygame.K_RIGHT]:
-            self.rect.x += self.speed
-            self.image = self.images['right'][self.walk_count // 10 % 2]
+            self.rect.x += self.speed * dt_seconds
+            self.image = self.images['right'][self.walk_count // 20 % 2]
             self.walk_count += 1
         else:
             self.image = self.images['right'][0]
@@ -48,10 +48,10 @@ class PlayerSide(pygame.sprite.Sprite):
             self.is_jumping = True
             self.vertical_velocity = -15
         if self.is_jumping:
-            self.rect.y += self.vertical_velocity
-            self.vertical_velocity += 1
-        if  self.rect.centery >= GROUND_FLOOR:
-            self.rect.bottom = GROUND_FLOOR
+            self.rect.y += self.vertical_velocity * dt_seconds * 60
+            self.vertical_velocity += 1 * dt_seconds * 60
+        if  self.rect.centery >= WINDOW_HEIGHT - 20:
+            self.rect.bottom = WINDOW_HEIGHT - 20
             self.is_jumping = False
             self.vertical_velocity = 0
 
