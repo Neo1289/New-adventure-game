@@ -54,3 +54,9 @@ for file_name in listdir(bat_folder):
     full_path = path.join(bat_folder, file_name)
     surf = pygame.image.load(full_path).convert_alpha()
     scheleton_frames.append(surf)
+
+# ---------------------------
+# bonus game images
+# ---------------------------
+
+chest = pygame.image.load(path.join('resources','world','chest.png')).convert_alpha()

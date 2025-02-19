@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="64" height="64" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="77">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="64" height="64" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="79">
  <tileset firstgid="1" source="house_ground.tsx"/>
  <tileset firstgid="65" source="objects_world.tsx"/>
  <layer id="1" name="ground" width="64" height="64">
@@ -116,7 +116,7 @@
   <object id="44" gid="72" x="1358.94" y="777.97" width="95" height="138"/>
   <object id="45" gid="72" x="1004.39" y="623.424" width="95" height="138"/>
   <object id="50" gid="68" x="1019" y="1221" width="38" height="51"/>
-  <object id="51" name="scarecrow" gid="82" x="1147" y="924" width="50" height="77"/>
+  <object id="51" gid="82" x="1147" y="924" width="50" height="77"/>
   <object id="52" gid="79" x="1177" y="1158" width="34" height="32"/>
   <object id="53" gid="79" x="1099" y="1207" width="34" height="32"/>
   <object id="54" gid="79" x="1123" y="1161" width="34" height="32"/>
@@ -146,5 +146,6 @@
    <point/>
   </object>
   <object id="48" name="world_map" x="1017.3" y="1162.79" width="39.1212" height="49.7879"/>
+  <object id="77" name="spawning area" x="1139.33" y="842" width="68.6667" height="75.3333"/>
  </objectgroup>
 </map>
