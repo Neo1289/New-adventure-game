@@ -8,13 +8,12 @@ from game_settings import (display_surface,
                            sys,
                            join
                            )
-from player_side_game import PlayerSide
+
 
 class SideGame():
     def __init__(self):
         self.running = True
         self.clock = pygame.time.Clock()
-        self.player = PlayerSide()
         self.display_surface = display_surface
 
     def run(self):
@@ -28,8 +27,6 @@ class SideGame():
                     self.running = False
 
             self.display_surface.fill((0, 0, 0))
-            self.player.update(dt)
-            self.display_surface.blit(self.player.image, self.player.rect)
             pygame.display.update()
 
         return
