@@ -5,7 +5,7 @@ from game_settings import (pygame,
                            WINDOW_HEIGHT,WINDOW_WIDTH,
                            TILE_SIZE,FONT_SIZE,
                            button_color,
-                           sys, bat_frames, scheleton_frames,FONT_SIZE)
+                           sys, bat_frames, scheleton_frames,FONT_SIZE,chest)
 from player import Player
 from sprites import GroundSprite, CollisionSprite, AreaSprite
 from groups import allSprites
@@ -31,6 +31,8 @@ class Game:
         ###extra monsters
         self.monster_event = pygame.event.custom_type()
         pygame.time.set_timer(self.monster_event, 5000)
+        self.bonus_event = pygame.event.custom_type()
+        pygame.time.set_timer(self.bonus_event, 5000)
         self.transition = False
         self.finding = None
         self.inventory = None
@@ -84,6 +86,17 @@ class Game:
             elif obj.name == 'scheleton':
                 self.scheleton = Enemy((obj.x, obj.y), scheleton_frames, self.all_sprites)
 
+    def bonus_game(self):
+        bonus_objects = [obj for obj in self.current_map.get_layer_by_name('areas')
+                         if obj.name == 'spawning bonus']
+
+        if bonus_objects:
+            # Choose one at random
+            chosen_obj = random.choice(bonus_objects)
+            # Create the bonus sprite at the chosen object's position
+            self.bonus = CollisionSprite((chosen_obj.x, chosen_obj.y), chest,
+                                         (self.all_sprites, self.collision_sprites), chosen_obj.name)
+
     def text_render(self):
 
         #display next stage
@@ -95,10 +108,8 @@ class Game:
         #interact with npc
         for obj in self.collision_sprites:
             if obj.rect.colliderect(self.player.rect) and obj.name != None and obj.resources == 1:
-                if obj.name not in ('scarecrow','merchant'):
+                if obj.name not in ('merchant'):
                     self.text = f"do you want inspect the {obj.name}?"
-                elif obj.name == 'scarecrow':
-                    self.text = f"do you want to play with the {obj.name}? Press the bar"
                 elif obj.name == 'merchant':
                     self.text = (f"do you want to sell your crystal balls? "
                                  f"Press E to see your tradable resources. S to sell"
@@ -133,7 +144,7 @@ class Game:
                 self.transition = True
 
         for obj in self.collision_sprites:
-            if obj.rect.colliderect(self.player.rect) and obj.name != None and event.type == pygame.KEYDOWN and event.key == pygame.K_y and obj.resources == 1 and obj.name not in ('scarecrow','merchant'):
+            if obj.rect.colliderect(self.player.rect) and obj.name != None and event.type == pygame.KEYDOWN and event.key == pygame.K_y and obj.resources == 1 and obj.name not in ('merchant'):
                 self.finding = random.randint(0,2)
 
                 for i in range(len(self.keys_list)):
@@ -146,13 +157,6 @@ class Game:
 
             if event.type == pygame.KEYDOWN and event.key == pygame.K_e and obj.rect.colliderect(self.player.rect) and obj.name == 'merchant':
                     self.inventory = True
-
-            if (event.type == pygame.KEYDOWN
-                  and event.key == pygame.K_SPACE
-                  and obj.rect.colliderect(self.player.rect)
-                  and obj.name == 'scarecrow'):
-                side_game_inst = SideGame()
-                side_game_inst.run()
 
     def using_resources(self,event):
         if event.type == pygame.KEYDOWN and event.key == pygame.K_1:
@@ -202,6 +206,8 @@ class Game:
                     self.running = False
                 if event.type == self.monster_event:
                     self.monsters()
+                if event.type == self.bonus_event:
+                    self.bonus_game()
                 self.transition_check(event)
                 self.using_resources(event)
                 self.trading_resouces(event)
