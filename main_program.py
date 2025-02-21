@@ -7,7 +7,7 @@ from game_settings import (pygame,
                            button_color,
                            sys, bat_frames, scheleton_frames,FONT_SIZE,chest)
 from player import Player
-from sprites import GroundSprite, CollisionSprite, AreaSprite
+from sprites import GroundSprite, CollisionSprite, AreaSprite, BonusSprite
 from groups import allSprites
 from enemy import Enemy
 from side_game import SideGame
@@ -91,11 +91,9 @@ class Game:
                          if obj.name == 'spawning bonus']
 
         if bonus_objects:
-            # Choose one at random
             chosen_obj = random.choice(bonus_objects)
-            # Create the bonus sprite at the chosen object's position
-            self.bonus = CollisionSprite((chosen_obj.x, chosen_obj.y), chest,
-                                         (self.all_sprites, self.collision_sprites), chosen_obj.name)
+            self.bonus = BonusSprite((chosen_obj.x, chosen_obj.y), chest,
+                                         (self.all_sprites, self.collision_sprites), chosen_obj.name, 1000)
 
     def text_render(self):
 
@@ -208,6 +206,7 @@ class Game:
                     self.monsters()
                 if event.type == self.bonus_event:
                     self.bonus_game()
+
                 self.transition_check(event)
                 self.using_resources(event)
                 self.trading_resouces(event)
