@@ -60,3 +60,13 @@ for file_name in listdir(bat_folder):
 # ---------------------------
 
 chest = pygame.image.load(path.join('resources','world','chest.png')).convert_alpha()
+
+# ---------------------------
+# rendering images
+# ---------------------------
+
+def rendering(text,x,y,FONT_SIZE,display_surface,button_color):
+    FONT = pygame.font.SysFont('Georgia', FONT_SIZE)
+    text_surface = FONT.render(text, True, button_color)
+    text_rect = display_surface.get_rect(center=(x,y))
+    display_surface.blit(text_surface, text_rect)
