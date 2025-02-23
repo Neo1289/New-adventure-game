@@ -5,7 +5,7 @@ from game_settings import (pygame,
                            WINDOW_HEIGHT,WINDOW_WIDTH,
                            TILE_SIZE,FONT_SIZE,
                            button_color,
-                           sys, bat_frames, scheleton_frames,FONT_SIZE,chest)
+                           sys, bat_frames, scheleton_frames,FONT_SIZE,chest,rendering)
 from player import Player
 from sprites import GroundSprite, CollisionSprite, AreaSprite, BonusSprite
 from groups import allSprites
@@ -23,7 +23,6 @@ class Game:
         self.player = None
         self.area_groups = {}
         self.FONT_SIZE = FONT_SIZE
-        self.FONT = pygame.font.SysFont('Georgia', self.FONT_SIZE)
 
         ###groups
         self.all_sprites = allSprites()
@@ -32,7 +31,7 @@ class Game:
         self.monster_event = pygame.event.custom_type()
         pygame.time.set_timer(self.monster_event, 5000)
         self.bonus_event = pygame.event.custom_type()
-        pygame.time.set_timer(self.bonus_event, 5000)
+        pygame.time.set_timer(self.bonus_event, 7000)
         self.transition = False
         self.finding = None
         self.inventory = None
@@ -96,12 +95,11 @@ class Game:
                                          (self.all_sprites, self.collision_sprites), chosen_obj.name, 1000)
 
     def text_render(self):
-
         #display next stage
         for name, area in self.area_groups.items():
             if area.rect.colliderect(self.player.rect):
                 self.text = f"Press Y to enter the {name}"
-                self.render(self.text,WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2)
+                rendering(self.text,WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2,FONT_SIZE,self.display_surface,button_color)
                 self.current_area = name
         #interact with npc
         for obj in self.collision_sprites:
@@ -110,29 +108,23 @@ class Game:
                     self.text = f"do you want inspect the {obj.name}?"
                 elif obj.name == 'merchant':
                     self.text = (f"do you want to sell your crystal balls? "
-                                 f"Press E to see your tradable resources. S to sell"
+                                 f"Press E to see your tradable resources. S to sell "
                                  f"B to buy potions")
 
-                self.render(self.text,WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2)
+                rendering(self.text, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2, FONT_SIZE, self.display_surface, button_color)
 
         #####print last object found
         if self.last_object_found != None:
             self.text = f"you found a {self.last_object_found}"
-            self.render(self.text, WINDOW_WIDTH + 250, WINDOW_HEIGHT / 2)
+            rendering(self.text, WINDOW_WIDTH / 2 + 250, WINDOW_HEIGHT / 2, FONT_SIZE, self.display_surface, button_color)
 
         ####display the inventory
         if self.inventory:
             self.inventory_font = self.FONT_SIZE
             for key, value in self.game_objects.items():
                 self.text_inv = f"you have {value} {key}"
-                self.render(self.text_inv, self.player.rect.centerx - 100 , self.player.rect.centery - 100 - self.inventory_font)
+                rendering(self.text_inv, self.player.rect.centerx - 100 , self.player.rect.centery - 100 - self.inventory_font, FONT_SIZE, self.display_surface, button_color)
                 self.inventory_font += self.FONT_SIZE
-
-    def render(self,text,x,y):
-        self.text = text
-        self.text_surface = self.FONT.render(self.text, True, button_color)
-        self.text_rect = display_surface.get_rect(center=(x,y))
-        self.display_surface.blit(self.text_surface, self.text_rect)
 
     def transition_check(self,event): ###check if the player is in an area for transition and if the y has been pressed
         for name, area in self.area_groups.items():
