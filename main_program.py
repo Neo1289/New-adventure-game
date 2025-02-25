@@ -5,7 +5,7 @@ from game_settings import (pygame,
                            WINDOW_HEIGHT,WINDOW_WIDTH,
                            TILE_SIZE,FONT_SIZE,
                            button_color,
-                           sys, bat_frames, scheleton_frames,FONT_SIZE,chest,rendering)
+                           sys, bat_frames, scheleton_frames,FONT_SIZE,chest,rendering,timer_function)
 from player import Player
 from sprites import GroundSprite, CollisionSprite, AreaSprite, BonusSprite
 from groups import allSprites
@@ -93,7 +93,6 @@ class Game:
             chosen_obj = random.choice(bonus_objects)
             self.bonus = BonusSprite((chosen_obj.x, chosen_obj.y), chest,
                                          (self.all_sprites, self.collision_sprites), chosen_obj.name, 1000)
-
     def text_render(self):
         #display next stage
         for name, area in self.area_groups.items():

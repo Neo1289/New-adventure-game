@@ -70,3 +70,18 @@ def rendering(text,x,y,FONT_SIZE,display_surface,button_color):
     text_surface = FONT.render(text, True, button_color)
     text_rect = display_surface.get_rect(center=(x,y))
     display_surface.blit(text_surface, text_rect)
+
+# ---------------------------
+# timer decorator
+# ---------------------------
+
+def timer_function(func):
+        def wrapper(*args,**kwargs):
+            clock = pygame.time.Clock()
+            elapsed_time = 0
+            while elapsed_time < 5000:
+                delta_time = clock.tick(60)
+                elapsed_time += delta_time
+                func(*args,**kwargs)
+
+        return wrapper
