@@ -5,7 +5,7 @@ from game_settings import (pygame,
                            WINDOW_HEIGHT,WINDOW_WIDTH,
                            TILE_SIZE,FONT_SIZE,
                            button_color,
-                           sys, bat_frames, scheleton_frames,FONT_SIZE,chest,rendering,timer_function)
+                           sys, bat_frames, scheleton_frames,FONT_SIZE,chest,rendering,count_calls)
 from player import Player
 from sprites import GroundSprite, CollisionSprite, AreaSprite, BonusSprite
 from groups import allSprites
@@ -93,22 +93,26 @@ class Game:
             chosen_obj = random.choice(bonus_objects)
             self.bonus = BonusSprite((chosen_obj.x, chosen_obj.y), chest,
                                          (self.all_sprites, self.collision_sprites), chosen_obj.name, 1000)
-    def text_render(self):
+    def stage_render(self):
         #display next stage
         for name, area in self.area_groups.items():
             if area.rect.colliderect(self.player.rect):
                 self.text = f"Press Y to enter the {name}"
                 rendering(self.text,WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2,FONT_SIZE,self.display_surface,button_color)
                 self.current_area = name
+    def objects_render(self):
         #interact with npc
         for obj in self.collision_sprites:
             if obj.rect.colliderect(self.player.rect) and obj.name != None and obj.resources == 1:
                 if obj.name not in ('merchant'):
                     self.text = f"do you want inspect the {obj.name}?"
-                elif obj.name == 'merchant':
-                    self.text = (f"do you want to sell your crystal balls? "
-                                 f"Press E to see your tradable resources. S to sell "
-                                 f"B to buy potions")
+    @count_calls
+    def npc_render(self):
+        for obj in self.collision_sprites:
+            if obj.name == 'merchant':
+                self.text = (f"do you want to sell your crystal balls? "
+                                     f"Press E to see your tradable resources. S to sell "
+                                     f"B to buy potions")
 
                 rendering(self.text, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2, FONT_SIZE, self.display_surface, button_color)
 
@@ -206,7 +210,8 @@ class Game:
             self.display_surface.fill('black')
             self.all_sprites.draw(self.player.rect.center)
             self.all_sprites.update(dt)
-            self.text_render()
+            self.stage_render()
+            self.npc_render()
             self.player_life_check()
             self.display_captions()
 
