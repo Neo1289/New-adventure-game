@@ -75,13 +75,13 @@ def rendering(text,x,y,FONT_SIZE,display_surface,button_color):
 # timer decorator
 # ---------------------------
 
-def timer_function(func):
-        def wrapper(*args,**kwargs):
-            clock = pygame.time.Clock()
-            elapsed_time = 0
-            while elapsed_time < 5000:
-                delta_time = clock.tick(60)
-                elapsed_time += delta_time
-                func(*args,**kwargs)
-
-        return wrapper
+def count_calls(func):
+    def wrapper(*args, **kwargs):
+        wrapper.call_count += 1  # Increment the counter
+        print(f"Call {wrapper.call_count} of {func.__name__}")
+        if wrapper.call_count <= 500:
+            return func(*args, **kwargs)
+        elif wrapper.call_count > 1000:
+            wrapper.call_count = 0
+    wrapper.call_count = 0
+    return wrapper
