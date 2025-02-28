@@ -71,17 +71,3 @@ def rendering(text,x,y,FONT_SIZE,display_surface,button_color):
     text_rect = display_surface.get_rect(center=(x,y))
     display_surface.blit(text_surface, text_rect)
 
-# ---------------------------
-# timer decorator
-# ---------------------------
-
-def count_calls(func):
-    def wrapper(*args, **kwargs):
-        wrapper.call_count += 1  # Increment the counter
-        print(f"Call {wrapper.call_count} of {func.__name__}")
-        if wrapper.call_count <= 500:
-            return func(*args, **kwargs)
-        elif wrapper.call_count > 1000:
-            wrapper.call_count = 0
-    wrapper.call_count = 0
-    return wrapper
