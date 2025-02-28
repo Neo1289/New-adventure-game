@@ -96,7 +96,11 @@ class Game:
     def render(self):
         #display next stage
         for name, area in self.area_groups.items():
-            if area.rect.colliderect(self.player.rect):
+            if area.rect.colliderect(self.player.rect) and name == 'secret passage':
+                self.text = f"You found a {name} press Y to enter"
+                rendering(self.text, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2, FONT_SIZE, self.display_surface, button_color)
+                self.current_area = name
+            elif area.rect.colliderect(self.player.rect):
                 self.text = f"Press Y to enter the {name}"
                 rendering(self.text,WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2,FONT_SIZE,self.display_surface,button_color)
                 self.current_area = name
