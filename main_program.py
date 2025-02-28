@@ -5,7 +5,7 @@ from game_settings import (pygame,
                            WINDOW_HEIGHT,WINDOW_WIDTH,
                            TILE_SIZE,FONT_SIZE,
                            button_color,
-                           sys, bat_frames, scheleton_frames,FONT_SIZE,chest,rendering,count_calls)
+                           sys, bat_frames, scheleton_frames,FONT_SIZE,chest,rendering)
 from player import Player
 from sprites import GroundSprite, CollisionSprite, AreaSprite, BonusSprite
 from groups import allSprites
@@ -43,7 +43,7 @@ class Game:
             'coin': 0
         }
         self.keys_list = list(self.game_objects.keys())
-        self.last_object_found = None
+        self.last_object_found = ''
 
     def setup(self):
         self.all_sprites.empty()
@@ -93,41 +93,36 @@ class Game:
             chosen_obj = random.choice(bonus_objects)
             self.bonus = BonusSprite((chosen_obj.x, chosen_obj.y), chest,
                                          (self.all_sprites, self.collision_sprites), chosen_obj.name, 1000)
-    def stage_render(self):
+    def render(self):
         #display next stage
         for name, area in self.area_groups.items():
             if area.rect.colliderect(self.player.rect):
                 self.text = f"Press Y to enter the {name}"
                 rendering(self.text,WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2,FONT_SIZE,self.display_surface,button_color)
                 self.current_area = name
-    def objects_render(self):
-        #interact with npc
+
         for obj in self.collision_sprites:
             if obj.rect.colliderect(self.player.rect) and obj.name != None and obj.resources == 1:
                 if obj.name not in ('merchant'):
                     self.text = f"do you want inspect the {obj.name}?"
-    @count_calls
-    def npc_render(self):
-        for obj in self.collision_sprites:
-            if obj.name == 'merchant':
+
+                rendering(self.text, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2, FONT_SIZE, self.display_surface, button_color)
+
+            if obj.name == 'merchant' and obj.rect.colliderect(self.player.rect):
                 self.text = (f"do you want to sell your crystal balls? "
                                      f"Press E to see your tradable resources. S to sell "
                                      f"B to buy potions")
 
                 rendering(self.text, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2, FONT_SIZE, self.display_surface, button_color)
 
-        #####print last object found
-        if self.last_object_found != None:
-            self.text = f"you found a {self.last_object_found}"
-            rendering(self.text, WINDOW_WIDTH / 2 + 250, WINDOW_HEIGHT / 2, FONT_SIZE, self.display_surface, button_color)
-
-        ####display the inventory
-        if self.inventory:
-            self.inventory_font = self.FONT_SIZE
-            for key, value in self.game_objects.items():
-                self.text_inv = f"you have {value} {key}"
-                rendering(self.text_inv, self.player.rect.centerx - 100 , self.player.rect.centery - 100 - self.inventory_font, FONT_SIZE, self.display_surface, button_color)
-                self.inventory_font += self.FONT_SIZE
+            if self.inventory and obj.rect.colliderect(self.player.rect) and obj.name == 'merchant':
+                self.inventory_font = self.FONT_SIZE
+                for key, value in self.game_objects.items():
+                    self.text_inv = f"you have {value} {key}"
+                    rendering(self.text_inv, self.player.rect.centerx - 100,
+                              self.player.rect.centery - 100 - self.inventory_font, FONT_SIZE, self.display_surface,
+                              button_color)
+                    self.inventory_font += self.FONT_SIZE
 
     def transition_check(self,event): ###check if the player is in an area for transition and if the y has been pressed
         for name, area in self.area_groups.items():
@@ -188,7 +183,9 @@ class Game:
         caption = (f"\u2665 {self.player.life}      "
                    f"\U0001F9EA {self.game_objects['potion']}      "
                    f"\U0001F52E {self.game_objects['crystal ball']}      "
-                   f"\U0001F4B0 {self.game_objects['coin']}")
+                   f"\U0001F4B0 {self.game_objects['coin']}             "
+                   f"last object found: {self.last_object_found}"
+                   )
         pygame.display.set_caption(caption)
 
     def run(self):
@@ -210,8 +207,7 @@ class Game:
             self.display_surface.fill('black')
             self.all_sprites.draw(self.player.rect.center)
             self.all_sprites.update(dt)
-            self.stage_render()
-            self.npc_render()
+            self.render()
             self.player_life_check()
             self.display_captions()
 
