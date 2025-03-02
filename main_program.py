@@ -7,7 +7,7 @@ from game_settings import (pygame,
                            button_color,
                            sys, bat_frames, scheleton_frames,FONT_SIZE,chest,rendering)
 from player import Player
-from sprites import GroundSprite, CollisionSprite, AreaSprite, BonusSprite
+from sprites import GroundSprite, CollisionSprite, AreaSprite, BonusSprite, Wall
 from groups import allSprites
 from enemy import Enemy
 from side_game import SideGame
@@ -32,6 +32,8 @@ class Game:
         pygame.time.set_timer(self.monster_event, 5000)
         self.bonus_event = pygame.event.custom_type()
         pygame.time.set_timer(self.bonus_event, 7000)
+        self.wall_event = pygame.event.custom_type()
+        pygame.time.set_timer(self.wall_event, 300)
         self.transition = False
         self.finding = None
         self.inventory = None
@@ -75,15 +77,25 @@ class Game:
                 else:
                     self.player.collision_rect.center = (obj.x, obj.y)
                     self.all_sprites.add(self.player)
-            elif obj.name not in ('bat','scheleton'):
+
+            elif obj.name not in ('bat','scheleton','wall'):
                 self.area_groups[obj.name] = AreaSprite(obj.x, obj.y, obj.width, obj.height, self.all_sprites)
 
-    def monsters(self): ###spawning monsters
+    def monsters(self):
+        ###spawning monsters
         for obj in self.current_map.get_layer_by_name('areas'):
             if obj.name == 'bat':
                 self.monster = Enemy((obj.x,obj.y), bat_frames, self.all_sprites)
             elif obj.name == 'scheleton':
                 self.scheleton = Enemy((obj.x, obj.y), scheleton_frames, self.all_sprites)
+
+
+    def wall_spawn(self):
+            walls = [obj for obj in self.current_map.get_layer_by_name('areas')
+                     if obj.name == 'wall']
+            if walls:
+                chosen_wall = random.choice(walls)
+                self.wall = Wall(chosen_wall.x,chosen_wall.y,self.all_sprites)
 
     def bonus_game(self):
         bonus_objects = [obj for obj in self.current_map.get_layer_by_name('areas')
@@ -202,6 +214,8 @@ class Game:
                     self.monsters()
                 if event.type == self.bonus_event:
                     self.bonus_game()
+                if event.type == self.wall_event:
+                    self.wall_spawn()
 
                 self.transition_check(event)
                 self.using_resources(event)
