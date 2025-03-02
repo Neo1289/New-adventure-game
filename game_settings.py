@@ -60,7 +60,7 @@ for file_name in listdir(bat_folder):
 # ---------------------------
 
 chest = pygame.image.load(path.join('resources','world','chest.png')).convert_alpha()
-
+wall =  pygame.image.load(path.join('resources','world','wall_two.png')).convert_alpha()
 # ---------------------------
 # rendering images
 # ---------------------------
