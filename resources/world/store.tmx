@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="64" height="64" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="79">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="64" height="64" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="84">
  <tileset firstgid="1" source="house_ground.tsx"/>
  <tileset firstgid="65" source="objects_world.tsx"/>
  <layer id="1" name="ground" width="64" height="64">
@@ -72,15 +72,6 @@
  </layer>
  <objectgroup id="3" name="objects">
   <object id="1" gid="74" x="1061.79" y="1224.98" width="35" height="111"/>
-  <object id="2" gid="75" x="1113.34" y="1130.68" width="109" height="30"/>
-  <object id="3" gid="75" x="982.155" y="1134.78" width="109" height="30"/>
-  <object id="4" gid="75" x="1113.34" y="1039.68" width="109" height="30"/>
-  <object id="5" gid="74" x="1098.68" y="1032.3" width="35" height="111"/>
-  <object id="6" gid="74" x="969.141" y="1034.76" width="35" height="111"/>
-  <object id="7" gid="74" x="970.781" y="939.654" width="35" height="111"/>
-  <object id="8" gid="75" x="828.834" y="1133.97" width="109" height="30"/>
-  <object id="9" gid="75" x="891.966" y="1040.5" width="109" height="30"/>
-  <object id="10" gid="75" x="889.506" y="941.288" width="109" height="30"/>
   <object id="12" gid="74" x="1196.25" y="1224.98" width="35" height="111"/>
   <object id="13" gid="74" x="1197.07" y="1133.97" width="35" height="111"/>
   <object id="14" gid="74" x="1197.07" y="1038.04" width="35" height="111"/>
@@ -116,36 +107,28 @@
   <object id="44" gid="72" x="1358.94" y="777.97" width="95" height="138"/>
   <object id="45" gid="72" x="1004.39" y="623.424" width="95" height="138"/>
   <object id="50" gid="68" x="1019" y="1221" width="38" height="51"/>
-  <object id="51" gid="82" x="1147" y="924" width="50" height="77"/>
-  <object id="52" gid="79" x="1177" y="1158" width="34" height="32"/>
+  <object id="52" gid="79" x="1150" y="1166" width="34" height="32"/>
   <object id="53" gid="79" x="1099" y="1207" width="34" height="32"/>
-  <object id="54" gid="79" x="1123" y="1161" width="34" height="32"/>
+  <object id="54" gid="79" x="1144" y="1123" width="34" height="32"/>
   <object id="55" gid="80" x="1166" y="1211" width="31" height="39"/>
   <object id="56" gid="80" x="1092" y="1169" width="31" height="39"/>
   <object id="57" gid="80" x="1150" y="1205" width="31" height="39"/>
   <object id="58" gid="80" x="1188" y="1202" width="31" height="39"/>
   <object id="59" gid="80" x="1134" y="1212" width="31" height="39"/>
-  <object id="61" gid="80" x="1183" y="1018" width="31" height="39"/>
-  <object id="62" gid="80" x="1160" y="1021" width="31" height="39"/>
-  <object id="63" gid="80" x="1136" y="1021" width="31" height="39"/>
-  <object id="64" gid="80" x="1139" y="992" width="31" height="39"/>
-  <object id="65" gid="80" x="1160" y="988" width="31" height="39"/>
-  <object id="66" gid="80" x="1180" y="988" width="31" height="39"/>
-  <object id="67" gid="80" x="1137" y="970" width="31" height="39"/>
-  <object id="68" gid="80" x="1159" y="968" width="31" height="39"/>
-  <object id="69" gid="80" x="1181" y="970" width="31" height="39"/>
-  <object id="70" gid="80" x="838" y="1164" width="31" height="39"/>
-  <object id="71" gid="80" x="839" y="1185" width="31" height="39"/>
-  <object id="72" gid="80" x="838" y="1206" width="31" height="39"/>
-  <object id="73" gid="79" x="954" y="871" width="34" height="32"/>
-  <object id="74" gid="79" x="906" y="871" width="34" height="32"/>
-  <object id="76" name="merchant" gid="84" x="834" y="883" width="29" height="46"/>
+  <object id="61" gid="80" x="1187" y="1168" width="31" height="39"/>
+  <object id="66" gid="80" x="1184" y="1138" width="31" height="39"/>
+  <object id="69" gid="80" x="1185" y="1120" width="31" height="39"/>
+  <object id="76" name="merchant" gid="84" x="1038" y="916.333" width="29" height="46"/>
+  <object id="79" gid="88" x="830" y="931" width="26" height="35"/>
+  <object id="80" gid="87" x="837" y="871" width="27" height="38"/>
+  <object id="81" gid="87" x="836" y="902" width="27" height="38"/>
+  <object id="82" gid="88" x="861" y="883" width="26" height="35"/>
+  <object id="83" gid="88" x="851" y="920" width="26" height="35"/>
  </objectgroup>
  <objectgroup id="4" name="areas">
   <object id="46" name="player_spawn" x="968.21" y="1180.27">
    <point/>
   </object>
-  <object id="48" name="world_map" x="1017.3" y="1162.79" width="39.1212" height="49.7879"/>
-  <object id="77" name="spawning area" x="1139.33" y="842" width="68.6667" height="75.3333"/>
+  <object id="48" name="secret passage" x="1017.3" y="1162.79" width="39.1212" height="49.7879"/>
  </objectgroup>
 </map>
