@@ -7,7 +7,7 @@ from game_settings import (pygame,
                            button_color,
                            sys, bat_frames, scheleton_frames,FONT_SIZE,chest,rendering)
 from player import Player
-from sprites import GroundSprite, CollisionSprite, AreaSprite, BonusSprite, Wall
+from sprites import GroundSprite, CollisionSprite, AreaSprite, BonusSprite, Wall, ColumnSprite
 from groups import allSprites
 from enemy import Enemy
 from side_game import SideGame
@@ -65,8 +65,10 @@ class Game:
         ###objects###
 
         for obj in self.current_map.get_layer_by_name('objects'):
-            if obj.image:
+            if obj.image and obj.name != 'runes':
                 CollisionSprite((obj.x, obj.y), obj.image, (self.all_sprites, self.collision_sprites), obj.name)
+            else:
+                ColumnSprite((obj.x,obj.y),obj.image,(self.all_sprites, self.collision_sprites), obj.name)
 
         ###player###
 
