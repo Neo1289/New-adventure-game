@@ -158,11 +158,13 @@ class Game:
                 self.finding = random.randint(0,2)
 
                 for i in range(len(self.keys_list)):
-                    if i == self.finding:
+                    if i == self.finding and obj.name != 'runes':
                         key = self.keys_list[self.finding]
                         self.game_objects[key] += 1
                         self.last_object_found = self.keys_list[i]
                         self.finding = None
+                        obj.resources = 0
+                    else:
                         obj.resources = 0
 
             if event.type == pygame.KEYDOWN and event.key == pygame.K_e and obj.rect.colliderect(self.player.rect) and obj.name == 'merchant':
