@@ -104,7 +104,7 @@ class Game:
         if bonus_objects:
             chosen_obj = random.choice(bonus_objects)
             self.bonus = BonusSprite((chosen_obj.x, chosen_obj.y), chest,
-                                         (self.all_sprites, self.collision_sprites), chosen_obj.name, 1000)
+                                         (self.all_sprites, self.collision_sprites), chosen_obj.name, 3000)
     def render(self):
         #display next stage
         for name, area in self.area_groups.items():
@@ -119,7 +119,7 @@ class Game:
 
         for obj in self.collision_sprites:
             if obj.rect.colliderect(self.player.rect) and obj.name != None and obj.resources == 1:
-                if obj.name not in ('merchant'):
+                if obj.name not in ('merchant','runes'):
                     self.text = f"do you want inspect the {obj.name}?"
 
                 rendering(self.text, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2, FONT_SIZE, self.display_surface, button_color)
@@ -139,6 +139,10 @@ class Game:
                               self.player.rect.centery - 100 - self.inventory_font, FONT_SIZE, self.display_surface,
                               button_color)
                     self.inventory_font += self.FONT_SIZE
+
+            if obj.rect.colliderect(self.player.rect) and obj.name == 'runes':
+                self.text = f"the column has some inscriptions"
+                rendering(self.text, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2, FONT_SIZE, self.display_surface, button_color)
 
     def transition_check(self,event): ###check if the player is in an area for transition and if the y has been pressed
         for name, area in self.area_groups.items():
