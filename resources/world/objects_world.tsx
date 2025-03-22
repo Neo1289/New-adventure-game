@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset version="1.10" tiledversion="1.11.2" name="objects" tilewidth="112" tileheight="141" tilecount="22" columns="0">
+<tileset version="1.10" tiledversion="1.11.2" name="objects" tilewidth="112" tileheight="141" tilecount="29" columns="0">
  <grid orientation="orthogonal" width="1" height="1"/>
  <tile id="0">
   <image source="bush.png" width="47" height="43"/>
@@ -56,15 +56,36 @@
   <image source="scarecrow.png" width="50" height="77"/>
  </tile>
  <tile id="18">
-  <image source="merchant.png" width="29" height="46"/>
+  <image source="merchant.png" width="22" height="35"/>
  </tile>
  <tile id="19">
-  <image source="merchant.png" width="29" height="46"/>
+  <image source="merchant.png" width="22" height="35"/>
  </tile>
  <tile id="20">
   <image source="secret passage.png" width="37" height="65"/>
  </tile>
  <tile id="21">
   <image source="big wall.png" width="101" height="133"/>
+ </tile>
+ <tile id="22">
+  <image source="jar_2.png" width="27" height="38"/>
+ </tile>
+ <tile id="23">
+  <image source="jar_1.png" width="26" height="35"/>
+ </tile>
+ <tile id="24">
+  <image source="est.png" width="31" height="40"/>
+ </tile>
+ <tile id="25">
+  <image source="west.png" width="30" height="37"/>
+ </tile>
+ <tile id="26">
+  <image source="bench.png" width="57" height="45"/>
+ </tile>
+ <tile id="27">
+  <image source="runes.png" width="33" height="73"/>
+ </tile>
+ <tile id="28">
+  <image source="runes floor.png" width="19" height="46"/>
  </tile>
 </tileset>

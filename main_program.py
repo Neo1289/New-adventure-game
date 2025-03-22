@@ -7,7 +7,7 @@ from game_settings import (pygame,
                            button_color,
                            sys, bat_frames, scheleton_frames,FONT_SIZE,chest,rendering)
 from player import Player
-from sprites import GroundSprite, CollisionSprite, AreaSprite, BonusSprite, Wall
+from sprites import GroundSprite, CollisionSprite, AreaSprite, BonusSprite, Wall, ColumnSprite
 from groups import allSprites
 from enemy import Enemy
 from side_game import SideGame
@@ -65,8 +65,10 @@ class Game:
         ###objects###
 
         for obj in self.current_map.get_layer_by_name('objects'):
-            if obj.image:
+            if obj.image and obj.name != 'runes':
                 CollisionSprite((obj.x, obj.y), obj.image, (self.all_sprites, self.collision_sprites), obj.name)
+            else:
+                ColumnSprite((obj.x,obj.y),obj.image,(self.all_sprites, self.collision_sprites), obj.name)
 
         ###player###
 
@@ -104,7 +106,7 @@ class Game:
         if bonus_objects:
             chosen_obj = random.choice(bonus_objects)
             self.bonus = BonusSprite((chosen_obj.x, chosen_obj.y), chest,
-                                         (self.all_sprites, self.collision_sprites), chosen_obj.name, 1000)
+                                         (self.all_sprites, self.collision_sprites), chosen_obj.name, 3000)
     def render(self):
         #display next stage
         for name, area in self.area_groups.items():
@@ -119,7 +121,7 @@ class Game:
 
         for obj in self.collision_sprites:
             if obj.rect.colliderect(self.player.rect) and obj.name != None and obj.resources == 1:
-                if obj.name not in ('merchant'):
+                if obj.name not in ('merchant','runes'):
                     self.text = f"do you want inspect the {obj.name}?"
 
                 rendering(self.text, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2, FONT_SIZE, self.display_surface, button_color)
@@ -140,6 +142,10 @@ class Game:
                               button_color)
                     self.inventory_font += self.FONT_SIZE
 
+            if obj.rect.colliderect(self.player.rect) and obj.name == 'runes':
+                self.text = f"the column has some inscriptions"
+                rendering(self.text, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2, FONT_SIZE, self.display_surface, button_color)
+
     def transition_check(self,event): ###check if the player is in an area for transition and if the y has been pressed
         for name, area in self.area_groups.items():
             if (area.rect.colliderect(self.player.rect)
@@ -152,11 +158,13 @@ class Game:
                 self.finding = random.randint(0,2)
 
                 for i in range(len(self.keys_list)):
-                    if i == self.finding:
+                    if i == self.finding and obj.name != 'runes':
                         key = self.keys_list[self.finding]
                         self.game_objects[key] += 1
                         self.last_object_found = self.keys_list[i]
                         self.finding = None
+                        obj.resources = 0
+                    else:
                         obj.resources = 0
 
             if event.type == pygame.KEYDOWN and event.key == pygame.K_e and obj.rect.colliderect(self.player.rect) and obj.name == 'merchant':
