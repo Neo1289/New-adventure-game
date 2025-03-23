@@ -2,15 +2,14 @@ import random
 from game_settings import (pygame,
                            maps,
                            display_surface,
-                           WINDOW_HEIGHT,WINDOW_WIDTH,
-                           TILE_SIZE,FONT_SIZE,
+                           WINDOW_HEIGHT, WINDOW_WIDTH,
+                           TILE_SIZE, FONT_SIZE,
                            button_color,
-                           sys, bat_frames, scheleton_frames,FONT_SIZE,chest,rendering)
+                           sys, bat_frames, scheleton_frames, chest, rendering)
 from player import Player
 from sprites import GroundSprite, CollisionSprite, AreaSprite, BonusSprite, Wall, ColumnSprite
 from groups import allSprites
 from enemy import Enemy
-from side_game import SideGame
 
 class Game:
     def __init__(self):
@@ -107,16 +106,21 @@ class Game:
             chosen_obj = random.choice(bonus_objects)
             self.bonus = BonusSprite((chosen_obj.x, chosen_obj.y), chest,
                                          (self.all_sprites, self.collision_sprites), chosen_obj.name, 3000)
+
+    # New helper method for rendering text
+    def _render_text(self, text, x, y):
+        rendering(text, x, y, self.FONT_SIZE, self.display_surface, button_color)
+
     def render(self):
         #display next stage
         for name, area in self.area_groups.items():
             if area.rect.colliderect(self.player.rect) and name == 'secret passage':
                 self.text = f"You found a {name} press Y to enter"
-                rendering(self.text, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2, FONT_SIZE, self.display_surface, button_color)
+                self._render_text(self.text, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2)
                 self.current_area = name
             elif area.rect.colliderect(self.player.rect):
                 self.text = f"Press Y to enter the {name}"
-                rendering(self.text,WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2,FONT_SIZE,self.display_surface,button_color)
+                self._render_text(self.text,WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2)
                 self.current_area = name
 
         for obj in self.collision_sprites:
@@ -204,11 +208,13 @@ class Game:
             sys.exit()
 
     def display_captions(self):
+        time_sec = pygame.time.get_ticks() // 1000
         caption = (f"\u2665 {self.player.life}      "
                    f"\U0001F9EA {self.game_objects['potion']}      "
-                   f"\U0001F52E {self.game_objects['crystal ball']}      "
-                   f"\U0001F4B0 {self.game_objects['coin']}             "
-                   f"last object found: {self.last_object_found}"
+                   f"\U0001F52E {self.game_objects['crystal ball']}     "
+                   f"\U0001F4B0 {self.game_objects['coin']}       "
+                   f"time: {time_sec}         "
+                   f"last object found: {self.last_object_found}    "
                    )
         pygame.display.set_caption(caption)
 
@@ -236,7 +242,6 @@ class Game:
             self.render()
             self.player_life_check()
             self.display_captions()
-
             pygame.display.update()
         pygame.quit()
 
