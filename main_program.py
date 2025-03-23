@@ -22,6 +22,7 @@ class Game:
         self.player = None
         self.area_groups = {}
         self.FONT_SIZE = FONT_SIZE
+        self.runes_found = 0
 
         ###groups
         self.all_sprites = allSprites()
@@ -170,6 +171,7 @@ class Game:
                         obj.resources = 0
                     else:
                         obj.resources = 0
+                        self.runes_found += 1
 
             if event.type == pygame.KEYDOWN and event.key == pygame.K_e and obj.rect.colliderect(self.player.rect) and obj.name == 'merchant':
                     self.inventory = True
@@ -213,6 +215,7 @@ class Game:
                    f"\U0001F9EA {self.game_objects['potion']}      "
                    f"\U0001F52E {self.game_objects['crystal ball']}     "
                    f"\U0001F4B0 {self.game_objects['coin']}       "
+                   f"runes found: {self.runes_found}       "
                    f"time: {time_sec}         "
                    f"last object found: {self.last_object_found}    "
                    )
