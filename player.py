@@ -1,4 +1,5 @@
 from game_settings import *
+from sprites import Bullet
 
 class Player(pygame.sprite.Sprite):
     def __init__(self,pos,groups, collision_sprites):
@@ -9,7 +10,7 @@ class Player(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(center = pos)
         self.collision_rect = self.rect.inflate(-30, -30)
         self.direction = pygame.Vector2(0,0)
-        self.speed = 1000
+        self.speed = 250
         self.groups = groups
         self.collision_sprites = collision_sprites
         self.life = 100
@@ -62,6 +63,16 @@ class Player(pygame.sprite.Sprite):
 
         self.frame_index = self.frame_index + 20 * dt if self.direction else 0
         self.image = self.frames[self.state][int(self.frame_index) % len(self.frames[self.state])]
+
+    def shoot(self, groups):
+        directions = {
+            'up': pygame.math.Vector2(0, -1),
+            'down': pygame.math.Vector2(0, 1),
+            'left': pygame.math.Vector2(-1, 0),
+            'right': pygame.math.Vector2(1, 0)
+        }
+        bullet_direction = directions.get(self.state, pygame.math.Vector2(1, 0))
+        Bullet(self.rect.center, bullet_direction, groups)
 
     def update(self,dt):
         self.input()

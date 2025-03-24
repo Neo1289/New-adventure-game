@@ -1,4 +1,4 @@
-from game_settings import pygame, wall
+from game_settings import pygame, wall,WINDOW_WIDTH, WINDOW_HEIGHT,join
 
 class GroundSprite(pygame.sprite.Sprite):
     def __init__(self, pos ,surf, groups):
@@ -62,6 +62,19 @@ class ColumnSprite(pygame.sprite.Sprite):
         if self.resources == 0:
             self.kill()
 
+class Bullet(pygame.sprite.Sprite):
+    def __init__(self, pos, direction, groups):
+        super().__init__(groups)
+        self.image = pygame.image.load(join('resources', 'world', 'rune_bullet.png')).convert_alpha()
+        self.rect = self.image.get_rect(center=pos)
+        self.direction = direction
+        self.speed = 30
+        self.spawn_time = pygame.time.get_ticks()
+
+    def update(self, dt):
+        current_time = pygame.time.get_ticks()
+        if current_time - self.spawn_time >= 10000:
+            self.kill()
 
 
 
