@@ -169,7 +169,7 @@ class Game:
                         self.last_object_found = self.keys_list[i]
                         self.finding = None
                         obj.resources = 0
-                    else:
+                    elif obj.name == 'runes':
                         obj.resources = 0
                         self.runes_found += 1
 
@@ -223,7 +223,7 @@ class Game:
 
     def run(self):
         while self.running:
-            dt = self.clock.tick() / 5000
+            dt = self.clock.tick(60) / 1000
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.running = False
@@ -233,6 +233,8 @@ class Game:
                     self.bonus_game()
                 if event.type == self.wall_event:
                     self.wall_spawn()
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+                    self.player.shoot(self.all_sprites)
 
                 self.transition_check(event)
                 self.using_resources(event)
