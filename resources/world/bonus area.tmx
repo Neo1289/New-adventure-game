@@ -56,9 +56,6 @@
   <object id="16" gid="75" x="425.5" y="650.5" width="109" height="30"/>
   <object id="17" gid="75" x="508" y="650.5" width="109" height="30"/>
   <object id="18" gid="75" x="536" y="650.5" width="109" height="30"/>
-  <object id="23" name="spawning bonus" x="615.5" y="345">
-   <point/>
-  </object>
  </objectgroup>
  <objectgroup id="3" name="areas">
   <object id="19" name="spawning bonus" x="353.5" y="342">
@@ -203,6 +200,9 @@
    <point/>
   </object>
   <object id="67" name="spawning bonus" x="571" y="401">
+   <point/>
+  </object>
+  <object id="23" name="spawning bonus" x="615.5" y="345">
    <point/>
   </object>
  </objectgroup>

@@ -62,7 +62,7 @@ class ColumnSprite(pygame.sprite.Sprite):
         if self.resources == 0:
             self.kill()
 
-class Bullet(pygame.sprite.Sprite):
+class Rune(pygame.sprite.Sprite):
     def __init__(self, pos, direction, groups):
         super().__init__(groups)
         self.image = pygame.image.load(join('resources', 'world', 'rune_bullet.png')).convert_alpha()
@@ -73,7 +73,7 @@ class Bullet(pygame.sprite.Sprite):
 
     def update(self, dt):
         current_time = pygame.time.get_ticks()
-        if current_time - self.spawn_time >= 10000:
+        if current_time - self.spawn_time >= 30000:
             self.kill()
 
 

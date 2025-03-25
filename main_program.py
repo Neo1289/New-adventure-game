@@ -7,7 +7,7 @@ from game_settings import (pygame,
                            button_color,
                            sys, bat_frames, scheleton_frames, chest, rendering)
 from player import Player
-from sprites import GroundSprite, CollisionSprite, AreaSprite, BonusSprite, Wall, ColumnSprite
+from sprites import GroundSprite, CollisionSprite, AreaSprite, BonusSprite, Wall, ColumnSprite,Rune
 from groups import allSprites
 from enemy import Enemy
 
@@ -22,7 +22,7 @@ class Game:
         self.player = None
         self.area_groups = {}
         self.FONT_SIZE = FONT_SIZE
-        self.runes_found = 0
+
 
         ###groups
         self.all_sprites = allSprites()
@@ -171,7 +171,7 @@ class Game:
                         obj.resources = 0
                     elif obj.name == 'runes':
                         obj.resources = 0
-                        self.runes_found += 1
+                        self.player.runes_found += 1
 
             if event.type == pygame.KEYDOWN and event.key == pygame.K_e and obj.rect.colliderect(self.player.rect) and obj.name == 'merchant':
                     self.inventory = True
@@ -215,11 +215,20 @@ class Game:
                    f"\U0001F9EA {self.game_objects['potion']}      "
                    f"\U0001F52E {self.game_objects['crystal ball']}     "
                    f"\U0001F4B0 {self.game_objects['coin']}       "
-                   f"runes found: {self.runes_found}       "
+                   f"runes dust: {self.player.runes_found}       "
                    f"time: {time_sec}         "
                    f"last object found: {self.last_object_found}    "
                    )
         pygame.display.set_caption(caption)
+
+    def check_rune_collisions(self):
+        enemies = [sprite for sprite in self.all_sprites if isinstance(sprite, Enemy)]
+        rune_group = pygame.sprite.Group([sprite for sprite in self.all_sprites if isinstance(sprite, Rune)])
+
+        for enemy in enemies:
+            rune_hits = pygame.sprite.spritecollide(enemy, rune_group, False)
+            if rune_hits:
+                enemy.kill()
 
     def run(self):
         while self.running:
@@ -244,6 +253,7 @@ class Game:
             self.display_surface.fill('black')
             self.all_sprites.draw(self.player.rect.center)
             self.all_sprites.update(dt)
+            self.check_rune_collisions()
             self.render()
             self.player_life_check()
             self.display_captions()

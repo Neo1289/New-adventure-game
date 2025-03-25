@@ -1,5 +1,5 @@
 from game_settings import *
-from sprites import Bullet
+from sprites import Rune
 
 class Player(pygame.sprite.Sprite):
     def __init__(self,pos,groups, collision_sprites):
@@ -14,6 +14,7 @@ class Player(pygame.sprite.Sprite):
         self.groups = groups
         self.collision_sprites = collision_sprites
         self.life = 100
+        self.runes_found = 0
 
     def input(self):
         keys = pygame.key.get_pressed()
@@ -72,7 +73,9 @@ class Player(pygame.sprite.Sprite):
             'right': pygame.math.Vector2(1, 0)
         }
         bullet_direction = directions.get(self.state, pygame.math.Vector2(1, 0))
-        Bullet(self.rect.center, bullet_direction, groups)
+        if self.runes_found > 0:
+            Rune(self.rect.center, bullet_direction, groups)
+            self.runes_found -= 1
 
     def update(self,dt):
         self.input()
