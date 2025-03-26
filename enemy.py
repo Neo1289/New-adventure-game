@@ -13,7 +13,7 @@ class Enemy(pygame.sprite.Sprite):
         self.pos = pygame.Vector2(pos)
         self.list = [-1,1]
         self.direction = pygame.Vector2(random.choice(self.list), random.choice(self.list))
-        self.speed = 200
+        self.speed = 70
         self.dangerous = True
 
     def animate(self, dt):

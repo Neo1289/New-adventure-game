@@ -1,4 +1,4 @@
-from game_settings import pygame, wall,WINDOW_WIDTH, WINDOW_HEIGHT,join
+from game_settings import pygame, wall,join
 
 class GroundSprite(pygame.sprite.Sprite):
     def __init__(self, pos ,surf, groups):
@@ -42,7 +42,7 @@ class Wall(pygame.sprite.Sprite):
         super().__init__(groups)
         self.image = wall
         self.rect = self.image.get_rect(topleft=(x, y))
-        self.speed_x = 2000
+        self.speed_x = 700
         self.dangerous = True
 
     def update(self, dt):
@@ -63,13 +63,12 @@ class ColumnSprite(pygame.sprite.Sprite):
             self.kill()
 
 class Rune(pygame.sprite.Sprite):
-    def __init__(self, pos, direction, groups):
+    def __init__(self, pos, groups):
         super().__init__(groups)
         self.image = pygame.image.load(join('resources', 'world', 'rune_bullet.png')).convert_alpha()
         self.rect = self.image.get_rect(center=pos)
-        self.direction = direction
-        self.speed = 30
         self.spawn_time = pygame.time.get_ticks()
+        self.resources = 1
 
     def update(self, dt):
         current_time = pygame.time.get_ticks()
