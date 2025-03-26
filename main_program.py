@@ -33,7 +33,7 @@ class Game:
         self.bonus_event = pygame.event.custom_type()
         pygame.time.set_timer(self.bonus_event, 7000)
         self.wall_event = pygame.event.custom_type()
-        pygame.time.set_timer(self.wall_event, 300)
+        pygame.time.set_timer(self.wall_event, 1000)
         self.transition = False
         self.finding = None
         self.inventory = None
@@ -148,8 +148,12 @@ class Game:
                     self.inventory_font += self.FONT_SIZE
 
             if obj.rect.colliderect(self.player.rect) and obj.name == 'runes':
-                self.text = f"the column has some inscriptions"
-                rendering(self.text, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2, FONT_SIZE, self.display_surface, button_color)
+                if self.player.runes_found < 3:
+                    self.text = "do you want to collect the energy of the runes?"
+                    rendering(self.text, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2, FONT_SIZE, self.display_surface, button_color)
+                else:
+                    self.text = "You have too much runes energy, you can't collect more"
+                    rendering(self.text, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2, FONT_SIZE, self.display_surface, button_color)
 
     def transition_check(self,event): ###check if the player is in an area for transition and if the y has been pressed
         for name, area in self.area_groups.items():
@@ -157,6 +161,7 @@ class Game:
                     and event.type == pygame.KEYDOWN
                     and event.key == pygame.K_y):
                 self.transition = True
+
 
         for obj in self.collision_sprites:
             if obj.rect.colliderect(self.player.rect) and obj.name != None and event.type == pygame.KEYDOWN and event.key == pygame.K_y and obj.resources == 1 and obj.name not in ('merchant'):
@@ -169,7 +174,7 @@ class Game:
                         self.last_object_found = self.keys_list[i]
                         self.finding = None
                         obj.resources = 0
-                    elif obj.name == 'runes':
+                    elif obj.name == 'runes' and self.player.runes_found < 3:
                         obj.resources = 0
                         self.player.runes_found += 1
 
@@ -205,7 +210,7 @@ class Game:
 
         if self.player.life <= 0:
             self.caption = pygame.display.set_caption('GAME OVER')
-            pygame.time.delay(2000)
+            pygame.time.delay(10000)
             pygame.quit()
             sys.exit()
 
