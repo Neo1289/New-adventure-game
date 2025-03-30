@@ -11,6 +11,7 @@ import sys
 from pytmx.util_pygame import load_pygame
 from random import randint
 import time
+
 pygame.init()
 
 # ---------------------------
@@ -49,11 +50,22 @@ for file_name in listdir(bat_folder):
 # ---------------------------
 
 scheleton_frames = []
-bat_folder = path.join('resources', 'skeleton')
-for file_name in listdir(bat_folder):
-    full_path = path.join(bat_folder, file_name)
+scheleton_folder = path.join('resources', 'skeleton')
+for file_name in listdir(scheleton_folder):
+    full_path = path.join(scheleton_folder, file_name)
     surf = pygame.image.load(full_path).convert_alpha()
     scheleton_frames.append(surf)
+
+# ---------------------------
+# flames images
+# ---------------------------
+
+flame_frames = []
+flame_folder = path.join('resources', 'torch')
+for file_name in listdir(flame_folder):
+    full_path = path.join(flame_folder, file_name)
+    surf = pygame.image.load(full_path).convert_alpha()
+    flame_frames.append(surf)
 
 # ---------------------------
 # bonus game images

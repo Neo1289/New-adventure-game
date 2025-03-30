@@ -1,15 +1,18 @@
 import random
+
+from flame import Flame
 from game_settings import (pygame,
                            maps,
                            display_surface,
                            WINDOW_HEIGHT, WINDOW_WIDTH,
                            TILE_SIZE, FONT_SIZE,
                            button_color,
-                           sys, bat_frames, scheleton_frames, chest, rendering)
+                           sys, bat_frames, scheleton_frames, chest, rendering, flame_frames)
 from player import Player
 from sprites import GroundSprite, CollisionSprite, AreaSprite, BonusSprite, Wall, ColumnSprite,Rune
 from groups import allSprites
 from enemy import Enemy
+from flame import Flame
 
 class Game:
     def __init__(self):
@@ -80,7 +83,7 @@ class Game:
                     self.player.collision_rect.center = (obj.x, obj.y)
                     self.all_sprites.add(self.player)
 
-            elif obj.name not in ('bat','scheleton','wall'):
+            elif obj.name not in ('bat','scheleton','wall','flame'):
                 self.area_groups[obj.name] = AreaSprite(obj.x, obj.y, obj.width, obj.height, self.all_sprites)
 
     def monsters(self):
@@ -90,7 +93,8 @@ class Game:
                 self.monster = Enemy((obj.x,obj.y), bat_frames, self.all_sprites)
             elif obj.name == 'scheleton':
                 self.scheleton = Enemy((obj.x, obj.y), scheleton_frames, self.all_sprites)
-
+            elif obj.name == 'flame':
+                self.flame = Flame((obj.x, obj.y), flame_frames, self.all_sprites)
 
     def wall_spawn(self):
             walls = [obj for obj in self.current_map.get_layer_by_name('areas')
