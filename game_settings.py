@@ -64,7 +64,8 @@ flame_frames = []
 flame_folder = path.join('resources', 'torch')
 for file_name in listdir(flame_folder):
     full_path = path.join(flame_folder, file_name)
-    surf = pygame.image.load(full_path).convert_alpha()
+    surf = pygame.image.load(full_path).convert()
+    surf.set_colorkey((10,5,46))
     flame_frames.append(surf)
 
 # ---------------------------

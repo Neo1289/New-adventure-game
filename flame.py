@@ -13,7 +13,7 @@ class Flame(pygame.sprite.Sprite):
 
     def animate(self, dt):
 
-        self.frames_index += 10 * dt
+        self.frames_index += 7 * dt
         self.image = self.frames[int(self.frames_index) % len(self.frames)]
 
     def update(self, dt):
