@@ -13,6 +13,7 @@ from sprites import GroundSprite, CollisionSprite, AreaSprite, BonusSprite, Wall
 from groups import allSprites
 from enemy import Enemy
 from flame import Flame
+from side_game import SideGame
 
 class Game:
     def __init__(self):
@@ -40,6 +41,7 @@ class Game:
         self.transition = False
         self.finding = None
         self.inventory = None
+        self.secret = False
 
         #### game objects that can be used by the player
         self.game_objects = {
@@ -123,6 +125,10 @@ class Game:
                 self.text = f"You found a {name} press Y to enter"
                 self._render_text(self.text, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2)
                 self.current_area = name
+            elif area.rect.colliderect(self.player.rect) and name == 'secret game':
+                self.text = f"Press Y to enter the {name}"
+                self._render_text(self.text, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2)
+                self.secret = True
             elif area.rect.colliderect(self.player.rect):
                 self.text = f"Press Y to enter the {name}"
                 self._render_text(self.text,WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2)
@@ -136,9 +142,9 @@ class Game:
                 rendering(self.text, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2, FONT_SIZE, self.display_surface, button_color)
 
             if obj.name == 'merchant' and obj.rect.colliderect(self.player.rect):
-                self.text = (f"do you want to sell your crystal balls? "
-                                     f"Press E to see your tradable resources. S to sell "
-                                     f"B to buy potions")
+                self.text = ("do you want to sell your crystal balls? \n"
+                                     "Press E to see your tradable resources. S to sell \n"
+                                     "B to buy potions")
 
                 rendering(self.text, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2, FONT_SIZE, self.display_surface, button_color)
 
@@ -201,10 +207,15 @@ class Game:
                 self.game_objects['potion'] += 1
 
     def remapping(self): ###check if bool is true and perform the remapping
-        if self.transition:
+        if self.transition and not self.secret:
             self.setup()
             self.mapping()
             self.transition = False
+        elif self.transition and self.secret:
+            side_game = SideGame()
+            side_game.run()
+            self.transition = False
+            self.secret = False
 
     def player_life_check(self):
         for sprite in self.all_sprites:
