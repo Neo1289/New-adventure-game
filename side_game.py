@@ -1,12 +1,6 @@
 from game_settings import (display_surface,
                            pygame,
-                           maps,
-                           TILE_SIZE,
-                           FONT_SIZE,
-                           WINDOW_WIDTH,WINDOW_HEIGHT,
-                           button_color,
-                           sys,
-                           join
+                           sys
                            )
 
 
@@ -23,6 +17,7 @@ class SideGame():
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
+
                 if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                     self.running = False
 
