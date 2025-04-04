@@ -27,7 +27,6 @@ class Game:
         self.area_groups = {}
         self.FONT_SIZE = FONT_SIZE
 
-
         ###groups
         self.all_sprites = allSprites()
         self.collision_sprites = pygame.sprite.Group()
