@@ -17,9 +17,9 @@ class Player(pygame.sprite.Sprite):
         self.runes_found = 0
 
     def input(self):
-        keys = pygame.key.get_pressed()
-        self.direction.x = int(keys[pygame.K_RIGHT] or keys[pygame.K_d]) - int(keys[pygame.K_LEFT] or keys[pygame.K_a])
-        self.direction.y = int(keys[pygame.K_DOWN] or keys[pygame.K_s]) - int(keys[pygame.K_UP] or keys[pygame.K_w])
+        self.keys = pygame.key.get_pressed()
+        self.direction.x = int(self.keys[pygame.K_RIGHT] or self.keys[pygame.K_d]) - int(self.keys[pygame.K_LEFT] or self.keys[pygame.K_a])
+        self.direction.y = int(self.keys[pygame.K_DOWN] or self.keys[pygame.K_s]) - int(self.keys[pygame.K_UP] or self.keys[pygame.K_w])
         if self.direction.length() > 0:  # Prevent division by zero
             self.direction = self.direction.normalize()
 
