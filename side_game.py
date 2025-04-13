@@ -4,6 +4,29 @@ from game_settings import (display_surface,
                            join
                            )
 from player import Player
+import math  # Import Python's math module for sin function
+
+
+class Coin(pygame.sprite.Sprite):
+    def __init__(self, pos, groups):
+        super().__init__(groups)
+        # Create a simple coin image (yellow circle)
+        self.image = pygame.Surface((15, 15), pygame.SRCALPHA)
+        pygame.draw.circle(self.image, (255, 215, 0), (7.5, 7.5), 7.5)  # Gold color
+
+        # Add a slight shine effect
+        pygame.draw.circle(self.image, (255, 255, 200), (5, 5), 3)  # Highlight
+
+        self.rect = self.image.get_rect(center=pos)
+        self.animation_counter = 0
+        self.original_y = pos[1]  # Store original y position for animation
+
+    def update(self, dt):
+        # Simple bobbing animation for coins
+        self.animation_counter += dt * 5
+        # Move up and down slightly using Python's math.sin (not pygame.math.sin)
+        offset = math.sin(self.animation_counter) * 3
+        self.rect.y = self.original_y + offset
 
 
 class Platform(Player):
@@ -15,6 +38,9 @@ class Platform(Player):
         self.velocity_y = 0
         self.is_jumping = False
         self.on_ground = True
+
+        # Coin collection tracking
+        self.coins_collected = 0
 
         # Get screen dimensions for boundary checking
         self.screen_width = pygame.display.get_surface().get_width()
@@ -32,6 +58,7 @@ class Platform(Player):
             self.velocity_y = self.jump_power
             self.is_jumping = True
             self.on_ground = False
+
 
     def move(self, dt):
         # Handle horizontal movement using parent method
@@ -52,6 +79,9 @@ class Platform(Player):
         self.apply_vertical_boundaries()
 
         self.rect.centery = self.collision_rect.centery
+
+        # Check for coin collection
+        self.check_coin_collisions()
 
     def apply_horizontal_boundaries(self):
         # Left boundary
@@ -89,6 +119,11 @@ class Platform(Player):
                     self.on_ground = True
                     self.is_jumping = False
 
+    def check_coin_collisions(self):
+        # Check for collisions with coins
+        coins_hit = pygame.sprite.spritecollide(self, self.game.coin_group, True)
+        if coins_hit:
+            self.coins_collected += len(coins_hit)
 
 class SideGame():
     def __init__(self):
@@ -97,6 +132,14 @@ class SideGame():
         self.display_surface = display_surface
         self.platform_group = pygame.sprite.Group()
         self.collision_sprites = pygame.sprite.Group()
+        self.coin_group = pygame.sprite.Group()  # Group for coins
+
+        # Add these lines after other initializations
+        self.start_time = pygame.time.get_ticks()
+        self.game_duration = 10000  # 10 seconds in milliseconds
+        # Add font for timer display
+        self.timer_font = pygame.font.SysFont('Arial', 36)
+        self.remaining_time = 10
 
         # Get screen dimensions
         self.screen_width = self.display_surface.get_width()
@@ -142,6 +185,7 @@ class SideGame():
         self.ground_rect = pygame.Rect(0, self.screen_height - 50, self.screen_width, 50)
         self.WHITE = (255, 255, 255)
         self.BLUE = (0, 0, 255)
+        self.COIN_COLOR = (255, 215, 0)  # Gold color for coins
 
         # More varied platform colors
         self.GROUND_COLOR = (100, 50, 0)  # Brown for ground
@@ -153,6 +197,56 @@ class SideGame():
 
         # Background
         self.bg_color = (20, 20, 40)  # Dark blue-ish background
+
+        # Set up font for UI
+        self.font = pygame.font.SysFont('Arial', 24)
+
+        self.spawn_coins()
+
+
+    def display_timer(self):
+        # Calculate remaining time
+        elapsed_time = pygame.time.get_ticks() - self.start_time
+        self.remaining_time = max(0, (self.game_duration - elapsed_time) // 1000)
+
+        # Create timer text
+        timer_text = self.timer_font.render(f"Time: {self.remaining_time}", True, self.WHITE)
+        timer_rect = timer_text.get_rect(midtop=(self.screen_width // 2, 20))
+        self.display_surface.blit(timer_text, timer_rect)
+
+    def spawn_coins(self):
+        # Place coins on platforms
+        for platform in self.platforms:
+            # Calculate platform center
+            platform_x = platform[0] + platform[2] / 2
+            platform_y = platform[1] - 20  # Place above platform
+
+            # Create a coin at the platform center
+            Coin((platform_x, platform_y), (self.coin_group))
+
+            # For wider platforms, add more coins
+            if platform[2] > 100:
+                # Add coins to the left and right
+                Coin((platform_x - 30, platform_y), (self.coin_group))
+                Coin((platform_x + 30, platform_y), (self.coin_group))
+
+            # For even wider platforms, add even more coins
+            if platform[2] > 150:
+                Coin((platform_x - 60, platform_y), (self.coin_group))
+                Coin((platform_x + 60, platform_y), (self.coin_group))
+
+        # Add some bonus coins in interesting locations
+        bonus_coin_positions = [
+            (200, self.screen_height - 200),
+            (400, self.screen_height - 250),
+            (600, self.screen_height - 300),
+            (300, self.screen_height - 400),
+            (500, self.screen_height - 500),
+            (350, 80),  # High up bonus coin
+        ]
+
+        for pos in bonus_coin_positions:
+            Coin(pos, (self.coin_group))
 
     def draw_platforms(self):
         # Draw ground platform with ground color
@@ -166,8 +260,19 @@ class SideGame():
     def display_instructions(self):
         # Create a font for instructions
         font = pygame.font.SysFont('Arial', 18)
-        text = font.render("Use Arrow Keys/WASD to move, SPACE to jump, ESC to exit", True, self.WHITE)
+        text = font.render("Use Arrow Keys to move, SPACE to jump, ESC to exit", True, self.WHITE)
         self.display_surface.blit(text, (20, 20))
+
+    def display_coin_count(self):
+        # Display coin count at the top right
+        coin_text = self.font.render(f"Coins: {self.platform_player.coins_collected}", True, self.COIN_COLOR)
+        coin_rect = coin_text.get_rect(topright=(self.screen_width - 20, 20))
+        self.display_surface.blit(coin_text, coin_rect)
+
+        # Draw a small coin icon next to the counter
+        coin_icon = pygame.Surface((15, 15), pygame.SRCALPHA)
+        pygame.draw.circle(coin_icon, self.COIN_COLOR, (7.5, 7.5), 7.5)
+        self.display_surface.blit(coin_icon, (coin_rect.left - 25, coin_rect.top + 5))
 
     def run(self):
         while self.running:
@@ -190,9 +295,23 @@ class SideGame():
             # Draw platforms
             self.draw_platforms()
 
-            # Update and draw player
+            # Update and draw sprites
             self.platform_group.update(dt)
+
+            if self.remaining_time > 0:
+                self.coin_group.update(dt)
+                # Draw coins
+                self.coin_group.draw(self.display_surface)
+            elif self.remaining_time == 0:
+                self.coin_group.empty()
+            # Draw player
             self.platform_group.draw(self.display_surface)
+
+            # Display coin count
+            self.display_coin_count()
+
+            # Display
+            self.display_timer()
 
             pygame.display.update()
 
