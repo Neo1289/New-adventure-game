@@ -236,7 +236,7 @@ class Game:
                    f"\U0001F4B0 {self.game_objects['coin']}       "
                    f"runes dust: {self.player.runes_found}       "
                    f"time: {time_sec}         "
-                   f"last object found: {self.last_object_found}    "
+                   f"last object found: {self.last_object_found}    " 
                    )
         pygame.display.set_caption(caption)
 
