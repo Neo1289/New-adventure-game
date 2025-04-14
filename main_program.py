@@ -215,6 +215,9 @@ class Game:
             side_game.run()
             self.transition = False
             self.secret = False
+            if side_game.platform_player.coins_collected > 10:
+                self.game_objects['potion'] += 1
+                self.last_object_found = 'you collected more than 9 coins you get a potion!'
 
     def player_life_check(self):
         for sprite in self.all_sprites:
