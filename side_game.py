@@ -260,7 +260,8 @@ class SideGame():
     def display_instructions(self):
         # Create a font for instructions
         font = pygame.font.SysFont('Arial', 18)
-        text = font.render("Use Arrow Keys to move, SPACE to jump, ESC to exit", True, self.WHITE)
+        text = font.render("Use Arrow Keys to move, SPACE to jump, ESC to exit \n"
+                           "get more than 30 coins for a free potion", True, self.WHITE)
         self.display_surface.blit(text, (20, 20))
 
     def display_coin_count(self):

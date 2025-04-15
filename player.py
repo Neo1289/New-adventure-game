@@ -1,5 +1,6 @@
 from game_settings import *
 from sprites import Rune
+from flame import PlayerFlame
 
 class Player(pygame.sprite.Sprite):
     def __init__(self,pos,groups, collision_sprites):
@@ -70,6 +71,11 @@ class Player(pygame.sprite.Sprite):
         if self.runes_found > 0:
             Rune(self.rect.center, groups)
             self.runes_found -= 1
+
+    def shoot_fire(self, groups):
+        if self.runes_found == 3:
+            PlayerFlame((self.rect.centerx,self.rect.centery), flame_frames,groups)
+            self.runes_found = 0
 
     def update(self,dt):
         self.input()
