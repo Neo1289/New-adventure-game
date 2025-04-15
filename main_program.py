@@ -1,6 +1,5 @@
 import random
 
-from flame import Flame
 from game_settings import (pygame,
                            maps,
                            display_surface,
@@ -12,7 +11,7 @@ from player import Player
 from sprites import GroundSprite, CollisionSprite, AreaSprite, BonusSprite, Wall, ColumnSprite,Rune
 from groups import allSprites
 from enemy import Enemy
-from flame import Flame
+from flame import Flame, PlayerFlame
 from side_game import SideGame
 
 class Game:
@@ -215,9 +214,9 @@ class Game:
             side_game.run()
             self.transition = False
             self.secret = False
-            if side_game.platform_player.coins_collected > 10:
+            if side_game.platform_player.coins_collected > 30:
                 self.game_objects['potion'] += 1
-                self.last_object_found = 'you collected more than 9 coins you get a potion!'
+                self.last_object_found = 'you collected more than 30 coins you get a potion!'
 
     def player_life_check(self):
         for sprite in self.all_sprites:
@@ -245,7 +244,7 @@ class Game:
 
     def check_rune_collisions(self):
         enemies = [sprite for sprite in self.all_sprites if isinstance(sprite, Enemy)]
-        rune_group = pygame.sprite.Group([sprite for sprite in self.all_sprites if isinstance(sprite, Rune)])
+        rune_group = pygame.sprite.Group([sprite for sprite in self.all_sprites if isinstance(sprite, (Rune, PlayerFlame))])
 
         for enemy in enemies:
             rune_hits = pygame.sprite.spritecollide(enemy, rune_group, False)
@@ -266,6 +265,8 @@ class Game:
                     self.wall_spawn()
                 if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
                     self.player.shoot(self.all_sprites)
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_f:
+                    self.player.shoot_fire(groups=self.all_sprites)
 
                 self.transition_check(event)
                 self.using_resources(event)
