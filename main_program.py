@@ -43,7 +43,7 @@ class Game:
 
         #### game objects that can be used by the player
         self.game_objects = {
-            'potion': 0,
+            'potion': 1,
             'crystal ball': 1,
             'coin': 0
         }
@@ -79,9 +79,12 @@ class Game:
             if obj.name == 'player_spawn':
                 if self.player is None:
                     self.player = Player((obj.x, obj.y), self.all_sprites, self.collision_sprites)
+                    self.player.game = self
                 else:
                     self.player.collision_rect.center = (obj.x, obj.y)
                     self.all_sprites.add(self.player)
+                    self.player.game = self
+
 
             elif obj.name not in ('bat','scheleton','wall','flame'):
                 self.area_groups[obj.name] = AreaSprite(obj.x, obj.y, obj.width, obj.height, self.all_sprites)

@@ -73,9 +73,10 @@ class Player(pygame.sprite.Sprite):
             self.runes_found -= 1
 
     def shoot_fire(self, groups):
-        if self.runes_found == 3:
+        if self.runes_found == 3 and self.game.game_objects['crystal ball'] > 0:
             PlayerFlame((self.rect.centerx,self.rect.centery), flame_frames,groups)
             self.runes_found = 0
+            self.game.game_objects['crystal ball'] -= 1
 
     def update(self,dt):
         self.input()
