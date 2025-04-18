@@ -41,7 +41,7 @@ class PlayerFlame(pygame.sprite.Sprite):
         self.animate(dt)
         current_time = pygame.time.get_ticks()
         if current_time - self.spawn_time >= 1000:
-            self.pos = pygame.Vector2(randint(-10, 10), randint(-10, 10)) + self.pos
+            self.pos = pygame.Vector2(randint(-20, 20), randint(-20, 20)) + self.pos
             PlayerFlame(self.pos, self.frames, self.groups)
             self.kill()
 
