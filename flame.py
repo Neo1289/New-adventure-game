@@ -32,17 +32,24 @@ class PlayerFlame(pygame.sprite.Sprite):
         self.spawn_time = pygame.time.get_ticks()
         self.groups = groups
 
+
     def animate(self, dt):
 
         self.frames_index += 7 * dt
         self.image = self.frames[int(self.frames_index) % len(self.frames)]
 
-    def update(self, dt):
+    def flame(self, dt):
         self.animate(dt)
         current_time = pygame.time.get_ticks()
-        if current_time - self.spawn_time >= 1000:
+        if current_time - self.spawn_time >= 300:
             self.pos = pygame.Vector2(randint(-20, 20), randint(-20, 20)) + self.pos
             PlayerFlame(self.pos, self.frames, self.groups)
             self.kill()
+        if current_time - self.spawn_time >=3000:
+            self.kill()
+
+    def update(self, dt):
+        self.flame(dt)
+
 
 
