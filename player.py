@@ -1,4 +1,4 @@
-from game_settings import *
+from game_settings import pygame, walk, path, join,player_flame_frames
 from sprites import Rune
 from flame import PlayerFlame
 
@@ -74,9 +74,9 @@ class Player(pygame.sprite.Sprite):
 
     def shoot_fire(self, groups):
         if self.runes_found == 3 and self.game.game_objects['crystal ball'] > 0:
-            PlayerFlame((self.rect.centerx,self.rect.centery), flame_frames,groups)
             self.runes_found = 0
             self.game.game_objects['crystal ball'] -= 1
+            PlayerFlame((self.rect.centerx,self.rect.centery), player_flame_frames,groups)
 
     def update(self,dt):
         self.input()

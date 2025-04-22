@@ -1,7 +1,7 @@
 
 import pygame.display
 
-from game_settings import *
+from game_settings import pygame,WINDOW_WIDTH,WINDOW_HEIGHT
 
 class allSprites(pygame.sprite.Group):
     def __init__(self):

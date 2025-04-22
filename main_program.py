@@ -6,7 +6,7 @@ from game_settings import (pygame,
                            WINDOW_HEIGHT, WINDOW_WIDTH,
                            TILE_SIZE, FONT_SIZE,
                            button_color,
-                           sys, bat_frames, scheleton_frames, chest, rendering, flame_frames)
+                           sys, bat_frames, scheleton_frames, chest, rendering, flame_frames,player_flame_frames)
 from player import Player
 from sprites import GroundSprite, CollisionSprite, AreaSprite, BonusSprite, Wall, ColumnSprite,Rune
 from groups import allSprites
@@ -253,6 +253,7 @@ class Game:
             rune_hits = pygame.sprite.spritecollide(enemy, rune_group, False)
             if rune_hits:
                 enemy.kill()
+                PlayerFlame((self.player.rect.centerx,self.player.rect.centery), player_flame_frames, self.all_sprites)
 
     def run(self):
         while self.running:
