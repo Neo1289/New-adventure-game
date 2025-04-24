@@ -5,5 +5,5 @@ from PIL import Image
 img_path = os.path.join("resources", "player_flame", "1.png")
 img = Image.open(img_path).convert("RGB")  # converts to RGB mode, no alpha channel
 
-pixel_value = img.getpixel((5, 1))
+pixel_value = img.getpixel((3, 2))
 print("Sampled pixel:", pixel_value)  # prints a 3-value tuple for RGB

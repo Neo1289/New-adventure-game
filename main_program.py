@@ -13,6 +13,7 @@ from groups import allSprites
 from enemy import Enemy
 from flame import Flame, PlayerFlame
 from side_game import SideGame
+from menu import GameMenu
 
 class Game:
     def __init__(self):
@@ -271,6 +272,9 @@ class Game:
                     self.player.shoot(self.all_sprites)
                 if event.type == pygame.KEYDOWN and event.key == pygame.K_f:
                     self.player.shoot_fire(groups=self.all_sprites)
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_m:
+                    self.menu_item = GameMenu()
+                    self.menu_item.run()
 
                 self.transition_check(event)
                 self.using_resources(event)
