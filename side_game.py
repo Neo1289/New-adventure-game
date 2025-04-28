@@ -138,7 +138,7 @@ class SideGame():
         self.start_time = pygame.time.get_ticks()
         self.game_duration = 10000  # 10 seconds in milliseconds
         # Add font for timer display
-        self.timer_font = pygame.font.SysFont('Arial', 36)
+        self.timer_font = pygame.font.SysFont('Georgia', 20)
         self.remaining_time = 10
 
         # Get screen dimensions
@@ -199,7 +199,7 @@ class SideGame():
         self.bg_color = (20, 20, 40)  # Dark blue-ish background
 
         # Set up font for UI
-        self.font = pygame.font.SysFont('Arial', 24)
+        self.font = pygame.font.SysFont('Georgia', 20)
 
         self.spawn_coins()
 
@@ -257,13 +257,6 @@ class SideGame():
             color_index = i % len(self.PLATFORM_COLORS)
             pygame.draw.rect(self.display_surface, self.PLATFORM_COLORS[color_index], platform)
 
-    def display_instructions(self):
-        # Create a font for instructions
-        font = pygame.font.SysFont('Arial', 18)
-        text = font.render("Use Arrow Keys to move, SPACE to jump, ESC to exit \n"
-                           "get more than 30 coins for a free potion", True, self.WHITE)
-        self.display_surface.blit(text, (20, 20))
-
     def display_coin_count(self):
         # Display coin count at the top right
         coin_text = self.font.render(f"Coins: {self.platform_player.coins_collected}", True, self.COIN_COLOR)
@@ -289,9 +282,6 @@ class SideGame():
 
             # Clear screen with background color
             self.display_surface.fill(self.bg_color)
-
-            # Draw instructions
-            self.display_instructions()
 
             # Draw platforms
             self.draw_platforms()

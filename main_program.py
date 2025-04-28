@@ -86,7 +86,6 @@ class Game:
                     self.all_sprites.add(self.player)
                     self.player.game = self
 
-
             elif obj.name not in ('bat','scheleton','wall','flame'):
                 self.area_groups[obj.name] = AreaSprite(obj.x, obj.y, obj.width, obj.height, self.all_sprites)
 
@@ -248,11 +247,16 @@ class Game:
 
     def check_rune_collisions(self):
         enemies = [sprite for sprite in self.all_sprites if isinstance(sprite, Enemy)]
-        rune_group = pygame.sprite.Group([sprite for sprite in self.all_sprites if isinstance(sprite, (Rune, PlayerFlame))])
+        rune_group = pygame.sprite.Group([sprite for sprite in self.all_sprites if isinstance(sprite, (Rune))])
+        flame_group = pygame.sprite.Group(
+            [sprite for sprite in self.all_sprites if isinstance(sprite, (PlayerFlame))])
 
         for enemy in enemies:
             rune_hits = pygame.sprite.spritecollide(enemy, rune_group, False)
+            flame_hits = pygame.sprite.spritecollide(enemy, flame_group, False)
             if rune_hits:
+                enemy.kill()
+            elif flame_hits:
                 enemy.kill()
                 PlayerFlame((self.player.rect.centerx,self.player.rect.centery), player_flame_frames, self.all_sprites)
 
