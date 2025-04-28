@@ -8,27 +8,28 @@ class GameMenu:
         # Define colors as class attributes
         self.WHITE = (255, 255, 255)
         self.bg_color = (0, 0, 0)
-        self.game_duration = 60000  # 60 seconds in milliseconds
 
         # Get display surface from pygame directly
         self.display_surface = pygame.display.get_surface()
         self.screen_width = self.display_surface.get_width()
         self.screen_height = self.display_surface.get_height()
         self.start_time = pygame.time.get_ticks()
-        self.timer_font = pygame.font.SysFont('Arial', 36)
-
-    def display_timer(self):
-        elapsed_time = pygame.time.get_ticks() - self.start_time
-        self.remaining_time = max(0, (self.game_duration - elapsed_time) // 1000)
-        timer_text = self.timer_font.render(f"Time: {self.remaining_time}", True, self.WHITE)
-        timer_rect = timer_text.get_rect(midtop=(self.screen_width // 2, 20))
-        self.display_surface.blit(timer_text, timer_rect)
+        self.timer_font = pygame.font.SysFont('Georgia', 20)
 
     def display_instructions(self):
-        font = pygame.font.SysFont('Arial', 18)
+        font = pygame.font.SysFont('Georgia', 15)
         instructions = [
-            "Use Arrow Keys to move, SPACE to jump, ESC to exit",
-            "get more than 30 coins for a free potion"
+            "Coin collection game instructions: \n\n"
+            "Use Arrow Keys to move, SPACE to jump, ESC to exit \n"
+            "get more than 30 coins for a free potion \n\n"
+            "Main instructions: \n\n"
+            "Use arrows to move the character around \n"
+            "Y to enter areas or inspect objects \n"
+            "Press 1 to use the potion \n"
+            "Press f to release a the runic fire \n"
+            "Press space to relelase a rune \n"
+
+
         ]
         for i, line in enumerate(instructions):
             text = font.render(line, True, self.WHITE)
@@ -36,7 +37,7 @@ class GameMenu:
 
     def run(self):
         while self.running:
-            dt = self.clock.tick(60) / 1000
+
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
@@ -47,7 +48,7 @@ class GameMenu:
 
             self.display_surface.fill(self.bg_color)
             self.display_instructions()
-            self.display_timer()
+
             pygame.display.update()
 
         return
