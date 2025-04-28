@@ -86,7 +86,6 @@ class Game:
                     self.all_sprites.add(self.player)
                     self.player.game = self
 
-
             elif obj.name not in ('bat','scheleton','wall','flame'):
                 self.area_groups[obj.name] = AreaSprite(obj.x, obj.y, obj.width, obj.height, self.all_sprites)
 
