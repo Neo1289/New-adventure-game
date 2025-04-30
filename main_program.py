@@ -173,7 +173,6 @@ class Game:
                     and event.key == pygame.K_y):
                 self.transition = True
 
-
         for obj in self.collision_sprites:
             if obj.rect.colliderect(self.player.rect) and obj.name != None and event.type == pygame.KEYDOWN and event.key == pygame.K_y and obj.resources == 1 and obj.name not in ('merchant'):
                 self.finding = random.randint(0,2)
@@ -235,7 +234,7 @@ class Game:
 
     def display_captions(self):
         time_sec = pygame.time.get_ticks() // 1000
-        caption = (f"\u2665 {self.player.life}      "
+        self.caption = (f"\u2665 {self.player.life}      "
                    f"\U0001F9EA {self.game_objects['potion']}      "
                    f"\U0001F52E {self.game_objects['crystal ball']}     "
                    f"\U0001F4B0 {self.game_objects['coin']}       "
@@ -243,7 +242,7 @@ class Game:
                    f"time: {time_sec}         "
                    f"last object found: {self.last_object_found}    " 
                    )
-        pygame.display.set_caption(caption)
+        pygame.display.set_caption(self.caption)
 
     def check_rune_collisions(self):
         enemies = [sprite for sprite in self.all_sprites if isinstance(sprite, Enemy)]
@@ -277,7 +276,7 @@ class Game:
                 if event.type == pygame.KEYDOWN and event.key == pygame.K_f:
                     self.player.shoot_fire(groups=self.all_sprites)
                 if event.type == pygame.KEYDOWN and event.key == pygame.K_m:
-                    self.menu_item = GameMenu()
+                    self.menu_item = GameMenu(objects=main_game.game_objects)
                     self.menu_item.run()
 
                 self.transition_check(event)
@@ -297,6 +296,8 @@ class Game:
 
 if __name__ == '__main__':
     main_game = Game()
+    menu_item = GameMenu(objects=main_game.game_objects)
+    menu_item.run()
     main_game.setup()
     main_game.mapping()
     main_game.monsters()

@@ -77,7 +77,7 @@ player_flame_folder = path.join('resources', 'player_flame')
 for file_name in listdir(player_flame_folder):
     full_path = path.join(player_flame_folder, file_name)
     surf = pygame.image.load(full_path).convert()
-    surf.set_colorkey((0,0,12))
+    surf.set_colorkey((31, 16, 42))
     player_flame_frames.append(surf)
 
 # ---------------------------
