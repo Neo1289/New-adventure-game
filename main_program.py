@@ -14,6 +14,7 @@ from enemy import Enemy
 from flame import Flame, PlayerFlame
 from side_game import SideGame
 from menu import GameMenu
+from storyteller import StoryTeller
 
 class Game:
     def __init__(self):
@@ -211,6 +212,8 @@ class Game:
             self.setup()
             self.mapping()
             self.transition = False
+            self.story_teller = StoryTeller(self.current_area)
+            self.story_teller.run()
         elif self.transition and self.secret:
             side_game = SideGame()
             side_game.run()
